@@ -1,0 +1,22 @@
+export const typeOfEvent = [
+  "Boda",
+  "Quinceaños",
+  "Fiesta de cumpleaños",
+  "3 Años",
+  "Despedida de solter@",
+  "Cumpleaños",
+  "Bautizo",
+  "Primera comunión",
+  "Graduación (escolar, universitaria)",
+  "Aniversario de bodas",
+  "Baby shower",
+  "Reunión familiar",
+  "Confirmación (ceremonia religiosa)",
+  "Bar/Bat Mitzvah (ceremonia judía)",
+  "Fiesta de compromiso",
+  "Fiesta de jubilación",
+  "Fiesta de Año Nuevo",
+  "Cena de gala benéfica",
+  "Reunión de ex-alumnos",
+  "Fiesta corporativa o de empresa"
+]
