@@ -1,12 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 
-// Obtener la URL de la imagen del marcador desde Cloudinary
-const markerImageUrl = 'https://res.cloudinary.com/dgphzdi4e/image/upload/c_scale,w_28,h_28/contact_images/xnruzqleome2zopfbyne.png'
 
 const PeraIcon = L.icon({
-  iconUrl: markerImageUrl,
-  iconRetinaUrl: markerImageUrl,
+  iconUrl: 'https://res.cloudinary.com/dgphzdi4e/image/upload/contact_images/xnruzqleome2zopfbyne.png',
+  iconRetinaUrl: '../src/images/pera-marker-x2.png',
   iconSize: [28, 28],           // Tamaño ajustado para mejor visibilidad
   iconAnchor: [14, 28],         // Punto de anclaje en la base del ícono
   popupAnchor: [0, -28],        // Popup aparece arriba del ícono
