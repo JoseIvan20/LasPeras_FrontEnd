@@ -1,19 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-import { Cloudinary } from '@cloudinary/url-gen'
-
-// Cloudinary
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: "dgphzdi4e"
-  }
-})
 
 // Obtener la URL de la imagen del marcador desde Cloudinary
-const markerImageUrl = cld.image('xnruzqleome2zopfbyne')
-  .format('png')  // Asegurar formato PNG para transparencia
-  .quality('auto')
-  .toURL()
+const markerImageUrl = 'https://res.cloudinary.com/dgphzdi4e/image/upload/v1/xnruzqleome2zopfbyne.png'
 
 const PeraIcon = L.icon({
   iconUrl: markerImageUrl,

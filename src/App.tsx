@@ -52,7 +52,7 @@ const LandingPage = () => {
 
             {/* Texto descriptivo */}
             <p className="max-w-xl text-lg text-gray-600">
-            Bienvenidos a Las Peras, un encantador salón de eventos al aire libre rodeado de exuberante vegetación. Aquí, cada momento especial cobra vida en un ambiente natural único, acompañado de una experiencia gastronómica inolvidable con platillos deliciosos. Ideal para celebraciones que desean un toque de magia y frescura.
+            Bienvenidos a Las Peras, un encantador salón de eventos al aire libre rodeado de exuberante vegetación. Aquí, cada momento especial cobra vida en un ambiente natural único. Ideal para celebraciones que desean un toque de magia y frescura.
             </p>
 
             {/* Formulario de contacto */}
