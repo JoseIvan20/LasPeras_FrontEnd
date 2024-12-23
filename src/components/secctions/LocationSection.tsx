@@ -17,8 +17,8 @@ const cld = new Cloudinary({
 })
 
 const PeraIcon = L.icon({
-  iconUrl: '../src/images/pera-marker.png',
-  iconRetinaUrl: '../src/images/pera-marker-2x.png',
+  iconUrl: 'https://res.cloudinary.com/dgphzdi4e/image/upload/contact_images/xnruzqleome2zopfbyne.png',
+  iconRetinaUrl: 'https://res.cloudinary.com/dgphzdi4e/image/upload/contact_images/xnruzqleome2zopfbyne.png',
   iconSize: [7, 22],
   iconAnchor: [3, 22],
   popupAnchor: [0, -22],
