@@ -116,7 +116,7 @@ const FormContact = () => {
                   label="Teléfono"
                   type="phone"
                   icon={Phone}
-                  placeholder="55 0000 0000"
+                  placeholder="5500000000"
                   error={errors.phone?.message}
                   {...field}
                 />
