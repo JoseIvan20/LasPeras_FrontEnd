@@ -1,19 +1,18 @@
 import { Pin } from 'lucide-react'
-import FormContact from './components/secctions/FormContact'
-import Slider from './components/Slider'
-import circleImage from './images/circle_1.svg'
-import circleImage2 from './images/circle_2.svg'
-import pearIcon from './images/pear-icon.svg'
-import LocationSection from './components/secctions/LocationSection'
-import AnimatedPearIcon from './components/animations/AnimatedPearIcon'
-import AnimatedCircle from './components/animations/AnimatedCircle'
-import WhatsAppButton from './components/button/WhatsAppButton'
-import TestimonialsSection from './components/secctions/TestimonialsSection'
+import FormContact from '../components/secctions/FormContact'
+import Slider from '../components/Slider'
+import circleImage from '../images/circle_1.svg'
+import circleImage2 from '../images/circle_2.svg'
+import pearIcon from '../images/pear-icon.svg'
+import LocationSection from '../components/secctions/LocationSection'
+import AnimatedPearIcon from '../components/animations/AnimatedPearIcon'
+import AnimatedCircle from '../components/animations/AnimatedCircle'
+import WhatsAppButton from '../components/button/WhatsAppButton'
+import TestimonialsSection from '../components/secctions/TestimonialsSection'
 
-const LandingPage = () => {
+const Home = () => {
   return (
     <main className='relative min-h-screen overflow-hidden bg-white'>
-
       {/* Circulo decorativo superior izquierdo */}
       <AnimatedCircle
         src={circleImage}
@@ -94,4 +93,4 @@ const LandingPage = () => {
   )
 }
 
-export default LandingPage
+export default Home

@@ -5,6 +5,7 @@ import CustomInput from "../input/CustomInput"
 import { errorVariants } from "../../utils/animations"
 import { forwardRef, InputHTMLAttributes } from "react"
 import CustomDateInput from "../input/CustomInputDate"
+import CustomPassword from "../input/CustomPassword"
 
 export interface MessageToastyProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -20,6 +21,8 @@ const MessageToasty = forwardRef<HTMLInputElement, MessageToastyProps>(
       InputComponent = CustomTextarea
     } else if (type === 'date') {
       InputComponent = CustomDateInput
+    } else if (type === 'password') {
+      InputComponent = CustomPassword
     } else {
       InputComponent = CustomInput
     }

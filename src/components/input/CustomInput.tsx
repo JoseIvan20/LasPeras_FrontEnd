@@ -1,7 +1,7 @@
 import { type LucideIcon } from 'lucide-react'
 import { forwardRef, InputHTMLAttributes } from 'react'
 
-export interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   icon?: LucideIcon
   error?: string
