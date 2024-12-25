@@ -1,22 +1,19 @@
-import { Users } from "lucide-react"
+import { Eye, Users } from "lucide-react"
 import Navbar from "../components/navbar/NavbarDashboard"
 import ReusableTable from "../components/table/ReusableTable"
 import { ColumnDef } from "@tanstack/react-table"
+import { UserBody } from "../types/user"
+import { LabelBadge } from "../components/label/LabelBadge"
+import CustomButton from "../components/button/CustomButton"
 
 interface DashboardProps { // Props de Dashboard
   userName: string
 }
 
-interface User { // Props de un usuario
-  id: number
-  name: string
-  email: string
-}
-
 const Dashboard = ({ userName }: DashboardProps) => {
 
   // Deifnicion de usuarios para pintarlos dentro de la tabla
-  const columns: ColumnDef<User>[] = [
+  const columns: ColumnDef<UserBody>[] = [
     {
       header: 'ID',
       accessorKey: 'id',
@@ -29,12 +26,56 @@ const Dashboard = ({ userName }: DashboardProps) => {
       header: 'Email',
       accessorKey: 'email',
     },
+    {
+      header: 'Teléfono',
+      accessorKey: 'phone',
+    },
+    {
+      header: 'Fecha evento',
+      accessorKey: 'date',
+    },
+    {
+      header: 'Cantidad personas',
+      accessorKey: 'numberofpeople',
+    },
+    {
+      header: 'Tipo celebración',
+      accessorKey: 'typeofcelebration',
+    },
+    {
+      header: 'Estado',
+      accessorKey: 'typeOfCelebration',
+      cell: ({ row }) => {
+        row.original.status
+        return (
+          <LabelBadge labelText="En espera" variant="warning" />
+        )
+      }
+    },
+    {
+      header: 'Acciones',
+      id: 'actions',
+      cell: ({ row }) => {
+        <CustomButton
+          icon={Eye}
+          key={row.id}
+          type="button" />
+      }
+    },
   ]
 
   // Usuarios ejemplares
-  const data: User[] = [
-    { id: 1, name: 'John Doe', email: 'john@example.com' },
-    // ... más datos
+  const data: UserBody[] = [
+    {
+      id: 1,
+      name: 'Jose Ivan Jimenez Guerrero',
+      email: 'ivanjg1029@gmail.com',
+      phone: '123456789',
+      date: '2021-10-10',
+      numberofpeople: 10,
+      typeofcelebration: 'Boda',
+      status: 'active'
+    },
   ]
 
   return (

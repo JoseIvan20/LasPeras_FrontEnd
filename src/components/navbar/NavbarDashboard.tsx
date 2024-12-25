@@ -39,7 +39,7 @@ const Navbar = ({
             <div className="flex-1 flex items-center justify-center md:justify-start">
               <div className="text-center md:text-left">
                 <h1 className="text-xl md:text-2xl font-semibold text-gray-600">Bienvenido, {userName}</h1>
-                <p className="text-sm text-gray-500">Portal de Configuración Clientes</p>
+                <p className="text-sm text-gray-500">Portal de Configuración Usuarios</p>
               </div>
             </div>
 
