@@ -18,4 +18,5 @@ export interface AuthBody {
   checkpoint: string
   rol: number,
   token: string
+  user: UserBody
 }

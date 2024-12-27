@@ -8,7 +8,7 @@ import {
   getPaginationRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ChevronLeft, ChevronRight, LucideIcon, PlusCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, LucideIcon } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 // Props de table
