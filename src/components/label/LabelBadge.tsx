@@ -3,7 +3,7 @@ import { cn } from '../../helper/cn'
 
 interface LabelBadgeProps {
   labelText: string
-  variant?: 'default' | 'success' | 'warning' | 'error'
+  variant?: 'default' | 'success' | 'warning' | 'error' | "info"
   className?: string
 }
 
@@ -15,6 +15,7 @@ const badgeVariants = cva('px-2.5 py-1 rounded-md text-xs font-semibold', {
       success: 'bg-green-100 text-green-800',
       warning: 'bg-yellow-100 text-yellow-800',
       error: 'bg-red-100 text-red-800',
+      info: 'bg-sky-100 text-sky-800',
     },
   },
   defaultVariants: {

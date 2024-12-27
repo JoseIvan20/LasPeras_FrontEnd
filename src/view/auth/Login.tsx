@@ -1,20 +1,30 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { LoginBody } from "../../types/login"
 import MessageToasty from "../../components/messages/MessageToasty"
 import { GlobeLock, LockIcon, MailOpen, UserCircle2 } from "lucide-react"
 import CustomButton from "../../components/button/CustomButton"
-import { Link, NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
+import { AuthBody } from "../../types/user"
+import useAuth from "../../hooks/useAuth"
 
 const Login = () => {
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<LoginBody>()
+  const { control, handleSubmit, formState: { errors } } = useForm<AuthBody>()
 
-  const onSubmitLogin: SubmitHandler<LoginBody> = data => {
-    console.log('Data al back', data)
+  const {
+    loginUser,
+    isPendingLogin
+  } = useAuth()
+
+  const onSubmitLogin: SubmitHandler<AuthBody> = async data => {
+    try {
+      const authData = {
+        consumer: data.consumer,
+        checkpoint: data.checkpoint
+      }
+      await loginUser(authData)
+    } catch (error) {
+      console.log('Error en formulario')
+    }
   }
 
   return (
@@ -41,7 +51,7 @@ const Login = () => {
           </div>
           <div>
             <Controller
-              name="consumidor"
+              name="consumer"
               control={control}
               rules={{
                 required: 'Coloca un correo electronico'
@@ -52,7 +62,7 @@ const Login = () => {
                   type="email"
                   placeholder="example@gmail.com"
                   icon={MailOpen}
-                  error={errors.consumidor?.message}
+                  error={errors.consumer?.message}
                   {...field}
                 />
               )}
@@ -60,7 +70,7 @@ const Login = () => {
           </div>
           <div>
             <Controller
-              name="checkPoint"
+              name="checkpoint"
               control={control}
               rules={{
                 required: 'La contraseña no puede ir vacía',
@@ -75,27 +85,30 @@ const Login = () => {
                   type="password"
                   placeholder="********"
                   icon={LockIcon}
-                  error={errors.checkPoint?.message}
+                  error={errors.checkpoint?.message}
                   {...field}
                 />
               )}
             />
           </div>
 
-          <div className='mb-3 flex justify-end'>
+          {/* <div className='mb-3 flex justify-end'>
             <Link
               to='#'
               className='text-sm text-gray-500 font-medium hover:text-gray-600 duration-300'>
               ¿Olvidaste contraseña?
             </Link>
-          </div>
+          </div> */}
 
           <div className="flex justify-center pt-10">
             <CustomButton
-              buttonText="Iniciar sesión"
+              buttonText="Acceder"
               icon={GlobeLock}
               type="submit"
-              className="flex justify-center w-full bg-[#444] text-white hover:bg-[#666]" />
+              isLoading={isPendingLogin}
+              disabled={isPendingLogin}
+              loadingText="Accediendo..."
+              className="bg-[#444] text-white hover:bg-[#666] w-full justify-center" />
           </div>
         </form>
       </div>

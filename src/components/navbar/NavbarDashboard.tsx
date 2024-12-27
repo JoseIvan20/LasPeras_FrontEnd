@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, LogOut, UserCircle2 } from 'lucide-react'
+import useAuth from '../../hooks/useAuth'
 
 interface NavbarDashboardProps {
   userName: string,
@@ -9,6 +10,8 @@ interface NavbarDashboardProps {
 const Navbar = ({ 
   userName, 
 }: NavbarDashboardProps) => {
+
+  const { logoutUser } = useAuth()
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -26,7 +29,7 @@ const Navbar = ({
   }, [])
 
   const logout = () => {
-    console.log('Cerrar sesion')
+    logoutUser()
   }
 
   return (

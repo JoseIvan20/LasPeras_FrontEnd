@@ -1,11 +1,11 @@
 import { isAxiosError } from "axios"
-import apiSendMail from "../utils/axios"
 import { MailBody, MailResponse } from "../types/mail"
+import apiURL from "../utils/axios"
 
 export const sendMail = async (bodyMail: MailBody): Promise<MailResponse> => {
   try {
 
-    const { data } = await apiSendMail.post<MailResponse>('/send', bodyMail)
+    const { data } = await apiURL.post<MailResponse>('/contact/send', bodyMail)
     return data
 
   } catch (error) {

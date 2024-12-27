@@ -3,11 +3,11 @@ import CustomButton from "../components/button/CustomButton"
 import pearIcon from '../images/pear-icon.svg'
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import MessageToasty from "./messages/MessageToasty"
-import useMail from "../hooks/useMail"
 import { MailBody } from "../types/mail"
 import { MessageError, MessageSuccess } from "./messages/Message"
 import { useEffect } from "react"
 import AnimatedPearIcon from "../components/animations/AnimatedPearIcon"
+import useMail from "../hooks/useMail"
 
 const FormContact = () => {
 

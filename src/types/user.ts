@@ -1,10 +1,21 @@
 export interface UserBody { // Props de un usuario
-  id: number
+  _id: number
   name: string
   email: string
   phone: string,
   date: string,
-  numberofpeople: number,
-  typeofcelebration: string,
+  numberOfPeople: number,
+  typeOfCelebration: string,
   status: string
+  message?: string
+}
+
+export interface AuthBody {
+  message: string,
+  id: string,
+  name: string,
+  consumer: string,
+  checkpoint: string
+  rol: number,
+  token: string
 }

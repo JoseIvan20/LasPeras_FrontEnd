@@ -13,7 +13,7 @@ interface FilterSelectProps {
   error?: string
 }
 
-const FilterSelect: React.FC<FilterSelectProps> = ({
+const FilterSelect = ({
   options,
   onSelect,
   value = null,
@@ -22,7 +22,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
   label,
   searchPlaceholder = 'Buscar...',
   error
-}) => {
+}: FilterSelectProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [focusedIndex, setFocusedIndex] = useState(-1)

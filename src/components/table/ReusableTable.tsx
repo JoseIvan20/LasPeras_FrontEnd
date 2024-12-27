@@ -9,7 +9,7 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { ChevronLeft, ChevronRight, LucideIcon, PlusCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // Props de table
 interface ReusableTableProps<TData> {
@@ -17,6 +17,7 @@ interface ReusableTableProps<TData> {
   columns: ColumnDef<TData, any>[]
   title: string
   icon: LucideIcon
+  iconButton: LucideIcon
   paragraph?: string
   buttonText?: string
   enabledButton?: boolean
@@ -28,6 +29,7 @@ function ReusableTable<TData>({
   columns,
   title,
   icon: Icon,
+  iconButton: IconButton,
   paragraph,
   buttonText,
   enabledButton = false,
@@ -38,10 +40,53 @@ function ReusableTable<TData>({
   const [globalFilter, setGlobalFilter] = useState<string>('')
   // Manejo de los filtros
   const [columnFilters, setColumnFilters] = useState<any[]>([])
+  // Estado para el tamaño de la ventana
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Modificamos las columnas según el viewport
+  const getResponsiveColumns = () => {
+
+    // Separamos la columna de acciones
+    const actionColumn = columns.find(col => col.id === 'actions')
+
+    // Filtramos las columnas base (excluyendo acciones)
+    const baseColumns = columns.filter(col => 
+      ((col as any).accessorKey === 'consecutiveNumber' || 
+       (col as any).accessorKey === 'name')
+    )
+
+    // Columnas según el viewport (excluyendo acciones)
+    const responsiveColumns = [
+      ...baseColumns,
+      // md: email, status
+      ...(windowWidth >= 768 ? columns.filter(col => 
+        (col as any).accessorKey === 'email' || 
+        (col as any).accessorKey === 'status'
+      ) : []),
+      // lg: phone, date
+      ...(windowWidth >= 1024 ? columns.filter(col => 
+        (col as any).accessorKey === 'phone' || 
+        (col as any).accessorKey === 'date'
+      ) : []),
+      // xl: numberOfPeople, typeOfCelebration
+      ...(windowWidth >= 1280 ? columns.filter(col => 
+        (col as any).accessorKey === 'numberOfPeople' || 
+        (col as any).accessorKey === 'typeOfCelebration'
+      ) : [])
+    ]
+    
+    return actionColumn ? [...responsiveColumns, actionColumn] : responsiveColumns
+  }
 
   const table = useReactTable({
     data,
-    columns,
+    columns: getResponsiveColumns(),
     state: {
       globalFilter,
       columnFilters,
@@ -58,13 +103,13 @@ function ReusableTable<TData>({
   return (
     <div className="mx-5">
       {/* Header */}
-      <div className="flex justify-between mb-6 items-center mt-5 bg-white p-5 rounded-lg shadow-md">
+      <div className="flex justify-between mb-6 items-center mt-5 bg-white p-5 rounded-lg flex-col md:flex-row gap-4 md:gap-0">
         <div className="flex items-center">
           <div className='flex-col'>
-            <div className='flex'>
-              <Icon className='w-12 h-12 text-red-700' />
+            <div className='flex text-center md:text-start'>
+              <Icon className='md:w-12 md:h-12 w-8 h-8 text-red-700' />
               <div className='flex flex-col'>
-                <h1 className="font-semibold text-red-700 text-4xl ml-4">
+                <h1 className="font-semibold text-red-700 sm:text-4xl text-xl ml-4">
                   {title}
                 </h1>
 
@@ -74,13 +119,13 @@ function ReusableTable<TData>({
           </div>
         </div>
         {enabledButton && (
-          <div className='bg-red-700 p-2 hover:bg-red-800 duration-300 rounded-md'>
+          <div className='bg-red-700 p-2 hover:bg-red-800 duration-300 rounded-md w-full justify-center flex sm:w-auto'>
             <button 
               className='flex gap-2 items-center' 
               type='button'
               onClick={onButtonClick}
             >
-              <PlusCircle className='text-white' />
+              <IconButton className='text-white' />
               <span className='text-white font-base'>
                 {buttonText}
               </span>
@@ -93,33 +138,8 @@ function ReusableTable<TData>({
       <div className="w-full bg-white rounded-lg shadow">
         {/* Search and Entries Header */}
         <div className="p-6 border-b border-gray-200">
-          {/* <div className='bg-white mb-6'>
-            <div className='flex flex-row gap-3 items-center'>
-              <Search className='text-red-700' />
-              <h2 className='text-2xl text-red-700 font-semibold'>Filtros</h2>
-            </div>
-            <div className='grid grid-cols-2 gap-2 mt-4'>
-              <div className="flex flex-wrap gap-2">
-                {table.getHeaderGroups().map(headerGroup =>
-                  headerGroup.headers.map(header =>
-                    header.column.getCanFilter() ? (
-                      <div key={header.id} className="flex items-center">
-                        <span className="text-sm text-gray-600 mr-2">
-                          {header.column.columnDef.header as string}:
-                        </span>
-                        <FilterDropdown
-                          column={header.column}
-                          onFilterChange={(values) => header.column.setFilterValue(values)}
-                        />
-                      </div>
-                    ) : null
-                  )
-                )}
-              </div>
-            </div>
-          </div> */}
           &nbsp;
-          <div className="flex items-center justify-between">
+          <div className="md:flex md:flex-row md:items-center md:justify-between flex flex-col gap-3 items-center">
             <div className="flex items-center space-x-2">
               <select
                 value={table.getState().pagination.pageSize}
