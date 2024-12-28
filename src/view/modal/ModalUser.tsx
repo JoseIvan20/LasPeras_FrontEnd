@@ -68,10 +68,12 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <form onSubmit={handleSubmit(onSubmitEdit)} className="space-y-4">
-        {/* Grid de campos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+    <div className="flex flex-col gap-3 md:gap-5">
+
+      <form onSubmit={handleSubmit(onSubmitEdit)}>
+        {/* <CustomInput */}
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+
           <Controller
             name="name"
             control={control}
@@ -79,15 +81,13 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
               required: 'Coloca un nombre'
             }}
             render={({ field }) => (
-              <div className="col-span-1">
-                <MessageToasty
-                  label="Nombre"
-                  placeholder="John Doe"
-                  icon={User2}
-                  error={errors.name?.message}
-                  {...field}
-                />
-              </div>
+              <MessageToasty
+                label="Nombre"
+                placeholder="John Doe"
+                icon={User2}
+                error={errors.name?.message}
+                {...field}
+              />
             )}
           />
         
@@ -102,15 +102,13 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
               }
             }}
             render={({ field }) => (
-              <div className="col-span-1">
-                <MessageToasty
-                  label="Correo electrónico"
-                  icon={Mail}
-                  disabled
-                  error={errors.email?.message}
-                  {...field}
-                />
-              </div>
+              <MessageToasty
+                label="Correo electrónico"
+                icon={Mail}
+                disabled
+                error={errors.email?.message}
+                {...field}
+              />
             )}
           />
 
@@ -125,15 +123,13 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
               }
             }}
             render={({ field }) => (
-              <div className="col-span-1">
-                <MessageToasty
-                  label="Teléfono"
-                  type="phone"
-                  icon={Phone}
-                  error={errors.phone?.message}
-                  {...field}
-                />
-              </div>
+              <MessageToasty
+                label="Teléfono"
+                type="phone"
+                icon={Phone}
+                error={errors.phone?.message}
+                {...field}
+              />
             )}
           />
 
@@ -142,19 +138,17 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
             control={control}
             rules={{ required: 'Elige una fecha' }}
             render={({ field: { onChange, value, ...rest } }) => (
-              <div className="col-span-1">
-                <MessageToasty
-                  label="Fecha tentativa del evento"
-                  type="date"
-                  icon={Calendar}
-                  error={errors.date?.message}
-                  value={value ? formatDateForInput(value) : ''}
-                  onChange={(e) => {
-                    onChange(new Date(e.target.value).toISOString())
-                  }}
-                  {...rest}
-                />
-              </div>
+              <MessageToasty
+                label="Fecha tentativa del evento"
+                type="date"
+                icon={Calendar}
+                error={errors.date?.message}
+                value={value ? formatDateForInput(value) : ''}
+                onChange={(e) => {
+                  onChange(new Date(e.target.value).toISOString())
+                }}
+                {...rest}
+              />
             )}
           />
           
@@ -169,16 +163,14 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
               } 
             }}
             render={({ field }) => (
-              <div className="col-span-1">
-                <MessageToasty
-                  label="Cantidad de personas"
-                  type="number"
-                  icon={UsersRound}
-                  placeholder="Cantidad de personas"
-                  error={errors.numberOfPeople?.message}
-                  {...field}
-                />
-              </div>
+              <MessageToasty
+                label="Cantidad de personas"
+                type="number"
+                icon={UsersRound}
+                placeholder="Cantidad de personas"
+                error={errors.numberOfPeople?.message}
+                {...field}
+              />
             )}
           />
 
@@ -187,16 +179,14 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
             control={control}
             rules={{ required: 'Por favor, selecciona un tipo de evento' }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <div className="col-span-1">
-                <FilterSelect
-                  options={typeOfEvent}
-                  onSelect={onChange}
-                  value={value ? String(value) : null}
-                  label="Tipo de evento"
-                  placeholder="Selecciona un tipo de evento"
-                  error={error?.message}
-                />
-              </div>
+              <FilterSelect
+                options={typeOfEvent}
+                onSelect={onChange}
+                value={value ? String(value) : null}
+                label="Tipo de evento"
+                placeholder="Selecciona un tipo de evento"
+                error={error?.message}
+              />
             )}
           />
           
@@ -205,34 +195,35 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
             control={control}
             rules={{ required: 'Por favor, selecciona un estado' }}
             render={({ field: { onChange, value }, fieldState: { error } }) => {
+
+              // Creamos un objeto para mapear los valores a las etiquetas
               const valueToLabel = Object.fromEntries(
                 userContactStatus.map(status => [status.value, status.label])
               )
+
+              // Creamos un objeto para mapear las etiquetas de los valores
               const labelToValue = Object.fromEntries(
                 userContactStatus.map(status => [status.label, status.value])
               )
 
               return (
-                <div className="col-span-1">
-                  <FilterSelect
-                    options={userContactStatus.map(status => status.label)}
-                    onSelect={(selectedLabel) => {
-                      const selectedValue = labelToValue[selectedLabel] as UserStatus;
-                      onChange(selectedValue);
-                    }}
-                    value={value ? valueToLabel[value] : null}
-                    label="Estado del cliente"
-                    placeholder="Selecciona un estado"
-                    error={error?.message}
-                  />
-                </div>
+                <FilterSelect
+                  options={userContactStatus.map(status => status.label)}
+                  onSelect={(selectedLabel) => {
+                    // Convertimos la etiqueta seleccionada al valor correspondiente
+                    const selectedValue = labelToValue[selectedLabel] as UserStatus;
+                    onChange(selectedValue);
+                  }}
+                  value={value ? valueToLabel[value] : null}
+                  label="Estado del cliente"
+                  placeholder="Selecciona un estado"
+                  error={error?.message}
+                />
               )
             }}
           />
         </div>
-
-        {/* Mensaje */}
-        <div className="col-span-full">
+        <div className="mt-5">
           <Controller
             name="message"
             control={control}
@@ -248,16 +239,14 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
           />
         </div>
 
-        <hr className="my-4 sm:my-6" />
+        <hr className="my-8" />
 
-        {/* Botones */}
-        <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+        <div className="flex justify-end gap-3">
           <CustomButton
             buttonText="Cancelar"
             icon={XCircle}
             type="button"
-            onClick={onClose}
-            className="w-full sm:w-auto" />
+            onClick={onClose} />
 
           <CustomButton
             buttonText="Guardar cambios"
@@ -266,7 +255,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
             isLoading={isPendingUpdateUser}
             disabled={isPendingUpdateUser}
             loadingText="Guardando cambios..."
-            className="w-full sm:w-auto bg-[#444] text-white hover:bg-[#666]" />
+            className="bg-[#444] text-white hover:bg-[#666]" />
         </div>
       </form>
     </div>

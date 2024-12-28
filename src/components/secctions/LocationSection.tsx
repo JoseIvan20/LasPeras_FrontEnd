@@ -7,6 +7,7 @@ import { fill } from "@cloudinary/url-gen/actions/resize"
 import { format, quality } from "@cloudinary/url-gen/actions/delivery"
 import { auto } from "@cloudinary/url-gen/qualifiers/format"
 import { auto as autoQuality } from "@cloudinary/url-gen/qualifiers/quality"
+import { MapPin } from 'lucide-react'
 
 
 // Configuración de Cloudinary
@@ -31,6 +32,11 @@ const PeraIcon = L.icon({
 export default function LocationSection() {
   const [isMounted, setIsMounted] = useState(false)
   const position: [number, number] = [19.363984795125166, -99.29821437241759] // Coordenadas de ejemplo (Ciudad de México)
+
+  const latitude = 19.363984795125166
+  const longitude = -99.29821437241759
+  const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`
+  const wazeUrl = `https://www.waze.com/ul?ll=${latitude},${longitude}&navigate=yes`
 
   useEffect(() => {
     setIsMounted(true)
@@ -63,6 +69,27 @@ export default function LocationSection() {
           <a href='https://maps.app.goo.gl/WbUDvE7W5ZNKi94WA?g_st=com.google.maps.preview.copy' className="text-gray-600">
             Lic. Castillo Ledón 205, Cuajimalpa, Cuajimalpa de Morelos, 05000 Ciudad de México, CDMX
           </a>
+          <div className='flex flex-col sm:flex-row justify-center md:justify-end gap-4 mt-6'>
+            <a
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 transition-colors"
+              >
+                <MapPin className="mr-2 h-5 w-5" />
+                Abrir en Google Maps
+              </a>
+              <a
+                href={wazeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-[#444] bg-[#F8F8F8] hover:bg-[#F4F4F4] transition-colors"
+              >
+                <MapPin className="mr-2 h-5 w-5" />
+                Abrir en Waze
+              </a>
+          </div>
+          
         </div>
         <div className="h-96 rounded-lg overflow-hidden">
           <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>

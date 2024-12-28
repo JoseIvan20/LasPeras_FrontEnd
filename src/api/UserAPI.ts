@@ -7,6 +7,7 @@ export const getUsers = async () => {
   try {
 
     const { data } = await apiURL.get('/getUsers')
+    // const { data } = await apiURL.get('/user')
     return data
 
   } catch (error) {
@@ -16,6 +17,24 @@ export const getUsers = async () => {
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
     throw new Error('Error desconocido al obtener usuarios')
+    
+  }
+}
+
+// Actualiza el usuario
+export const getUser = async (_id: string): Promise<UserBody> => {
+  try {
+
+    const { data } = await apiURL.get(`/getUserById/${_id}`)
+    return data
+
+  } catch (error) {
+
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
+    }
+    throw new Error('Error desconocido al actualizar el usuario')
     
   }
 }
@@ -43,6 +62,7 @@ export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBo
   try {
 
     const { data } = await apiURL.post('/loginUser', authData)
+    // const { data } = await apiURL.post('/user/login', authData)
     return data
 
   } catch (error) {

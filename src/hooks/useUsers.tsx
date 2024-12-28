@@ -1,7 +1,7 @@
 // hook de usuarios
 
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getUsers, updateUserById } from "../api/UserAPI"
+import { getUser, getUsers, updateUserById } from "../api/UserAPI"
 import { UserBody } from "../types/user"
 import MessageToast from "../components/messages/MessageToast"
 import { useCallback, useState } from "react"
@@ -11,6 +11,10 @@ import { sendMail } from "../api/MailAPI"
 interface UpdateUserDataProps {
   _id: string
   formData: Partial<UserBody>
+}
+
+interface GetUserDataProps {
+  _id: string
 }
 
 export const useUsers = () => {
@@ -36,6 +40,16 @@ export const useUsers = () => {
     }
   })
 
+  const userById = useMutation({
+    mutationFn: ({ _id }: GetUserDataProps) => getUser(_id),
+    onSuccess: () => {
+      MessageToast({ icon: 'success', title: 'Éxitoso', message: `Usuario consultado con éxito` })
+    },
+    onError: () => {
+      MessageToast({ icon: 'error', title: 'Error', message: `Ocurrió un error al obtener usuario` })
+    }
+  })
+
   return {
     // Obtencion de usuarios
     users: userQuery.data || [],
@@ -46,6 +60,8 @@ export const useUsers = () => {
     updateUser: updateMutation.mutate,
     isPendingUpdateUser: updateMutation.isPending,
     isErrorUpdateUser: updateMutation.isError,
+
+    getUserById: userById.mutateAsync
   }
 }
 

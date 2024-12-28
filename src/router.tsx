@@ -12,6 +12,7 @@ import DashboardLayout from './layouts/DashboardLayout'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from './helper/auth/ProtectedRoute'
 import NotFound from './view/NotFound'
+import UserEdit from './view/user/UserEdit'
 
 const Router = () => {
 
@@ -32,6 +33,7 @@ const Router = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path='/dashboard' element={<Dashboard userName={`${user ? user?.name : 'Usuario'}`} />} />
+            <Route path="/edit-user/:id" element={<UserEdit />} />
           </Route>
         </Route>
 

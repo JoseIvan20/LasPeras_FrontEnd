@@ -11,6 +11,7 @@ import Modal from "../components/modal/Modal"
 import ModalUser from "./modal/ModalUser"
 import { formatDateForInput } from "../utils/dateUtils"
 import { useNavigate } from "react-router-dom"
+import { useMediaQuery } from 'react-responsive'
 
 interface DashboardProps { // Props de Dashboard
   userName: string
@@ -21,6 +22,8 @@ const Dashboard = ({ userName }: DashboardProps) => {
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [userSelected, setUserSelected] = useState<UserBody>(Object)
   const navigate = useNavigate()
+  // Modos responsivos
+  const isMobile = useMediaQuery({ maxWidth: 767 })
 
   // Hook de usuarios
   const {
@@ -31,8 +34,12 @@ const Dashboard = ({ userName }: DashboardProps) => {
 
   // Abrir modal
   const handleClickEdit = (user: UserBody) => {
-    setIsModalOpen(true)
-    setUserSelected(user)
+    if (isMobile) {
+      navigate(`/edit-user/${user._id}`, { state: { user } })
+    } else {
+      setIsModalOpen(true)
+      setUserSelected(user)
+    }
   }
 
   const handleCloseModal = () =>{
@@ -131,14 +138,17 @@ const Dashboard = ({ userName }: DashboardProps) => {
         onButtonClick={handleBackHome}
       />
 
-      <Modal
-        title="Informacion de usuario"
-        icon={UserCircle2}
-        isOpen={isOpenModal}
-        onClose={() => setIsModalOpen(false)}
-        size="xl" >
-        <ModalUser userSelected={userSelected} onClose={handleCloseModal} />
-      </Modal>
+      {!isMobile && (
+        <Modal
+          title="Informacion de usuario"
+          icon={UserCircle2}
+          isOpen={isOpenModal}
+          onClose={() => setIsModalOpen(false)}
+          size="xl" >
+          <ModalUser userSelected={userSelected} onClose={handleCloseModal} />
+        </Modal>
+      )}
+
     </div>
   )
 
