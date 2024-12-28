@@ -31,14 +31,15 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-3">
       <div className="w-full max-w-xl md:w-1/2 bg-white py-14 px-8 rounded-xl shadow-md">
 
-        <div className="justify-center flex bg-[#F6F6F6] w-auto text-[#444] p-2 rounded-md hover:bg-[#F4F4F4] transition-colors">
+        <NavLink 
+          to='/'
+          className="justify-center flex bg-[#F6F6F6] w-auto text-[#444] p-2 rounded-md hover:bg-[#F4F4F4] transition-colors">
           <ChevronLeft />
 
-          <NavLink
-            to='/'>
+          <span className="font-semibold">
             Regresar
-          </NavLink>
-        </div>
+          </span>
+        </NavLink>
 
         <div className="flex items-center gap-3 justify-center mb-10 mt-5">
           <NavLink to={'/'}>

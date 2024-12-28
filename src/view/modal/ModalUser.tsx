@@ -21,6 +21,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
   const {
     updateUser,
     isPendingUpdateUser,
+    isSuccessUpdateUser
   } = useUsers()
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<UserBody>({
@@ -31,6 +32,12 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
   useEffect(() => {
     reset(userSelected)
   }, [userSelected, reset])
+
+  useEffect(() => {
+    if (isSuccessUpdateUser && !isPendingUpdateUser) {
+      onClose()
+    }
+  }, [isSuccessUpdateUser, isPendingUpdateUser, onClose])
 
   const onSubmitEdit = async (data: UserBody) => {
     try {

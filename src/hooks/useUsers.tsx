@@ -59,6 +59,7 @@ export const useUsers = () => {
     // Actualizar usuario
     updateUser: updateMutation.mutate,
     isPendingUpdateUser: updateMutation.isPending,
+    isSuccessUpdateUser: updateMutation.isSuccess,
     isErrorUpdateUser: updateMutation.isError,
 
     getUserById: userById.mutateAsync

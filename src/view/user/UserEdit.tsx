@@ -11,7 +11,7 @@ import { userContactStatus, UserStatus } from "../../utils/statusUser"
 import CustomButton from "../../components/button/CustomButton"
 import { useUsers } from "../../hooks/useUsers"
 
-const UserEdit = ({ }) => {
+const UserEdit = () => {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -80,6 +80,10 @@ const UserEdit = ({ }) => {
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
     }
+  }
+
+  const handleCancel = () => {
+    navigate('/dashboard')
   }
 
   if (!user) {
@@ -294,7 +298,7 @@ const UserEdit = ({ }) => {
               icon={XCircle}
               type="button"
               className="w-full md:w-auto flex justify-center"
-              // onClick={onClose} 
+              onClick={handleCancel}
               />
 
             <CustomButton
