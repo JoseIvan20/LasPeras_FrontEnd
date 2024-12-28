@@ -30,7 +30,9 @@ const Home = () => {
       />
 
       {/* Seccion de formulario y slider */}
-      <div className="container relative z-10 mx-auto px-4 py-28">
+      <div 
+        id='inicio'
+        className="container relative z-10 mx-auto px-4 py-28">
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Columna izquierda */}
           <div className="space-y-8">
@@ -71,12 +73,16 @@ const Home = () => {
         </div>
       </div>
 
-      <div className='container relative z-10 mx-auto px-4 lg:py-12 sm:py-3 py-6'>
+      <div
+        id='opiniones' 
+        className='container relative z-10 mx-auto px-4 lg:py-12 sm:py-3 py-6'>
         <TestimonialsSection />
       </div>
 
       {/* Seccion de ubicacion */}
-      <div className='container relative z-10 mx-auto px-4 lg:py-12 sm:py-3 py-6'>
+      <div 
+        id='ubicacion'
+        className='container relative z-10 mx-auto px-4 lg:py-12 sm:py-3 py-6'>
         <div className="mb-10 flex items-center gap-4">
           <Pin className="text-gray-500" size={32} />
           <span className="border-b-2 border-gray-500 text-3xl text-gray-500 font-bold">

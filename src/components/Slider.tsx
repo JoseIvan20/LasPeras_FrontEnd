@@ -118,14 +118,6 @@ export default function Slider() {
               className="h-full w-full rounded-xl object-cover"
               loading="lazy"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-white">
-              <h2 className="mb-2 text-2xl font-bold text-center">
-                {slides[slideIndex].title}
-              </h2>
-              <p className="mx-auto max-w-2xl text-center text-sm">
-                {slides[slideIndex].description}
-              </p>
-            </div>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -163,7 +155,7 @@ export default function Slider() {
       {/* Auto-play Toggle */}
       <button
         onClick={() => setAutoPlay(!autoPlay)}
-        className="absolute bottom-20 right-8 z-10 rounded-full bg-white/80 px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm transition-all hover:bg-white duration-200"
+        className="absolute bottom-5 right-5 z-10 rounded-full bg-white/80 px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm transition-all hover:bg-white duration-200"
       >
         {autoPlay ? (
           <div className='flex items-center gap-1 text-gray-600'>

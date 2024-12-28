@@ -1,4 +1,4 @@
-import { CornerUpLeft, FileEditIcon, UserCircle2, Users } from "lucide-react"
+import { ChevronLeft, FileEditIcon, UserCircle2, Users } from "lucide-react"
 import Navbar from "../components/navbar/NavbarDashboard"
 import ReusableTable from "../components/table/ReusableTable"
 import { ColumnDef } from "@tanstack/react-table"
@@ -126,7 +126,7 @@ const Dashboard = ({ userName }: DashboardProps) => {
         paragraph="Aquí puedes administrar tus usuarios"
         icon={Users}
         enabledButton={true}
-        iconButton={CornerUpLeft}
+        iconButton={ChevronLeft}
         buttonText="Inicio"
         onButtonClick={handleBackHome}
       />

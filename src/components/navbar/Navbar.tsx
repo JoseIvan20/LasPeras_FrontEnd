@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Archive, Menu, User, X } from 'lucide-react'
+import { AlignRight, Archive, Menu, User, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -29,6 +29,18 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId)
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+      setIsMenuOpen(false)
+    }
+  }
+
+  const isLoginPage = window.location.pathname.includes('/auth/login')
+
+  if (isLoginPage) return null
+
   return (
     <>
       <nav
@@ -51,27 +63,28 @@ const Navbar = () => {
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-4 duration-300">
-                <a 
-                  href="#" 
+                <button 
+                  onClick={() => scrollToSection('inicio')} 
                   className={`${isScrolled ? 'text-gray-800' : 'hidden cursor-none'} hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Inicio
-                </a>
-                <a 
-                  href="#" 
+                </button>
+                <button 
+                  onClick={() => scrollToSection('opiniones')} 
                   className={`${isScrolled ? 'text-gray-800' : 'hidden cursor-none'} hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Opiniones
-                </a>
-                <a 
-                  href="#" 
+                </button>
+                <button 
+                  onClick={() => scrollToSection('ubicacion')} 
                   className={`${isScrolled ? 'text-gray-800' : 'hidden cursor-none'} hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Ubicación
-                </a>
+                </button>
                 {isAuthenticated ? (
                   <NavLink 
                     to={'/dashboard'} 
+                    onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-2 bg-[#444] py-1 px-2 rounded-md text-white text-sm hover:bg-[#555] transition-colors ${isScrolled ? "block" : "hidden"}`}
                   >
                     <Archive size={18}/>
@@ -80,6 +93,7 @@ const Navbar = () => {
                 ) : (
                   <NavLink 
                     to={'/auth/login'} 
+                    onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-2 bg-[#444] py-1 px-2 rounded-md text-white text-sm hover:bg-[#555] transition-colors ${isScrolled ? "block" : "hidden"}`}
                   >
                     <User size={18}/>
@@ -92,13 +106,13 @@ const Navbar = () => {
               <button
                 onClick={toggleMenu}
                 className={`inline-flex items-center justify-center p-2 rounded-md ${
-                  isScrolled ? 'text-gray-800' : 'text-white'
-                } hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors duration-300`}
+                  isScrolled ? 'text-gray-800' : 'text-[#444] bg-gray-100 hover:bg-gray-200 hover:text-[#444]'
+                } hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors duration-300`}
               >
                 {isMenuOpen ? (
                   <X className="block h-6 w-6" aria-hidden="true" />
                 ) : (
-                  <Menu className="block h-6 w-6" aria-hidden="true" />
+                  <AlignRight className="block h-6 w-6" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -120,27 +134,28 @@ const Navbar = () => {
             isMenuOpen ? 'translate-y-0' : '-translate-y-full'
           }`}>
             <div className="px-4 pt-4 pb-6 space-y-3">
-              <a 
-                href="#" 
-                className="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
+              <button 
+                onClick={() => scrollToSection('inicio')} 
+                className="block w-full text-left px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
               >
                 Inicio
-              </a>
-              <a 
-                href="#" 
-                className="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
+              </button>
+              <button 
+                onClick={() => scrollToSection('opiniones')} 
+                className="block w-full text-left px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
               >
                 Opiniones
-              </a>
-              <a 
-                href="#" 
-                className="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
+              </button>
+              <button 
+                onClick={() => scrollToSection('ubicacion')} 
+                className="block w-full text-left px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition-colors duration-200"
               >
                 Ubicación
-              </a>
+              </button>
               {isAuthenticated ? (
                 <NavLink 
                   to="/dashboard"
+                  onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-2 px-4 py-3 text-base font-medium text-white bg-[#444] hover:bg-[#555] rounded-lg transition-colors duration-200"
                 >
                   <Archive size={18} />
@@ -149,6 +164,7 @@ const Navbar = () => {
               ) : (
                 <NavLink 
                   to="/auth/login"
+                  onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-2 px-4 py-3 text-base font-medium text-white bg-[#444] hover:bg-[#555] rounded-lg transition-colors duration-200"
                 >
                   <User size={18} />
