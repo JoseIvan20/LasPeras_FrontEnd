@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AlignRight, Archive, Menu, User, X } from 'lucide-react'
+import { AlignRight, Archive, User, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
