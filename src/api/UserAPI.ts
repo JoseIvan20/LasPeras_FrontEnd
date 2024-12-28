@@ -6,7 +6,7 @@ import { AuthBody, UserBody } from "../types/user"
 export const getUsers = async () => {
   try {
 
-    const { data } = await apiURL.get('/user')
+    const { data } = await apiURL.get('/getUsers')
     return data
 
   } catch (error) {
@@ -24,7 +24,7 @@ export const getUsers = async () => {
 export const updateUserById = async (_id: string, userData: Partial<UserBody>): Promise<UserBody> => {
   try {
 
-    const { data } = await apiURL.put(`/user/${_id}`, userData)
+    const { data } = await apiURL.put(`/updateUser/${_id}`, userData)
     return data
 
   } catch (error) {
@@ -42,7 +42,7 @@ export const updateUserById = async (_id: string, userData: Partial<UserBody>): 
 export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBody> => {
   try {
 
-    const { data } = await apiURL.post('/user/login', authData)
+    const { data } = await apiURL.post('/loginUser', authData)
     return data
 
   } catch (error) {

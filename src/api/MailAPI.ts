@@ -5,7 +5,7 @@ import apiURL from "../utils/axios"
 export const sendMail = async (bodyMail: MailBody): Promise<MailResponse> => {
   try {
 
-    const { data } = await apiURL.post<MailResponse>('/contact/send', bodyMail)
+    const { data } = await apiURL.post<MailResponse>('/createUserAndSendEmail', bodyMail)
     return data
 
   } catch (error) {
