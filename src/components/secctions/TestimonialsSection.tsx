@@ -7,6 +7,7 @@ import Modal from '../modal/Modal'
 import ModalComment from '../../view/modal/ModalComment'
 import Lottie from 'react-lottie'
 import emptyCommentsAnimation from '../../assets/animations/empty-comments.json'
+import { useSelector } from 'react-redux'
 
 interface TestimonialProps {
   id: number
@@ -61,6 +62,8 @@ const TestimonialsSection = () => {
     getComments
   } = useComment() // Hook de comentarios
 
+  const { isAuthenticated } = useSelector((state: any) => state.auth)
+
   // Funcion que levantaria un modal para agregar el comentario
   const handleSubmitComment = () => {
     setIsModalOpen(true)
@@ -86,12 +89,14 @@ const TestimonialsSection = () => {
       <section className="py-16 bg-gray-50 rounded-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className='flex md:justify-end justify-center mb-4'>
-            <CustomButton
-              buttonText='Agregar comentario'
-              icon={MessageCirclePlus}
-              onClick={() => handleSubmitComment()} />
-          </div>
+          {isAuthenticated &&(
+            <div className='flex md:justify-end justify-center mb-4'>
+              <CustomButton
+                buttonText='Agregar comentario'
+                icon={MessageCirclePlus}
+                onClick={() => handleSubmitComment()} />
+            </div>
+          )}
 
           <h2 className="text-3xl font-bold text-center text-gray-500 mb-12">
             Lo que dicen nuestros clientes
