@@ -211,7 +211,6 @@ const GestionImage = () => {
                   <button 
                     onClick={() => deactivateImage(image._id)}
                     className={`text-red-500 hover:text-red-600 duration-300 ${image.isActive ? 'opacity-100' : 'opacity-50'}`}
-                    disabled={image.isActive ? false : true}
                     aria-label={image.isActive ? "Desactivar imagen" : "Activar imagen"}
                   >
                     {image.isActive ? <ImageDownIcon size={20} /> : <ImageUp size={20} /> }
