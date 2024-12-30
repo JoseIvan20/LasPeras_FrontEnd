@@ -26,7 +26,7 @@ const TestimonialCard = ({
   rating
 }: TestimonialProps) => (
   <div className="relative bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col md:flex-row items-center justify-between mb-4">
       <div className="flex items-center gap-4">
         {image ? (
           <img src={image} alt={name} className="w-12 h-12 rounded-full" />
