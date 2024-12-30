@@ -83,7 +83,7 @@ const Modal = ({
             {/* Titulo del modal */}
             {title && (
               <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="flex items-center text-lg text-red-700 font-semibold">
+                <h3 className="flex items-center text-lg text-gray-700 font-semibold">
                   <Icon size={30} />
                   &nbsp;
                   &nbsp;

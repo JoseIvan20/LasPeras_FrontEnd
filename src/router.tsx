@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import ProtectedRoute from './helper/auth/ProtectedRoute'
 import NotFound from './view/NotFound'
 import UserEdit from './view/user/UserEdit'
+import GestionImage from './view/GestionImage'
 
 const Router = () => {
 
@@ -34,6 +35,7 @@ const Router = () => {
           <Route element={<DashboardLayout />}>
             <Route path='/dashboard' element={<Dashboard userName={`${user ? user?.name : 'Usuario'}`} />} />
             <Route path="/edit-user/:id" element={<UserEdit />} />
+            <Route path="/gestion-image" element={<GestionImage />} />
           </Route>
         </Route>
 

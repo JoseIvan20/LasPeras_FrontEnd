@@ -33,7 +33,7 @@ const CustomButton = ({
         (`flex items-center px-4 py-2 border-2 border-[#444444] rounded-md text-[#444444] hover:shadow-md hover:bg-[#444444] hover:text-white duration-300 ${className}`)}
     >
       {isLoading ? (
-        <div className='flex items-center gap-3'>
+        <div className='flex justify-center items-center gap-3'>
           <Spinner size={20} borderColor='border-[#F6F6F6]' />
           <span className='text-sm'> {loadingText} </span>
         </div>

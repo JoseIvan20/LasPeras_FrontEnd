@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ImagePlus, Pause, Play, Settings } from 'lucide-react'
 import { slideVariants } from '../utils/animations'
 import { Cloudinary } from '@cloudinary/url-gen'
 import { fill } from "@cloudinary/url-gen/actions/resize"
 import { format, quality } from "@cloudinary/url-gen/actions/delivery"
 import { auto } from "@cloudinary/url-gen/qualifiers/format"
-import { auto as autoQuality } from "@cloudinary/url-gen/qualifiers/quality"
+import useImage from '../hooks/useImage'
+import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
 // Configuración de Cloudinary
 const cld = new Cloudinary({
@@ -14,42 +16,6 @@ const cld = new Cloudinary({
     cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   }
 })
-
-interface Slide {
-  image: {
-    publicId: string
-    alt: string
-  }
-  title: string
-  description: string
-}
-
-const slides: Slide[] = [
-  {
-    image: {
-      publicId: 'contact_images/s1z5csem6q3b7o0f1pk2', 
-      alt: 'Donas rosadas con chispas'
-    },
-    title: 'El Sabor de la Perfección',
-    description: 'Déjate llevar por el irresistible sabor de nuestras donas recién horneadas.'
-  },
-  {
-    image: {
-      publicId: 'contact_images/ultqm76vubz5mfoujy0l', 
-      alt: 'Descripción de la imagen 2'
-    },
-    title: 'Un Entorno Mágico',
-    description: 'Descubre un salón de eventos rodeado de naturaleza, ideal para momentos inolvidables.'
-  },
-  {
-    image: {
-      publicId: 'contact_images/y2bezluvha8xjfdpfv5y', 
-      alt: 'Descripción de la imagen 3'
-    },
-    title: 'Gastronomía de Primer Nivel',
-    description: 'Sorprende a tus invitados con una experiencia culinaria que deleita todos los sentidos.'
-  }
-]
 
 const swipeConfidenceThreshold = 10000
 const swipePower = (offset: number, velocity: number) => {
@@ -60,23 +26,69 @@ export default function Slider() {
   const [[page, direction], setPage] = useState([0, 0])
   const [autoPlay, setAutoPlay] = useState(true)
 
-  const slideIndex = Math.abs(page % slides.length)
+  const { isAuthenticated } = useSelector((state: any) => state.auth)
+
+  // Hook de imagenes
+  const {
+    getImages = [],
+    isPendingImages
+  } = useImage()
+
+  useMemo(() => {
+    getImages
+  },[getImages])
+
+  // Filtramos las imagenes activas 
+  const activeImages = getImages.filter(img => img.isActive)
+
+  // const slideIndex = Math.abs(page % getImages.length)
+  const slideIndex = activeImages.length > 0 ? Math.abs(page % activeImages.length) : 0
 
   const paginate = (newDirection: number) => {
+    if (activeImages.length === 0) return // Si no hay imagenes
     setPage(prevState => {
-      const [prevPage] = prevState;
-      return [prevPage + newDirection, newDirection];
-    });
-  };
+      const [prevPage] = prevState
+      return [prevPage + newDirection, newDirection]
+    })
+  }
 
   useEffect(() => {
-    if (autoPlay) {
+    if (autoPlay && activeImages.length > 0) {
       const timer = setInterval(() => {
         paginate(1)
       }, 5000)
       return () => clearInterval(timer)
     }
-  }, [autoPlay])
+  }, [autoPlay, activeImages.length])
+
+  // Si está cargando, mostrar un estado de carga
+  if (isPendingImages) {
+    return (
+      <div className="relative h-full min-h-[600px] w-full overflow-hidden rounded-xl shadow-2xl bg-gray-100 flex items-center justify-center">
+        <div className="text-gray-500">Cargando imágenes...</div>
+      </div>
+    )
+  }
+
+  // Solo tomara las imagenes activas
+  if (activeImages.length === 0) {
+    return (
+      <div className="relative h-full min-h-[600px] w-full overflow-hidden rounded-xl shadow-2xl bg-gray-100 flex flex-col items-center justify-center">
+        <ImagePlus size={48} className="text-gray-400 mb-4" />
+        <h3 className="text-xl font-semibold text-gray-600 mb-2">No hay imágenes activas en el carrusel</h3>
+        <p className="text-gray-500 mb-4"> {isAuthenticated ? 'Agrega o activa algunas imágenes para comenzar' : 'Espera a que el administrador agregue o active algunas imágenes'} </p>
+        {isAuthenticated && (
+          <NavLink
+            to='/gestion-image'
+            className='rounded-full bg-white px-6 py-3 text-sm font-medium shadow-lg transition-all hover:bg-gray-50 flex items-center gap-2'
+          >
+            <Settings size={16} />
+            Gestionar imágenes
+          </NavLink>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="relative h-full min-h-[600px] w-full overflow-hidden rounded-xl shadow-2xl">
@@ -109,18 +121,27 @@ export default function Slider() {
         >
           <div className="relative h-full w-full">
             <img
-              src={cld.image(slides[slideIndex].image.publicId)
+              src={cld.image(activeImages[slideIndex].publicId)
                 .resize(fill().width(1200).height(800))
                 .delivery(format(auto()))
-                .delivery(quality(autoQuality()))
+                .delivery(quality(100))
                 .toURL()}
-              alt={slides[slideIndex].image.alt}
+              alt={activeImages[slideIndex].alt}
               className="h-full w-full rounded-xl object-cover"
-              loading="lazy"
+              loading={slideIndex === 0 ? "eager" : "lazy"}
             />
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {isAuthenticated && (
+        <NavLink
+          to='/gestion-image'
+          className='absolute top-5 left-5 z-10 rounded-full bg-white/80 px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-sm transition-all hover:bg-white duration-200 items-center gap-2 flex' >
+          <Settings size={16} />
+          Gestionar imagenes
+        </NavLink>
+      )}
 
       {/* Navigation Buttons */}
       <button
@@ -138,7 +159,7 @@ export default function Slider() {
 
       {/* Slide Indicators */}
       <div className="absolute bottom-20 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {slides.map((_, index) => (
+        {activeImages.map((_, index) => (
           <button
             key={index}
             onClick={() => {

@@ -1,10 +1,10 @@
 // Hook de autenticacion
 
 import { useMutation } from "@tanstack/react-query"
-import { authenticated } from "../api/UserAPI"
 import MessageToast from "../components/messages/MessageToast"
 import { useDispatch } from "react-redux"
 import { logout, setCredentials } from "../helper/redux/AuthSlice"
+import { authenticated } from "../api/AuthAPI"
 
 
 const useAuth = () => {

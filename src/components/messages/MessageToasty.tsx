@@ -6,15 +6,17 @@ import { errorVariants } from "../../utils/animations"
 import { forwardRef, InputHTMLAttributes } from "react"
 import CustomDateInput from "../input/CustomInputDate"
 import CustomPassword from "../input/CustomPassword"
+import CustomInputFile from "../input/CustomInputFile"
 
 export interface MessageToastyProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   error?: string
   icon?: LucideIcon
+  onFileSelect?: (file: File | null) => void
 }
 
 const MessageToasty = forwardRef<HTMLInputElement, MessageToastyProps>(
-  ({ label, error, icon: Icon, type, ...props }, ref) => {
+  ({ label, error, icon: Icon, type, onFileSelect, ...props }, ref) => {
     // const InputComponent = type === 'textarea' ? CustomTextarea : CustomInput
     let InputComponent: React.ElementType
     if (type === 'textarea') {
@@ -23,6 +25,8 @@ const MessageToasty = forwardRef<HTMLInputElement, MessageToastyProps>(
       InputComponent = CustomDateInput
     } else if (type === 'password') {
       InputComponent = CustomPassword
+    } else if (type === 'file') {
+      InputComponent = CustomInputFile
     } else {
       InputComponent = CustomInput
     }
@@ -48,6 +52,7 @@ const MessageToasty = forwardRef<HTMLInputElement, MessageToastyProps>(
           icon={Icon}
           error={error}
           ref={ref as any}
+          onFileSelect={onFileSelect}
           {...props}
         />
       </div>
