@@ -1,4 +1,4 @@
-import { ImageIcon, Pin } from 'lucide-react'
+import { Pin } from 'lucide-react'
 import FormContact from './components/secctions/FormContact'
 import Slider from './components/Slider'
 import circleImage from './images/circle_1.svg'
@@ -10,7 +10,6 @@ import AnimatedCircle from './components/animations/AnimatedCircle'
 import WhatsAppButton from './components/button/WhatsAppButton'
 import TestimonialsSection from './components/secctions/TestimonialsSection'
 import Navbar from './components/navbar/Navbar'
-import CustomButton from './components/button/CustomButton'
 
 const LandingPage = () => {
   return (
