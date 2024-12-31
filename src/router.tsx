@@ -14,11 +14,13 @@ import ProtectedRoute from './helper/auth/ProtectedRoute'
 import NotFound from './view/NotFound'
 import UserEdit from './view/user/UserEdit'
 import GestionImage from './view/GestionImage'
+import Users from './view/user/User'
+import UserAuth from './view/user/auth/UserAuth'
 
 const Router = () => {
 
   // Uso del estado global de autenticacion
-  const { isAuthenticated, user } = useSelector((state: any) => state.auth)
+  const { isAuthenticated } = useSelector((state: any) => state.auth)
 
   return (
     <BrowserRouter>
@@ -33,9 +35,11 @@ const Router = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-            <Route path='/dashboard' element={<Dashboard userName={`${user ? user?.name : 'Usuario'}`} />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path="/dashboard/users" element={<Users />} />
             <Route path="/edit-user/:id" element={<UserEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
+            <Route path="/dashboard/auth-users" element={<UserAuth />} />
           </Route>
         </Route>
 

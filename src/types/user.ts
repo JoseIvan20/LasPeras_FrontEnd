@@ -13,11 +13,8 @@ export interface UserBody { // Props de un usuario
 // Props de autenticacion
 export interface AuthBody {
   message: string
-  id: string
   name: string
   consumer: string
-  checkpoint: string
-  rol: number
   token: string
   user: UserBody
 }

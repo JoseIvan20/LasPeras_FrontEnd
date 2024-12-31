@@ -66,17 +66,20 @@ function ReusableTable<TData>({
       ...baseColumns,
       // md: email, status
       ...(windowWidth >= 768 ? columns.filter(col => 
-        (col as any).accessorKey === 'email' || 
+        (col as any).accessorKey === 'email' ||
+        (col as any).accessorKey === 'consumer' ||
         (col as any).accessorKey === 'status'
       ) : []),
       // lg: phone, date
       ...(windowWidth >= 1024 ? columns.filter(col => 
-        (col as any).accessorKey === 'phone' || 
+        (col as any).accessorKey === 'phone' ||
+        (col as any).accessorKey === 'rol' ||
         (col as any).accessorKey === 'date'
       ) : []),
       // xl: numberOfPeople, typeOfCelebration
       ...(windowWidth >= 1280 ? columns.filter(col => 
-        (col as any).accessorKey === 'numberOfPeople' || 
+        (col as any).accessorKey === 'numberOfPeople' ||
+        (col as any).accessorKey === 'active' ||
         (col as any).accessorKey === 'typeOfCelebration'
       ) : [])
     ]
@@ -101,9 +104,9 @@ function ReusableTable<TData>({
   })
 
   return (
-    <div className="mx-5">
+    <div className="md:mx-5 mx-3">
       {/* Header */}
-      <div className="flex justify-between mb-6 items-center mt-5 bg-white p-5 rounded-lg flex-col md:flex-row gap-4 md:gap-0">
+      <div className="flex justify-between mb-6 items-center mt-5 bg-white p-5 rounded-lg flex-col md:flex-row gap-4 md:gap-0 shadow">
         <div className="flex items-center">
           <div className='flex-col'>
             <div className='flex text-center md:text-start'>

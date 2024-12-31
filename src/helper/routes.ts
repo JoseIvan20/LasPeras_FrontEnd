@@ -1,8 +1,8 @@
-import { Home, UserCog } from "lucide-react"
+import { Home, Shield, UserCog, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/user/User"
+import UserAuth from "../view/user/auth/UserAuth"
 
-// Archivo que contiene todos los modulos de rutas dentro del Dashboard
 export const routesDashboard = [
   { // Dashboard
     key: 'dashboard',
@@ -16,12 +16,28 @@ export const routesDashboard = [
   },
   {
     key: 'users',
-    path: '/dashboard/users',
-    name: 'Usuarios',
-    icon: UserCog,
-    component: User,
+    name: 'Gestión de Usuarios',
+    icon: Users,
     showInSidebar: true,
-    bgColor: 'bg-purple-100',
-    textColor: 'text-purple-600',
+    subItems: [
+      {
+        key: 'all-users',
+        path: '/dashboard/users',
+        name: 'Todos los Usuarios',
+        icon: UserCog,
+        component: User,
+        bgColor: 'bg-purple-100',
+        textColor: 'text-purple-600',
+      },
+      {
+        key: 'admins',
+        path: '/dashboard/auth-users',
+        name: 'Administradores',
+        icon: Shield,
+        component: UserAuth,
+        bgColor: 'bg-emerald-100',
+        textColor: 'text-emerald-600',
+      }
+    ]
   }
 ]

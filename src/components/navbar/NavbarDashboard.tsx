@@ -2,19 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, LogOut, UserCircle2 } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
+import { useSelector } from 'react-redux'
 
-interface NavbarDashboardProps {
-  userName: string,
-}
-
-const Navbar = ({ 
-  userName, 
-}: NavbarDashboardProps) => {
+const Navbar = () => {
 
   const { logoutUser } = useAuth()
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const { user } = useSelector((state: any) => state.auth)
   
   // Ocultamos el dropwdown presionando cualquier parte de la pantalla
   useEffect(() => {
@@ -41,7 +38,7 @@ const Navbar = ({
             {/* Título y subtítulo centrados */}
             <div className="flex-1 flex items-center justify-center md:justify-start">
               <div className="text-center md:text-left">
-                <h1 className="text-xl md:text-2xl font-semibold text-gray-600">Bienvenido, {userName}</h1>
+                <h1 className="text-xl md:text-2xl font-semibold text-gray-600">Bienvenido, {user?.name}</h1>
                 <p className="text-sm text-gray-500">Portal de Configuración Usuarios</p>
               </div>
             </div>
