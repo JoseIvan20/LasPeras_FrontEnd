@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive"
 import { useUsers } from "../../hooks/useUsers"
 import { LabelBadge } from "../../components/label/LabelBadge"
 import { formatDateForInput } from "../../utils/dateUtils"
-import { ChevronLeft, FileEditIcon, UserCircle2, Users } from "lucide-react"
+import { FileEditIcon, UserCircle2, Users } from "lucide-react"
 import ReusableTable from "../../components/table/ReusableTable"
 import Modal from "../../components/modal/Modal"
 import ModalUser from "../modal/ModalUser"
@@ -42,11 +42,6 @@ const User = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setUserSelected(Object)
-  }
-
-  // Regresar al inicio
-  const handleBackHome = () => {
-    navigate('/')
   }
 
   // Sacar el numero consecutivo en vez de tomar el id del usuario
@@ -131,10 +126,6 @@ const User = () => {
         title="Tabla de usuarios"
         paragraph="Aquí puedes administrar tus usuarios"
         icon={Users}
-        enabledButton={true}
-        iconButton={ChevronLeft}
-        buttonText="Inicio"
-        onButtonClick={handleBackHome}
       />
 
       {!isMobile && (

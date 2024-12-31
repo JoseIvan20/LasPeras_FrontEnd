@@ -16,6 +16,7 @@ import UserEdit from './view/user/UserEdit'
 import GestionImage from './view/GestionImage'
 import Users from './view/user/User'
 import UserAuth from './view/user/auth/UserAuth'
+import Calendar from './view/Calendar'
 
 const Router = () => {
 
@@ -40,6 +41,7 @@ const Router = () => {
             <Route path="/edit-user/:id" element={<UserEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
             <Route path="/dashboard/auth-users" element={<UserAuth />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Route>
         </Route>
 

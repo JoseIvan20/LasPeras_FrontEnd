@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, LogOut, UserCircle2 } from 'lucide-react'
+import { ChevronDown, Home, LogOut, Menu, UserCircle2 } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import Sidebar from '../sidebar/Sidebar'
 
 const Navbar = () => {
 
@@ -10,6 +13,9 @@ const Navbar = () => {
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+  const isMobileMenu = useMediaQuery({ maxWidth: 767 })
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const { user } = useSelector((state: any) => state.auth)
   
@@ -29,17 +35,29 @@ const Navbar = () => {
     logoutUser()
   }
 
+  const backHome = () => {
+    navigate('/')
+  }
+
   return (
     <>
       <nav className="bg-white border-b border-gray-200 z-20 m-3 md:m-5 rounded-md shadow w-[auto]" >
         <div className="px-4 mx-auto">
           <div className="flex justify-between h-20">
+
+            {isMobileMenu && (
+              <div className="md:hidden">
+                <button onClick={() => setSidebarOpen(true)} className="p-2 m-2 text-gray-500 hover:text-gray-600 bg-gray-200 rounded-md hover:shadow duration-200">
+                  <Menu className="h-6 w-6" />
+                </button>
+              </div>
+            )}
             
             {/* Título y subtítulo centrados */}
             <div className="flex-1 flex items-center justify-center md:justify-start">
               <div className="text-center md:text-left">
                 <h1 className="text-xl md:text-2xl font-semibold text-gray-600">Bienvenido, {user?.name}</h1>
-                <p className="text-sm text-gray-500">Portal de Configuración Usuarios</p>
+                <p className="text-sm text-gray-500">Panel de control</p>
               </div>
             </div>
 
@@ -71,6 +89,13 @@ const Navbar = () => {
                         <LogOut className="mr-2 h-4 w-4" />
                         Cerrar sesión
                       </button>
+                      <button
+                        onClick={backHome}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      >
+                        <Home className="mr-2 h-4 w-4" />
+                        Inicio
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -79,6 +104,14 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      {/* Sidebar para móviles */}
+      <div className={`md:hidden fixed inset-0 z-40 ${sidebarOpen ? '' : 'pointer-events-none'}`}>
+        <div className={`absolute inset-0 opacity-75 transition-opacity ease-linear duration-300 ${sidebarOpen ? 'opacity-75 bg-gray-600' : 'opacity-0'}`} onClick={() => setSidebarOpen(false)}></div>
+        <div className={`fixed inset-y-0 left-0 flex flex-col z-40 w-64 bg-white transform ease-in-out duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <Sidebar />
+        </div>
+      </div>
     </>
   )
 }

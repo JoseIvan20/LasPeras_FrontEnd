@@ -17,7 +17,7 @@ interface ReusableTableProps<TData> {
   columns: ColumnDef<TData, any>[]
   title: string
   icon: LucideIcon
-  iconButton: LucideIcon
+  iconButton?: LucideIcon
   paragraph?: string
   buttonText?: string
   enabledButton?: boolean
@@ -128,7 +128,7 @@ function ReusableTable<TData>({
               type='button'
               onClick={onButtonClick}
             >
-              <IconButton className='text-white' />
+              {IconButton && <IconButton className='text-white' />}
               <span className='text-white font-base'>
                 {buttonText}
               </span>

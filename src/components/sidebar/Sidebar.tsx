@@ -1,17 +1,37 @@
-import { NavLink } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { NavLink, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { routesDashboard } from '../../helper/routes'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 
 const Sidebar = () => {
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([])
+  const location = useLocation()
 
-  // Funcion que expande los menus padres
-  const [expandedMenus, setExpandedMenu] = useState<string[]>([])
+  const isSubRoute = useCallback((path: string) => {
+    return routesDashboard.some(route => 
+      route.subItems && route.subItems.some(subItem => subItem.path === path)
+    )
+  }, [])
 
-  // Funcion que maneja el despliegue del menu
+  useEffect(() => {
+    const currentPath = location.pathname
+    const parentMenu = routesDashboard.find(route => 
+      route.subItems && route.subItems.some(subItem => subItem.path === currentPath)
+    )
+    
+    setExpandedMenus(prev => {
+      if (parentMenu && !prev.includes(parentMenu.key)) {
+        return [...prev, parentMenu.key]
+      } else if (!isSubRoute(currentPath)) {
+        return []
+      }
+      return prev
+    })
+  }, [location, isSubRoute])
+
   const toggleMenu = (key: string) => {
-    setExpandedMenu(prev => 
+    setExpandedMenus(prev => 
       prev.includes(key) ? prev.filter(item => item !== key) : [...prev, key]
     )
   }
@@ -19,6 +39,8 @@ const Sidebar = () => {
   const renderMenuItem = (route: any, isSubItem = false) => {
     const hasSubItems = route.subItems && route.subItems.length > 0
     const isExpanded = expandedMenus.includes(route.key)
+    const isActive = location.pathname === route.path || 
+      (hasSubItems && route.subItems.some((subItem: any) => subItem.path === location.pathname))
 
     return (
       <div key={route.key} className={`${isSubItem ? 'ml-4' : ''}`}>
@@ -71,22 +93,31 @@ const Sidebar = () => {
             className={`
               w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md
               transition-colors duration-150 ease-in-out hover:bg-gray-50
+              ${isActive ? 'bg-gray-50' : ''}
             `}
           >
             <div className="flex items-center">
-              <route.icon className="h-5 w-5 mr-3 text-gray-400" />
-              <span className="font-normal text-base text-gray-600">{route.name}</span>
+              <route.icon className={`h-5 w-5 mr-3 ${isActive ? route.textColor : 'text-gray-400'}`} />
+              <span className={`font-normal text-base ${isActive ? route.textColor : 'text-gray-600'}`}>{route.name}</span>
             </div>
             {hasSubItems && (
               isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
             )}
           </button>
         )}
-        {hasSubItems && isExpanded && (
-          <div className="mt-2">
-            {route.subItems.map((subItem: any) => renderMenuItem(subItem, true))}
-          </div>
-        )}
+        <AnimatePresence>
+          {hasSubItems && isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-2 overflow-hidden"
+            >
+              {route.subItems.map((subItem: any) => renderMenuItem(subItem, true))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     )
   }

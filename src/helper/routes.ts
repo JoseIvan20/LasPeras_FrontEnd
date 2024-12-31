@@ -1,14 +1,25 @@
-import { Home, Shield, UserCog, Users } from "lucide-react"
+import { Calendar, House, LayoutPanelTop, Shield, UserCog, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/user/User"
 import UserAuth from "../view/user/auth/UserAuth"
+import Home from "../view/Home"
 
 export const routesDashboard = [
+  { // Home
+    key: 'home',
+    path: '/',
+    name: 'Inicio',
+    icon: House,
+    component: Home,
+    showInSidebar: true,
+    bgColor: 'bg-amber-100',
+    textColor: 'text-amber-600',
+  },
   { // Dashboard
     key: 'dashboard',
     path: '/dashboard',
     name: 'Dashboard',
-    icon: Home,
+    icon: LayoutPanelTop,
     component: Dashboard,
     showInSidebar: true,
     bgColor: 'bg-sky-100',
@@ -23,7 +34,7 @@ export const routesDashboard = [
       {
         key: 'all-users',
         path: '/dashboard/users',
-        name: 'Todos los Usuarios',
+        name: 'Usuarios',
         icon: UserCog,
         component: User,
         bgColor: 'bg-purple-100',
@@ -39,5 +50,15 @@ export const routesDashboard = [
         textColor: 'text-emerald-600',
       }
     ]
-  }
+  },
+  { // Calendario
+    key: 'calendar',
+    path: '/calendar',
+    name: 'Calendario',
+    icon: Calendar,
+    component: Dashboard,
+    showInSidebar: true,
+    bgColor: 'bg-amber-100',
+    textColor: 'text-amber-600',
+  },
 ]

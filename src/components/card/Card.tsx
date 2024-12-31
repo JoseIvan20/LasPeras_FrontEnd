@@ -60,7 +60,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({
           {subtitle && <p className="text-gray-400">{subtitle}</p>}
         </div>
       </div>
-      {content && <p className="text-gray-700">{content}</p>}
+      {content && <p className="flex justify-end text-gray-500 text-xl md:text-2xl font-semibold">{content}</p>}
     </div>
   )
 })
