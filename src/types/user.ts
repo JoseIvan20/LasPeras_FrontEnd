@@ -15,6 +15,7 @@ export interface AuthBody {
   message: string
   name: string
   consumer: string
+  checkpoint: string
   token: string
   user: UserBody
 }
