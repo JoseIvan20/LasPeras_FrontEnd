@@ -38,7 +38,7 @@ const Calendar = () => {
       </div>
 
       <div className='pt-7'>
-        <img src="../src/images/man-with-laptop.png" alt="Imagen de construccion en proceso" />
+        <img src="https://res.cloudinary.com/dgphzdi4e/image/upload/contact_images/vbpcm71lnmegdanlaebd.png" alt="Imagen de construccion en proceso" />
       </div>
     </div>
   )
