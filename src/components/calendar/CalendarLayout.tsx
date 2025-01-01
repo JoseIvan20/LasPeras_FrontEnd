@@ -17,6 +17,8 @@ const CalendarLayout: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['finalized', 'in_progress'])
   const [currentView, setCurrentView] = useState<'mes' | 'semana' | 'dia' | 'lista'>('mes')
 
+  console.log(selectedDate)
+
   // Ejemplo de eventos (reemplazar con datos reales)
   const events: Event[] = [
     { id: '1', title: 'Evento 1', date: new Date(2025, 0, 15), status: 'finalized' },

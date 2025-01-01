@@ -48,6 +48,7 @@ const MainCalendar = ({ events, onEventClick }: MainCalendarProps) => {
         event.date.getMonth() === currentDate.getMonth() &&
         event.date.getFullYear() === currentDate.getFullYear()
       )
+      console.log(date)
 
       days.push(
         <div key={i} className="bg-white border border-gray-200 p-2 h-32 overflow-y-auto">
