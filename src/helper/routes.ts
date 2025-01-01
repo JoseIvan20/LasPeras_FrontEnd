@@ -1,4 +1,4 @@
-import { Calendar, House, LayoutPanelTop, Shield, UserCog, Users } from "lucide-react"
+import { Calendar, House, Image, LayoutPanelTop, Shield, UserCog, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/user/User"
 import UserAuth from "../view/user/auth/UserAuth"
@@ -24,6 +24,16 @@ export const routesDashboard = [
     showInSidebar: true,
     bgColor: 'bg-sky-100',
     textColor: 'text-sky-600',
+  },
+  { // Imagenes
+    key: 'gestionImage',
+    path: '/gestion-image',
+    name: 'Imagenes',
+    icon: Image,
+    component: Dashboard,
+    showInSidebar: true,
+    bgColor: 'bg-orange-100',
+    textColor: 'text-orange-600',
   },
   {
     key: 'users',
@@ -58,7 +68,7 @@ export const routesDashboard = [
     icon: Calendar,
     component: Dashboard,
     showInSidebar: true,
-    bgColor: 'bg-amber-100',
-    textColor: 'text-amber-600',
+    bgColor: 'bg-yellow-100',
+    textColor: 'text-yellow-600',
   },
 ]

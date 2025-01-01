@@ -1,6 +1,6 @@
 import { ImageBody } from '../types/image'
-import { ImageUpIcon, Home, Image, FileImageIcon, XCircle, Save, ImageDownIcon, ImageUp } from 'lucide-react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { ImageUpIcon, Image, FileImageIcon, XCircle, Save, ImageDownIcon, ImageUp } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import MessageToasty from '../components/messages/MessageToasty'
 import CustomButton from '../components/button/CustomButton'
@@ -86,12 +86,6 @@ const GestionImage = () => {
             </h1>
           </div>
         </div>
-
-        <NavLink to="/" className='bg-[#F6F6F6] rounded-md p-1.5 hover:bg-[#444] hover:text-[#F6F6F6] transition-colors flex gap-4 items-center'>
-          <Home />
-
-          <span className='font-semibold hidden md:block'> Ir al inicio </span>
-        </NavLink>
       </div>
 
       <div className="bg-white p-5 m-2 rounded-lg shadow-lg">
