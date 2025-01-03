@@ -83,7 +83,7 @@ export const updateAdminById = async (_id: string, formData: Partial<AdminBody>)
 export const toggleUserStatus = async (_id: string, active: number): Promise<AdminBody> => {
   try {
 
-    const { data } = await apiURL.put(`/deactiveAdmin/${_id}`, active)
+    const { data } = await apiURL.put(`/deactiveAdmin/${_id}`, { active })
     // const { data } = await apiURL.put(`/auth/deactive-user-auth/${_id}`, { active })
     return data
 
