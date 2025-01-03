@@ -10,6 +10,8 @@ import FilterSelect from "../../components/select/FilterSelect"
 import { userContactStatus, UserStatus } from "../../utils/statusUser"
 import CustomButton from "../../components/button/CustomButton"
 import { useUsers } from "../../hooks/useUsers"
+import { paymentMethod } from "../../utils/paymentMethod"
+import { percentage } from "../../utils/percentage"
 
 const UserEdit = () => {
 
@@ -21,7 +23,8 @@ const UserEdit = () => {
     updateUser,
     isPendingUpdateUser,
 
-    getUserById
+    getUserById,
+    statusById
   } = useUsers()
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<UserBody>()
@@ -57,7 +60,9 @@ const UserEdit = () => {
         status,
         numberOfPeople,
         typeOfCelebration,
-        message
+        message,
+        paymentMethod,
+        percentage
       } = data
   
       const filteredData = {
@@ -68,7 +73,9 @@ const UserEdit = () => {
         date: formatDate,
         numberOfPeople,
         typeOfCelebration,
-        message
+        message,
+        paymentMethod,
+        percentage
       }
   
       await updateUser({
@@ -76,14 +83,14 @@ const UserEdit = () => {
         formData: filteredData
       })
 
-      navigate('/dashboard') // Lo llevamos al dashboard
+      navigate('/dashboard/cotizaciones') // Lo llevamos al dashboard
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
     }
   }
 
   const handleCancel = () => {
-    navigate('/dashboard')
+    navigate('/dashboard/cotizaciones')
   }
 
   if (!user) {
@@ -97,7 +104,7 @@ const UserEdit = () => {
           </h1>
         </div>
 
-        <NavLink to="/dashboard" className='bg-[#F6F6F6] rounded-md p-1.5 hover:bg-[#444] hover:text-[#F6F6F6] transition-colors'>
+        <NavLink to="/dashboard/cotizaciones" className='bg-[#F6F6F6] rounded-md p-1.5 hover:bg-[#444] hover:text-[#F6F6F6] transition-colors'>
           <ChevronLeft />
         </NavLink>
       </div>
@@ -115,7 +122,7 @@ const UserEdit = () => {
           </h1>
         </div>
 
-        <NavLink to="/dashboard" className='bg-[#F6F6F6] rounded-md p-1.5 hover:bg-[#444] hover:text-[#F6F6F6] transition-colors'>
+        <NavLink to="/dashboard/cotizaciones" className='bg-[#F6F6F6] rounded-md p-1.5 hover:bg-[#444] hover:text-[#F6F6F6] transition-colors'>
           <ChevronLeft />
         </NavLink>
       </div>
@@ -273,6 +280,38 @@ const UserEdit = () => {
                 )
               }}
             />
+
+            {statusById === 'finalized' && (
+              <>
+                <Controller
+                  name="paymentMethod"
+                  control={control}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <FilterSelect
+                      options={paymentMethod}
+                      onSelect={onChange}
+                      value={value ? String(value) : null}
+                      label="Método de pago"
+                      error={error?.message}
+                    />
+                  )}
+                />
+                
+                <Controller
+                  name="percentage"
+                  control={control}
+                  render={({ field: { onChange, value }, fieldState: { error } }) => (
+                    <FilterSelect
+                      options={percentage}
+                      onSelect={onChange}
+                      value={value ? String(value) : null}
+                      label="Pagado(Porcentaje)"
+                      error={error?.message}
+                    />
+                  )}
+                />
+              </>
+            )}
           </div>
           <div className="mt-5">
             <Controller

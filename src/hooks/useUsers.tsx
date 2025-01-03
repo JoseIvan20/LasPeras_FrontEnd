@@ -50,6 +50,8 @@ export const useUsers = () => {
     }
   })
 
+  // console.log(userById.data?.status)
+
   return {
     // Obtencion de usuarios
     users: userQuery.data || [],
@@ -62,7 +64,8 @@ export const useUsers = () => {
     isSuccessUpdateUser: updateMutation.isSuccess,
     isErrorUpdateUser: updateMutation.isError,
 
-    getUserById: userById.mutateAsync
+    getUserById: userById.mutateAsync,
+    statusById: userById.data?.status
   }
 }
 

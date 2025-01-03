@@ -37,7 +37,7 @@ const Router = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path='/dashboard' element={<Dashboard />} />
-            <Route path="/dashboard/users" element={<Users />} />
+            <Route path="/dashboard/cotizaciones" element={<Users />} />
             <Route path="/edit-user/:id" element={<UserEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
             <Route path="/dashboard/auth-users" element={<UserAuth />} />

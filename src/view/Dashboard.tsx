@@ -2,7 +2,7 @@ import { useUsers } from "../hooks/useUsers"
 import { UserBody } from "../types/user"
 import useAuth from "../hooks/useAuth"
 import MessageCard from "../components/card/MessageCard"
-import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, Users } from "lucide-react"
+import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, NewspaperIcon, Users } from "lucide-react"
 import Card from "../components/card/Card"
 import { NavLink } from "react-router-dom"
 
@@ -58,11 +58,11 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-5">
         <NavLink
-          to={'/dashboard/users'}>
+          to={'/dashboard/cotizaciones'}>
           <Card
-            title="Usuarios"
+            title="Cotizaciones"
             titleStyle="text-gray-600"
-            icon={Users}
+            icon={NewspaperIcon}
             iconColor="text-blue-700"
             bgColorIcon="bg-blue-50"
             sizeIcon={40}

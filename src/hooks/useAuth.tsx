@@ -4,12 +4,17 @@ import { useMutation, UseMutationResult, useQuery, useQueryClient } from "@tanst
 import MessageToast from "../components/messages/MessageToast"
 import { useDispatch } from "react-redux"
 import { logout, setCredentials } from "../helper/redux/AuthSlice"
-import { authenticated, createAdmin, getAdmins, updateAdminById } from "../api/AuthAPI"
+import { authenticated, createAdmin, getAdmins, toggleUserStatus, updateAdminById } from "../api/AuthAPI"
 import { AdminBody } from "../types/admin"
 
 interface UpdateAdminDataProps {
   _id: string
-  formData: Partial<AdminBody>
+  formData: Partial<AdminBody>,
+}
+
+interface ToggleUserStatusProps {
+  _id: string
+  active: number
 }
 
 const useAuth = () => {
@@ -23,7 +28,7 @@ const useAuth = () => {
     retry: 3
   })
 
-  // Mutacion de creacion de admin
+  // Mutacion de creacion de usuario
   const createAdminMutation = useMutation({
     mutationFn: createAdmin,
     onSuccess: data => {
@@ -36,9 +41,22 @@ const useAuth = () => {
     }
   })
 
-  // Mutacion de actualizacon de admin
+  // Mutacion de actualizacon de usuario
   const updateAdminMutation: UseMutationResult<AdminBody, Error, UpdateAdminDataProps> = useMutation({
     mutationFn: ({ _id, formData }: UpdateAdminDataProps) => updateAdminById(_id, formData),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['admins'] })
+      MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
+    },
+    onError: error => {
+      const messageFormat = JSON.parse(error.message)
+      MessageToast({ icon: 'error', title: 'Error', message: messageFormat.error })
+    }
+  })
+
+  // Mutacion para la baja o alta de usario
+  const deactiveUserMutation = useMutation({
+    mutationFn: ({ _id, active }: ToggleUserStatusProps) => toggleUserStatus(_id, active),
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['admins'] })
       MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
@@ -93,7 +111,12 @@ const useAuth = () => {
     isPendingLogin: authMutation.isPending,
     isErrorLogin: authMutation.isError,
 
-    logoutUser
+    logoutUser,
+
+    toggleStatus: deactiveUserMutation.mutate,
+    isPendingToggleStatus: deactiveUserMutation.isPending,
+    isSuccessToggleStatus: deactiveUserMutation.isSuccess,
+    isErrorToggleStatus: deactiveUserMutation.isError
   }
 }
 

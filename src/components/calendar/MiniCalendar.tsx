@@ -1,3 +1,4 @@
+// Componente que muestra un calendario pequenio situado del lado izquierdo parte superior
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -50,7 +51,7 @@ const MiniCalendar = ({ onDateSelect }: MiniCalendarProps) => {
   }
 
   return (
-    <div className="w-64 bg-white shadow-lg rounded-lg p-4">
+    <div className="w-64 bg-white rounded-lg p-4">
       <div className="flex justify-between items-center mb-4">
         <button onClick={prevMonth} className="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
           <ChevronLeft className="w-5 h-5" />

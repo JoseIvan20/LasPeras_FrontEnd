@@ -7,6 +7,8 @@ export interface UserBody { // Props de un usuario
   numberOfPeople: number
   typeOfCelebration: string
   status: string
+  paymentMethod: string
+  percentage: string
   message?: string
 }
 

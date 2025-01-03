@@ -17,7 +17,7 @@ export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBo
       const errorMessage = error.response?.data  || 'Error en la petición'
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
-    throw new Error('Error desconocido al autenticar el administrador')
+    throw new Error('Error desconocido al autenticar el usuario')
     
   }
 }
@@ -36,7 +36,7 @@ export const createAdmin = async (authData: Partial<AdminBody>): Promise<AdminBo
       const errorMessage = error.response?.data  || 'Error en la petición'
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
-    throw new Error('Error desconocido al crear el administrador')
+    throw new Error('Error desconocido al crear el usuario')
     
   }
 }
@@ -55,7 +55,7 @@ export const getAdmins = async () => {
       const errorMessage = error.response?.data  || 'Error en la petición'
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
-    throw new Error('Error desconocido al obtener los administradores')
+    throw new Error('Error desconocido al obtener los usuarios')
     
   }
 }
@@ -74,7 +74,26 @@ export const updateAdminById = async (_id: string, formData: Partial<AdminBody>)
       const errorMessage = error.response?.data
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
-    throw new Error('Error desconocido al actualizar el adminstrador')
+    throw new Error('Error desconocido al actualizar el usuario')
+    
+  }
+}
+
+// Baja - Alta de usuario
+export const toggleUserStatus = async (_id: string, active: number): Promise<AdminBody> => {
+  try {
+
+    const { data } = await apiURL.put(`/deactiveAdmin/${_id}`, active)
+    // const { data } = await apiURL.put(`/auth/deactive-user-auth/${_id}`, { active })
+    return data
+
+  } catch (error) {
+
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
+    }
+    throw new Error('Error desconocido al cambiar el estatus del usuario')
     
   }
 }

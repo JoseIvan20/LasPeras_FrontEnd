@@ -43,8 +43,8 @@ export const routesDashboard = [
     subItems: [
       {
         key: 'all-users',
-        path: '/dashboard/users',
-        name: 'Usuarios',
+        path: '/dashboard/cotizaciones',
+        name: 'Cotizaciones',
         icon: UserCog,
         component: User,
         bgColor: 'bg-purple-100',
@@ -53,7 +53,7 @@ export const routesDashboard = [
       {
         key: 'admins',
         path: '/dashboard/auth-users',
-        name: 'Administradores',
+        name: 'Gestión de Usuarios',
         icon: Shield,
         component: UserAuth,
         bgColor: 'bg-emerald-100',

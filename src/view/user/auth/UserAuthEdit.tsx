@@ -1,29 +1,36 @@
 import { Controller, useForm } from "react-hook-form"
 import useAuth from "../../../hooks/useAuth"
 import { AdminBody } from "../../../types/admin"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import MessageToasty from "../../../components/messages/MessageToasty"
 import { LucideLockKeyhole, Mail, Save, User2, XCircle } from "lucide-react"
 import CustomButton from "../../../components/button/CustomButton"
+import CustomSwitch from "../../../components/switch/CustomSwitch"
 
 interface UserAuthEditProps {
   adminSelected: AdminBody | null
   onClose: () => void
 }
 
-const UserAuthEdit = ({ 
-  adminSelected, 
-  onClose 
-}: UserAuthEditProps) => {
+const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
+
+  const [isActive, setIsActive] = useState(adminSelected?.active === 1)
 
   const {
+    // Crear usuario
     createAdmin,
     isPendingCreateAdmin,
     isSuccessCreateAdmin,
 
+    // Actualizar informacion
     updateAdmin,
     isPendingUpdateAdmin,
-    isSuccessUpdateAdmin
+    isSuccessUpdateAdmin,
+
+    // Cambiar status
+    toggleStatus,
+    isPendingToggleStatus,
+    // isSuccessToggleStatus
   } = useAuth()
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<AdminBody>({
@@ -42,27 +49,34 @@ const UserAuthEdit = ({
       name: '',
       consumer: '',
       checkpoint: '',
+      active: 0
     })
   }, [adminSelected, reset])
 
   useEffect(() => {
-    if ((isSuccessUpdateAdmin && !isPendingUpdateAdmin) || (isSuccessCreateAdmin && !isPendingCreateAdmin)) {
+    if ((isSuccessUpdateAdmin && !isPendingUpdateAdmin) || 
+        (isSuccessCreateAdmin && !isPendingCreateAdmin)) {
       onClose()
     }
   }, [isSuccessUpdateAdmin, isPendingUpdateAdmin, isSuccessCreateAdmin, isPendingCreateAdmin, onClose])
+
+  // Update local state when adminSelected changes
+  useEffect(() => {
+    setIsActive(adminSelected?.active === 1)
+  }, [adminSelected])
 
   const onSubmit = async (data: AdminBody) => {
     try {
       const {
         name,
         consumer,
-        checkpoint
+        checkpoint,
       } = data
 
       const filteredData = {
         name,
         consumer,
-        ...(checkpoint && { checkpoint })
+        ...(checkpoint && { checkpoint }),
       }
 
       if (adminSelected) {
@@ -78,8 +92,38 @@ const UserAuthEdit = ({
     }
   }
 
+  // Funcion para dar de baja o alta el usuario
+  const handleToggleUserStatus = async (checked: boolean) => {
+    if (adminSelected) {
+      try {
+        await toggleStatus({
+          _id: adminSelected._id,
+          active: checked ? 1 : 0
+        })
+        setIsActive(checked)
+      } catch (error) {
+        setIsActive(!checked)
+        console.log('Ocurrió un error al cambiar el estado del usuario', error)
+      }
+    }
+  }
+
   return (
     <div className="flex flex-col gap-3 md:gap-5">
+
+      <div className="flex justify-end text-gray-600">
+        {adminSelected && (
+          <div className="mt-4">
+            <CustomSwitch
+              color="primary"
+              checked={isActive}
+              onChange={handleToggleUserStatus}
+              label={checked => `${checked ? 'Activo' : 'Inactivo'}`}
+              disabled={isPendingToggleStatus}
+            />
+          </div>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <CustomInput */}
@@ -96,6 +140,7 @@ const UserAuthEdit = ({
                 label="Nombre"
                 placeholder="John Doe"
                 icon={User2}
+                disabled={!isActive}
                 error={errors.name?.message}
                 {...field}
               />
@@ -116,6 +161,7 @@ const UserAuthEdit = ({
               <MessageToasty
                 label="Correo electrónico"
                 icon={Mail}
+                disabled={!isActive}
                 placeholder="john.doe@example.com"
                 error={errors.consumer?.message}
                 {...field}
@@ -137,6 +183,7 @@ const UserAuthEdit = ({
               <MessageToasty
                 label={adminSelected ? "Contraseña nueva" : "Contraseña"}
                 type="password"
+                disabled={!isActive}
                 icon={LucideLockKeyhole}
                 placeholder={adminSelected ? "Ingrese nueva contraseña" : "Ingrese una contraseña"}
                 error={errors.checkpoint?.message}

@@ -103,8 +103,8 @@ const UserAuth = () => {
       <ReusableTable
         data={generateId}
         columns={columns}
-        title="Tabla de administradores"
-        paragraph="Aquí puedes administrar tus administradores"
+        title="Tabla de usuarios"
+        paragraph="Aquí puedes administrar tus usuarios"
         icon={UserCircle2}
         enabledButton={true}
         iconButton={UserPlus2Icon}

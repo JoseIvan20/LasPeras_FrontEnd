@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive"
 import { useUsers } from "../../hooks/useUsers"
 import { LabelBadge } from "../../components/label/LabelBadge"
 import { formatDateForInput } from "../../utils/dateUtils"
-import { FileEditIcon, UserCircle2, Users } from "lucide-react"
+import { FileEditIcon, NotebookPenIcon, NotebookText } from "lucide-react"
 import ReusableTable from "../../components/table/ReusableTable"
 import Modal from "../../components/modal/Modal"
 import ModalUser from "../modal/ModalUser"
@@ -97,6 +97,8 @@ const User = () => {
           return <LabelBadge labelText='Finalizado' variant="success" />
         } else if (row.original.status === 'overdue') {
           return <LabelBadge labelText='Atrasado' variant="error" />
+        } else if (row.original.status === 'canceled') {
+          return <LabelBadge labelText='Cancelado' variant="error" />
         } else {
           return <LabelBadge labelText='No se obtuvo el estado' variant="error" />
         }
@@ -123,15 +125,15 @@ const User = () => {
       <ReusableTable
         data={generateId}
         columns={columns}
-        title="Tabla de usuarios"
-        paragraph="Aquí puedes administrar tus usuarios"
-        icon={Users}
+        title="Tabla de cotizaciones"
+        paragraph="Aquí puedes administrar tus cotizaciones"
+        icon={NotebookPenIcon}
       />
 
       {!isMobile && (
         <Modal
-          title="Informacion de usuario"
-          icon={UserCircle2}
+          title="Informacion de cotización"
+          icon={NotebookText}
           isOpen={isOpenModal}
           onClose={() => setIsModalOpen(false)}
           size="xl" >

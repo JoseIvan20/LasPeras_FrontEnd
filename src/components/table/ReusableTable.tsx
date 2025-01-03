@@ -110,9 +110,9 @@ function ReusableTable<TData>({
         <div className="flex items-center">
           <div className='flex-col'>
             <div className='flex text-center md:text-start'>
-              <Icon className='md:w-12 md:h-12 w-8 h-8 text-red-700' />
+              <Icon className='md:w-12 md:h-12 w-8 h-8 text-gray-700' />
               <div className='flex flex-col'>
-                <h1 className="font-semibold text-red-700 sm:text-4xl text-xl ml-4">
+                <h1 className="font-semibold text-gray-700 sm:text-4xl text-xl ml-4">
                   {title}
                 </h1>
 
@@ -122,7 +122,7 @@ function ReusableTable<TData>({
           </div>
         </div>
         {enabledButton && (
-          <div className='bg-red-700 p-2 hover:bg-red-800 duration-300 rounded-md w-full justify-center flex sm:w-auto'>
+          <div className='bg-gray-700 p-2 hover:bg-gray-800 duration-300 rounded-md w-full justify-center flex sm:w-auto'>
             <button 
               className='flex gap-2 items-center' 
               type='button'
@@ -147,7 +147,7 @@ function ReusableTable<TData>({
               <select
                 value={table.getState().pagination.pageSize}
                 onChange={e => table.setPageSize(Number(e.target.value))}
-                className="block rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="block rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 {[7, 10, 20, 30, 40, 50].map(pageSize => (
                   <option key={pageSize} value={pageSize}>
@@ -162,7 +162,7 @@ function ReusableTable<TData>({
                 value={globalFilter ?? ''}
                 onChange={e => setGlobalFilter(e.target.value)}
                 placeholder="Buscar..."
-                className="px-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-red-500 duration-200 focus:shadow-md"
+                className="px-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-gray-500 duration-200 focus:shadow-md"
               />
             </div>
           </div>
@@ -220,7 +220,7 @@ function ReusableTable<TData>({
               <button
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                className="px-3 py-2 bg-slate-100 border-none rounded-md text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed duration-300 mr-3"
+                className="px-3 py-2 bg-slate-100 border-none rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed duration-300 mr-3"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -230,8 +230,8 @@ function ReusableTable<TData>({
                 onClick={() => table.setPageIndex(0)}
                 className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium ${
                   table.getState().pagination.pageIndex === 0
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-slate-100 text-gray-700 hover:bg-red-50 hover:text-red-500'
+                    ? 'bg-gray-100 text-gray-700'
+                    : 'bg-slate-100 text-gray-700 hover:bg-gray-50 hover:text-gray-500'
                 }`}
               >
                 1
@@ -258,8 +258,8 @@ function ReusableTable<TData>({
                     onClick={() => table.setPageIndex(pageIndex)}
                     className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium ${
                       pageIndex === table.getState().pagination.pageIndex
-                        ? 'bg-red-100 text-red-700 duration-300'
-                        : 'bg-slate-100 text-gray-700 hover:bg-red-50 hover:text-red-500 duration-300'
+                        ? 'bg-gray-100 text-gray-700 duration-300'
+                        : 'bg-slate-100 text-gray-700 hover:bg-gray-50 hover:text-gray-500 duration-300'
                     }`}
                   >
                     {pageIndex + 1}
@@ -278,8 +278,8 @@ function ReusableTable<TData>({
                   onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                   className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium ${
                     table.getState().pagination.pageIndex === table.getPageCount() - 1
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-slate-100 text-gray-700 hover:bg-red-50 hover:text-red-500'
+                      ? 'bg-gray-100 text-gray-700'
+                      : 'bg-slate-100 text-gray-700 hover:bg-gray-50 hover:text-gray-500'
                   }`}
                 >
                   {table.getPageCount()}
@@ -289,7 +289,7 @@ function ReusableTable<TData>({
               <button
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                className="px-3 py-2 bg-slate-100 border-none rounded-md text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-500 disabled:opacity-50 disabled:cursor-not-allowed duration-300 ml-3"
+                className="px-3 py-2 bg-slate-100 border-none rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed duration-300 ml-3"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
