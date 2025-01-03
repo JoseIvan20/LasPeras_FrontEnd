@@ -34,22 +34,24 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
   } = useAuth()
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm<AdminBody>({
-    defaultValues: adminSelected || {
-      name: '',
-      consumer: '',
-      checkpoint: '',
-      rol: 1,
-      active: 1
+    defaultValues: {
+      // Solo incluir checkpoint si es un nuevo usuario
+      name: adminSelected?.name || '',
+      consumer: adminSelected?.consumer || '',
+      checkpoint: '', // Siempre iniciar vacío
+      rol: adminSelected?.rol || 1,
+      active: adminSelected?.active || 1
     }
   })
 
   // Actualizar userData cuando cambie adminSelected
   useEffect(() => {
-    reset(adminSelected || {
-      name: '',
-      consumer: '',
-      checkpoint: '',
-      active: 0
+    reset({
+      name: adminSelected?.name || '',
+      consumer: adminSelected?.consumer || '',
+      checkpoint: '', // Siempre mantener vacío al resetear
+      rol: adminSelected?.rol || 1,
+      active: adminSelected?.active || 0
     })
   }, [adminSelected, reset])
 
@@ -108,6 +110,12 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
     }
   }
 
+  const isFieldDisabled = () => {
+    // Si es un usuario nuevo (adminSelected es null), retornar false
+    // Si es un usuario existente, retornar true solo si está inactivo
+    return adminSelected ? !isActive : false
+  }
+
   return (
     <div className="flex flex-col gap-3 md:gap-5">
 
@@ -140,7 +148,7 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
                 label="Nombre"
                 placeholder="John Doe"
                 icon={User2}
-                disabled={!isActive}
+                disabled={isFieldDisabled()}
                 error={errors.name?.message}
                 {...field}
               />
@@ -161,7 +169,7 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
               <MessageToasty
                 label="Correo electrónico"
                 icon={Mail}
-                disabled={!isActive}
+                disabled={isFieldDisabled()}
                 placeholder="john.doe@example.com"
                 error={errors.consumer?.message}
                 {...field}
@@ -183,7 +191,7 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
               <MessageToasty
                 label={adminSelected ? "Contraseña nueva" : "Contraseña"}
                 type="password"
-                disabled={!isActive}
+                disabled={isFieldDisabled()}
                 icon={LucideLockKeyhole}
                 placeholder={adminSelected ? "Ingrese nueva contraseña" : "Ingrese una contraseña"}
                 error={errors.checkpoint?.message}
