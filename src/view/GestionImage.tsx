@@ -90,41 +90,44 @@ const GestionImage = () => {
 
       <div className="bg-white p-5 m-2 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit(onSubmitAdd)} className="mb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-            <Controller
-              name="title"
-              control={control}
-              rules={{
-                required: 'Agrega un titulo corto'
-              }}
-              render={({ field }) => (
-                <MessageToasty
-                  label="Titulo"
-                  placeholder="Imagen 1"
-                  icon={Image}
-                  error={errors.title?.message}
-                  {...field}
-                />
-              )}
-            />
+          <Controller
+            name="title"
+            control={control}
+            rules={{
+              required: 'Agrega un titulo corto'
+            }}
+            render={({ field }) => (
+              <MessageToasty
+                label="Titulo"
+                placeholder="Imagen 1"
+                icon={Image}
+                error={errors.title?.message}
+                {...field}
+              />
+            )}
+          />
             
-            <Controller
-              name="alt"
-              control={control}
-              rules={{
-                required: 'Agrega una descripción a la imagen'
-              }}
-              render={({ field }) => (
-                <MessageToasty
-                  label="Descripción"
-                  placeholder="La imagen pertence al login..."
-                  icon={FileImageIcon}
-                  error={errors.alt?.message}
-                  {...field}
-                />
-              )}
-            />
-          </div>
+          <Controller
+            name="alt"
+            control={control}
+            rules={{
+              required: 'Agrega una descripción a la imagen',
+              pattern: {
+                value: /^\d{200}$/,
+                message: 'Has rebasado el límite de caracteres, el límite es de 200 caracteres'
+              }
+            }}
+            render={({ field }) => (
+              <MessageToasty
+                label="Descripción"
+                placeholder="La imagen pertence al login..."
+                type='textarea'
+                icon={FileImageIcon}
+                error={errors.alt?.message}
+                {...field}
+              />
+            )}
+          />
           <Controller
             name="file"
             control={control}

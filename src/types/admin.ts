@@ -8,4 +8,10 @@ export interface AdminBody {
   token: string
   active: number
   checkpoint: string
+  status: string
+}
+
+export interface ConfirmUserBody {
+  consumer: string,
+  confirmationCode: string
 }

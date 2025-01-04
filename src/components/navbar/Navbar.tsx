@@ -37,9 +37,11 @@ const Navbar = () => {
     }
   }
 
-  const isLoginPage = window.location.pathname.includes('/auth/login')
+  const isLoginPage = window.location.pathname.includes('/auth/login') // No mostrar el navbar en login
+  const isActiveAccountPage = window.location.pathname.includes('/active-account') // No mostrar el navbar en activate account
 
   if (isLoginPage) return null
+  if (isActiveAccountPage) return null
 
   return (
     <>

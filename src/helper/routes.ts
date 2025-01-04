@@ -1,7 +1,7 @@
 import { Calendar, House, Image, LayoutPanelTop, Shield, UserCog, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
-import User from "../view/user/User"
-import UserAuth from "../view/user/auth/UserAuth"
+import User from "../view/gestion/price/Price"
+import UserAuth from "../view/gestion/auth/UserAuth"
 import Home from "../view/Home"
 
 export const routesDashboard = [
@@ -36,8 +36,8 @@ export const routesDashboard = [
     textColor: 'text-orange-600',
   },
   {
-    key: 'users',
-    name: 'Gestión de Usuarios',
+    key: 'gestion',
+    name: 'Gestión',
     icon: Users,
     showInSidebar: true,
     subItems: [

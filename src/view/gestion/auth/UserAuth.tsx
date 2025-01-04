@@ -44,6 +44,8 @@ const UserAuth = () => {
     }))
   }, [admins])
 
+  console.log(generateId)
+
   // Definicion de usuarios para pintarlos dentro de la tabla
   const columns: ColumnDef<AdminBody>[] = [
     {
@@ -71,16 +73,21 @@ const UserAuth = () => {
       ),
     },
     {
-      header: 'Activo',
-      accessorKey: 'active',
-      cell: ({ row }) => (
-        row.original.active === 1 ?
-        (
-          <LabelBadge labelText="Activo" variant="success" />
-        ) : (
-          <LabelBadge labelText="Inactivo" variant="error" />
-        )
-      ),
+      header: 'Estado',
+      accessorKey: 'status',
+      cell: ({ row }) => {
+        if (row.original.status === 'pending') {
+          return <LabelBadge labelText='Pendiente' variant="warning" />
+        } else if (row.original.status === 'confirmed') {
+          return <LabelBadge labelText='Confirmado' variant="info" />
+        } else if (row.original.status === 'active') {
+          return <LabelBadge labelText='Activado' variant="success" />
+        } else if (row.original.status === 'expired') {
+          return <LabelBadge labelText='Expirado' variant="error" />
+        } else {
+          return <LabelBadge labelText='No se obtuvo el estado' variant="error" />
+        }
+      }
     },
     {
       header: 'Acciones',

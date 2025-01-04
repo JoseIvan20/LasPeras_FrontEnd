@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react"
 import { NavLink, useNavigate, useParams } from "react-router-dom"
-import { UserBody } from "../../types/user"
+import { UserBody } from "../../../types/user"
 import { Controller, useForm } from "react-hook-form"
-import MessageToasty from "../../components/messages/MessageToasty"
+import MessageToasty from "../../../components/messages/MessageToasty"
 import { Calendar, ChevronLeft, Mail, Phone, Save, User2, UserCircle2, UserRoundXIcon, UsersRound, XCircle } from "lucide-react"
-import { formatDateForInput } from "../../utils/dateUtils"
-import { typeOfEvent } from "../../utils/typeOfEvent"
-import FilterSelect from "../../components/select/FilterSelect"
-import { userContactStatus, UserStatus } from "../../utils/statusUser"
-import CustomButton from "../../components/button/CustomButton"
-import { useUsers } from "../../hooks/useUsers"
-import { paymentMethod } from "../../utils/paymentMethod"
-import { percentage } from "../../utils/percentage"
+import { formatDateForInput } from "../../../utils/dateUtils"
+import { typeOfEvent } from "../../../utils/typeOfEvent"
+import FilterSelect from "../../../components/select/FilterSelect"
+import { userContactStatus, UserStatus } from "../../../utils/statusUser"
+import CustomButton from "../../../components/button/CustomButton"
+import { useUsers } from "../../../hooks/useUsers"
+import { paymentMethod } from "../../../utils/paymentMethod"
+import { percentage } from "../../../utils/percentage"
 
-const UserEdit = () => {
+const PriceEdit = () => {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -356,4 +356,4 @@ const UserEdit = () => {
   )
 }
 
-export default UserEdit
+export default PriceEdit

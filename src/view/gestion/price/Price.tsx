@@ -1,18 +1,18 @@
 import { useMemo, useState } from "react"
-import { UserBody } from "../../types/user"
+import { UserBody } from "../../../types/user"
 import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from "react-responsive"
-import { useUsers } from "../../hooks/useUsers"
-import { LabelBadge } from "../../components/label/LabelBadge"
-import { formatDateForInput } from "../../utils/dateUtils"
+import { useUsers } from "../../../hooks/useUsers"
+import { LabelBadge } from "../../../components/label/LabelBadge"
+import { formatDateForInput } from "../../../utils/dateUtils"
 import { FileEditIcon, NotebookPenIcon, NotebookText } from "lucide-react"
-import ReusableTable from "../../components/table/ReusableTable"
-import Modal from "../../components/modal/Modal"
-import ModalUser from "../modal/ModalUser"
+import ReusableTable from "../../../components/table/ReusableTable"
+import Modal from "../../../components/modal/Modal"
+import ModalUser from "../../modal/ModalUser"
 import { ColumnDef } from "@tanstack/react-table"
-import LoadingErrorHandler from "../../components/chargeView/LoadingErrorHandler"
+import LoadingErrorHandler from "../../../components/chargeView/LoadingErrorHandler"
 
-const User = () => {
+const Price = () => {
 
   const [isOpenModal, setIsModalOpen] = useState(false) // Modal
   const [userSelected, setUserSelected] = useState<UserBody>(Object) // Usuario
@@ -157,4 +157,4 @@ const User = () => {
   )
 }
 
-export default User
+export default Price

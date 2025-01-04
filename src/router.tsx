@@ -12,11 +12,12 @@ import DashboardLayout from './layouts/DashboardLayout'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from './helper/auth/ProtectedRoute'
 import NotFound from './view/NotFound'
-import UserEdit from './view/user/UserEdit'
+import PriceEdit from './view/gestion/price/PriceEdit'
 import GestionImage from './view/GestionImage'
-import Users from './view/user/User'
-import UserAuth from './view/user/auth/UserAuth'
+import UserAuth from './view/gestion/auth/UserAuth'
 import Calendar from './view/Calendar'
+import Price from './view/gestion/price/Price'
+import ActivateAccount from './view/auth/ActivateAccount'
 
 const Router = () => {
 
@@ -33,12 +34,15 @@ const Router = () => {
             element={isAuthenticated ? <Navigate to='/dashboard' replace /> : <Login />} 
           /> {/* Ruta de login */}
         </Route>
-
+        <Route 
+          path='/active-account'
+          element={<ActivateAccount />} 
+        /> {/* Ruta de activacion de cuenta */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path='/dashboard' element={<Dashboard />} />
-            <Route path="/dashboard/cotizaciones" element={<Users />} />
-            <Route path="/edit-user/:id" element={<UserEdit />} />
+            <Route path="/dashboard/cotizaciones" element={<Price />} />
+            <Route path="/edit-user/:id" element={<PriceEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
             <Route path="/dashboard/auth-users" element={<UserAuth />} />
             <Route path="/calendar" element={<Calendar />} />

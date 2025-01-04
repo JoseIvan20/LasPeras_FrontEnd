@@ -1,7 +1,7 @@
 import { isAxiosError } from "axios"
 import { AuthBody } from "../types/user"
 import apiURL from "../utils/axios"
-import { AdminBody } from "../types/admin"
+import { AdminBody, ConfirmUserBody } from "../types/admin"
 
 // Inicio de sesion de administrador
 export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBody> => {
@@ -27,7 +27,7 @@ export const createAdmin = async (authData: Partial<AdminBody>): Promise<AdminBo
   try {
 
     const { data } = await apiURL.post('/createAuthUser', authData)
-    // const { data } = await apiURL.post('/auth/create-user-auth', authData)
+    // const { data } = await apiURL.post('/auth/create-user', authData)
     return data
 
   } catch (error) {
@@ -65,7 +65,7 @@ export const updateAdminById = async (_id: string, formData: Partial<AdminBody>)
   try {
 
     const { data } = await apiURL.put(`/updateAdmin/${_id}`, formData)
-    // const { data } = await apiURL.put(`/auth/update-user-auth/${_id}`, formData)
+    // const { data } = await apiURL.put(`/auth/update-user/${_id}`, formData)
     return data
 
   } catch (error) {
@@ -84,7 +84,7 @@ export const toggleUserStatus = async (_id: string, active: number): Promise<Adm
   try {
 
     const { data } = await apiURL.put(`/deactiveAdmin/${_id}`, { active })
-    // const { data } = await apiURL.put(`/auth/deactive-user-auth/${_id}`, { active })
+    // const { data } = await apiURL.put(`/auth/deactive-user/${_id}`, { active })
     return data
 
   } catch (error) {
@@ -95,5 +95,36 @@ export const toggleUserStatus = async (_id: string, active: number): Promise<Adm
     }
     throw new Error('Error desconocido al cambiar el estatus del usuario')
     
+  }
+}
+
+// Confirmacion de cuenta
+export const confirmAccount = async ( formData: Partial<ConfirmUserBody> ) => {
+  try {
+    const { data } = await apiURL.post('/confirmAccount', formData)
+    // const { data } = await apiURL.post('/auth/confirm-user', formData)
+    return data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
+    }
+    throw new Error('Error desconocido al confirmar la cuenta.')
+  }
+}
+
+// Reenvio de codigo
+export const resendConfirmationCode = async ( formData: Partial<ConfirmUserBody> ) => {
+  try {
+    const { data } = await apiURL.post('/resendConfirmationCode', formData)
+    // const { data } = await apiURL.post('/auth/resend-confirmation', formData)
+    return data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      // throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
+      throw errorMessage
+    }
+    throw new Error('Error desconocido al reenviar el codigo')
   }
 }

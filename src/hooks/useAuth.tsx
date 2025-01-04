@@ -4,8 +4,17 @@ import { useMutation, UseMutationResult, useQuery, useQueryClient } from "@tanst
 import MessageToast from "../components/messages/MessageToast"
 import { useDispatch } from "react-redux"
 import { logout, setCredentials } from "../helper/redux/AuthSlice"
-import { authenticated, createAdmin, getAdmins, toggleUserStatus, updateAdminById } from "../api/AuthAPI"
-import { AdminBody } from "../types/admin"
+import { 
+  authenticated, 
+  confirmAccount, 
+  createAdmin, 
+  getAdmins, 
+  toggleUserStatus, 
+  updateAdminById,
+  resendConfirmationCode 
+} from "../api/AuthAPI"
+import { AdminBody, ConfirmUserBody } from "../types/admin"
+import { useNavigate } from "react-router-dom"
 
 interface UpdateAdminDataProps {
   _id: string
@@ -21,6 +30,7 @@ const useAuth = () => {
 
   const queryClient = useQueryClient()
   const dispath = useDispatch()
+  const navigate = useNavigate()
 
   const adminQuery = useQuery({
     queryFn: getAdmins,
@@ -81,6 +91,46 @@ const useAuth = () => {
     }
   })
 
+  // Mutacion de confirmacion de cuenta de usuario
+  const confirmAccountMutation = useMutation({
+    mutationFn: (formDataConfirm: ConfirmUserBody) => confirmAccount(formDataConfirm),
+    onSuccess: data => {
+      MessageToast({ icon: 'success', title: 'Éxito', message: `${data.message}` })
+      navigate('/auth/login')
+    },
+    onError: (error: any) => {
+      let errorMessage = 'Error desconocido al confirmar la cuenta'
+      let errorData = null
+      
+      if (error instanceof Error) {
+        try {
+          errorData = JSON.parse(error.message)
+          errorMessage = errorData.message
+        } catch (e) {
+          errorMessage = error.message
+        }
+      }
+
+      MessageToast({ 
+        icon: 'error', 
+        title: 'Error', 
+        message: errorMessage
+      })
+    }
+  })
+
+  // Mutacion de reenvio de codigo
+  const resendConfirmAccountMutation = useMutation({
+    mutationFn: (formDataConfirm: ConfirmUserBody) => resendConfirmationCode(formDataConfirm),
+    onSuccess: data => {
+      MessageToast({ icon: 'success', title: 'Éxito', message: `${data.message}` })
+    },
+     onError: error => {
+      const messageFormat = JSON.parse(error.message)
+      MessageToast({ icon: 'error', title: 'Error', message: `${messageFormat.message}` })
+    }
+  })
+
   // Cierre de sesion
   const logoutUser = () => {
     dispath(logout())
@@ -113,10 +163,24 @@ const useAuth = () => {
 
     logoutUser,
 
+    // Alta - Baja de usuario
     toggleStatus: deactiveUserMutation.mutate,
     isPendingToggleStatus: deactiveUserMutation.isPending,
     isSuccessToggleStatus: deactiveUserMutation.isSuccess,
-    isErrorToggleStatus: deactiveUserMutation.isError
+    isErrorToggleStatus: deactiveUserMutation.isError,
+
+    // Confirmacion de cuenta
+    confirmAccount: confirmAccountMutation.mutate,
+    isPendingConfirmAccount: confirmAccountMutation.isPending,
+    isSuccessConfirmAccount: confirmAccountMutation.isSuccess,
+    isErrorConfirmAccount: confirmAccountMutation.isError,
+    confirmAccountError: confirmAccountMutation.error as any,
+   
+    // Reenvio de codigo
+    resendConfirmAccount: resendConfirmAccountMutation.mutate,
+    isPendingResend: resendConfirmAccountMutation.isPending,
+    isSuccessResend: resendConfirmAccountMutation.isSuccess,
+    isErrorResend: resendConfirmAccountMutation.isError,
   }
 }
 
