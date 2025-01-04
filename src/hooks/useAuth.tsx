@@ -11,7 +11,8 @@ import {
   getAdmins, 
   toggleUserStatus, 
   updateAdminById,
-  resendConfirmationCode 
+  resendConfirmationCode, 
+  deleteUser
 } from "../api/AuthAPI"
 import { AdminBody, ConfirmUserBody } from "../types/admin"
 import { useNavigate } from "react-router-dom"
@@ -131,6 +132,19 @@ const useAuth = () => {
     }
   })
 
+  // Mutacion de eliminar usuario
+  const deleteAdminMutation = useMutation({
+    mutationFn: (_id: string) => deleteUser(_id),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['admins'] })
+      MessageToast({ icon: 'success', title: 'Éxito', message: `${data.message}` })
+    },
+    onError: error => {
+      const messageFormat = JSON.parse(error.message)
+      MessageToast({ icon: 'error', title: 'Error', message: `${messageFormat.message}` })
+    }
+  })
+
   // Cierre de sesion
   const logoutUser = () => {
     dispath(logout())
@@ -181,6 +195,12 @@ const useAuth = () => {
     isPendingResend: resendConfirmAccountMutation.isPending,
     isSuccessResend: resendConfirmAccountMutation.isSuccess,
     isErrorResend: resendConfirmAccountMutation.isError,
+
+    // Eliminar usuario
+    deleteAdmin: deleteAdminMutation.mutate,
+    isPendingDeleteAdmin: deleteAdminMutation.isPending,
+    isSuccessDeleteAdmin: deleteAdminMutation.isSuccess,
+    isErrorDeleteAdmin: deleteAdminMutation.isError
   }
 }
 

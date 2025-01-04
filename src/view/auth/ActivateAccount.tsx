@@ -19,7 +19,8 @@ const ActivateAccount = () => {
     resendConfirmAccount,
     isPendingResend,
     confirmAccountError,
-    isErrorConfirmAccount
+    isErrorConfirmAccount,
+    isSuccessConfirmAccount
   } = useAuth()
 
   useEffect(() => {
@@ -52,12 +53,15 @@ const ActivateAccount = () => {
     }
   }
 
+  // Efecto para limpiar el formulario después de un envío exitoso o error
   useEffect(() => {
-    reset({
-      consumer: '',
-      confirmationCode: ''
-    })
-  }, [reset])
+    if (isSuccessConfirmAccount || isErrorConfirmAccount) {
+      reset({
+        consumer: '',
+        confirmationCode: ''
+      })
+    }
+  }, [isSuccessConfirmAccount, isErrorConfirmAccount, reset])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-3">

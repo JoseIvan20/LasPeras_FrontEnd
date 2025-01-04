@@ -149,7 +149,7 @@ const Price = () => {
       <LoadingErrorHandler
         isLoading={isPendingUsers}
         isError={isErrorUsers}
-        loadingMessage="Cargando usuarios" 
+        loadingMessage="Cargando cotizaciones..." 
       >
         {contentUsers}
       </LoadingErrorHandler>

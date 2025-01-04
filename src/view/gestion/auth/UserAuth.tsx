@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import useAuth from "../../../hooks/useAuth"
-import { FileEditIcon, UserCircle2, UserPlus2Icon } from "lucide-react"
+import { FileEditIcon, Trash, UserCircle2, UserPlus2Icon } from "lucide-react"
 import { LabelBadge } from "../../../components/label/LabelBadge"
 import ReusableTable from "../../../components/table/ReusableTable"
 import Modal from "../../../components/modal/Modal"
@@ -8,6 +8,8 @@ import UserAuthEdit from "./UserAuthEdit"
 import { ColumnDef } from "@tanstack/react-table"
 import LoadingErrorHandler from "../../../components/chargeView/LoadingErrorHandler"
 import { AdminBody } from "../../../types/admin"
+import MessageAlert from "../../../components/messages/MessageAlert"
+import Swal from "sweetalert2"
 
 const UserAuth = () => {
 
@@ -18,19 +20,26 @@ const UserAuth = () => {
   const {
     admins,
     isPendingAdmins,
-    isErrorAdmins
+    isErrorAdmins,
+
+    deleteAdmin,
+    // isPendingDeleteAdmin,
+    // isSuccessDeleteAdmin
   } = useAuth()
 
+  // Edicion de usuario
   const handleClickEdit = (admin: AdminBody) => {
     setIsModalOpen(true)
     setAdminSelected(admin)
   }
 
+  // Nuevo usuario
   const handleNewAdmin = () => {
     setIsModalOpen(true)
     setAdminSelected(null)
   }
 
+  // Cierre del modal
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setAdminSelected(null)
@@ -44,7 +53,45 @@ const UserAuth = () => {
     }))
   }, [admins])
 
-  console.log(generateId)
+  // Funcion que ejecuta la eliminacion del usuario
+  const handleDeleteUser = async (_id: string, userName: string) => {
+    MessageAlert.showConfirmDialog({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar al usuario ${userName}?`,
+      icon: 'question',
+      confirmButtonText: 'Sí, eliminar',
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: 'Cancelar',
+      onConfirm: async () => {
+        try {
+          Swal.fire({
+            title: 'Eliminando usuario...',
+            text: 'Por favor espere',
+            icon: 'info',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+              Swal.showLoading()
+            }
+          })
+
+          await deleteAdmin(_id)
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al eliminar el usuario',
+            icon: 'error',
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: "#444444"
+          })
+        }
+      },
+      onCancel: () => {
+        // MessageAlert maneja el mensaje de cancelación
+      }
+    })
+  }
 
   // Definicion de usuarios para pintarlos dentro de la tabla
   const columns: ColumnDef<AdminBody>[] = [
@@ -93,13 +140,23 @@ const UserAuth = () => {
       header: 'Acciones',
       id: 'actions',
       cell: ({ row }) => (
-        <button
-          className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
-          onClick={() => handleClickEdit(row.original)}
-          title="Editar"
+        <div className="flex gap-2">
+          <button
+            className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
+            onClick={() => handleClickEdit(row.original)}
+            title="Editar"
+            >
+            <FileEditIcon size={18} />
+          </button>
+
+          <button
+            className="bg-red-100 text-red-700 rounded-md p-1.5 hover:bg-red-200 hover:shadow duration-300"
+            onClick={() => handleDeleteUser(row.original._id, row.original.name)}
+            title="Eliminar"
           >
-          <FileEditIcon size={22} />
-        </button>
+            <Trash size={18} />
+          </button>
+        </div>
       )
     },
   ]
@@ -111,16 +168,16 @@ const UserAuth = () => {
         data={generateId}
         columns={columns}
         title="Tabla de usuarios"
-        paragraph="Aquí puedes administrar tus usuarios"
+        paragraph="Aquí puedes gestionar tus usuarios"
         icon={UserCircle2}
         enabledButton={true}
         iconButton={UserPlus2Icon}
-        buttonText="Agregar administrador"
+        buttonText="Agregar usuario"
         onButtonClick={handleNewAdmin}
       />
 
       <Modal
-        title={`${adminSelected ? 'Edición de administrador' : 'Creación de administrador'}`}
+        title={`${adminSelected ? 'Edición de usuario' : 'Creación de usuario'}`}
         icon={UserCircle2}
         isOpen={isOpenModal}
         onClose={handleCloseModal}
@@ -136,7 +193,7 @@ const UserAuth = () => {
       <LoadingErrorHandler
         isLoading={isPendingAdmins}
         isError={isErrorAdmins}
-        loadingMessage="Cargando administradores..." 
+        loadingMessage="Cargando usuarios..." 
       >
         {contentAdmins}
       </LoadingErrorHandler>

@@ -7,8 +7,8 @@ import { AdminBody, ConfirmUserBody } from "../types/admin"
 export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBody> => {
   try {
 
-    const { data } = await apiURL.post('/loginUser', authData)
-    // const { data } = await apiURL.post('/auth/login', authData)
+    // const { data } = await apiURL.post('/loginUser', authData)
+    const { data } = await apiURL.post('/auth/login', authData)
     return data
 
   } catch (error) {
@@ -126,5 +126,20 @@ export const resendConfirmationCode = async ( formData: Partial<ConfirmUserBody>
       throw errorMessage
     }
     throw new Error('Error desconocido al reenviar el codigo')
+  }
+}
+
+// Eliminar usuario
+export const deleteUser = async ( _id: string ) => {
+  try {
+    const { data } = await apiURL.post(`/deleteUser/${_id}`)
+    // const { data } = await apiURL.delete(`/auth/delete-user/${_id}`)
+    return data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
+    }
+    throw new Error('Error desconocido al eliminar el usuario.')
   }
 }
