@@ -132,7 +132,7 @@ export const resendConfirmationCode = async ( formData: Partial<ConfirmUserBody>
 // Eliminar usuario
 export const deleteUser = async ( _id: string ) => {
   try {
-    const { data } = await apiURL.post(`/deleteUser/${_id}`)
+    const { data } = await apiURL.delete(`/deleteUser/${_id}`)
     // const { data } = await apiURL.delete(`/auth/delete-user/${_id}`)
     return data
   } catch (error) {
