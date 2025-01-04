@@ -26,7 +26,7 @@ export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBo
 export const createAdmin = async (authData: Partial<AdminBody>): Promise<AdminBody> => {
   try {
 
-    const { data } = await apiURL.post('/createAuthUser', authData)
+    const { data } = await apiURL.post('/createAdmin', authData)
     // const { data } = await apiURL.post('/auth/create-user', authData)
     return data
 
