@@ -7,8 +7,8 @@ import { AdminBody, ConfirmUserBody } from "../types/admin"
 export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBody> => {
   try {
 
-    // const { data } = await apiURL.post('/loginUser', authData)
-    const { data } = await apiURL.post('/auth/login', authData)
+    const { data } = await apiURL.post('/loginUser', authData)
+    // const { data } = await apiURL.post('/auth/login', authData)
     return data
 
   } catch (error) {

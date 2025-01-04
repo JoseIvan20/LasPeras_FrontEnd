@@ -137,7 +137,7 @@ const useAuth = () => {
     mutationFn: (_id: string) => deleteUser(_id),
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['admins'] })
-      MessageToast({ icon: 'success', title: 'Éxito', message: `${data.message}` })
+      MessageToast({ icon: 'success', title: 'Éxito', message: data.message })
     },
     onError: error => {
       const messageFormat = JSON.parse(error.message)
