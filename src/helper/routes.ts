@@ -1,4 +1,4 @@
-import { Calendar, House, Image, LayoutPanelTop, NotebookText, Shield, UserCog, Users } from "lucide-react"
+import { Calendar, House, Image, LayoutPanelTop, NotebookText, Shield, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/gestion/price/Price"
 import UserAuth from "../view/gestion/auth/UserAuth"
