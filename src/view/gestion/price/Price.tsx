@@ -1,7 +1,7 @@
 import { useMemo } from "react"
-import { UserBody } from "../../../types/user"
+import { PriceBody } from "../../../types/price"
 import { useNavigate } from "react-router-dom"
-import { useUsers } from "../../../hooks/useUsers"
+import { usePrice } from "../../../hooks/usePrice"
 import { LabelBadge } from "../../../components/label/LabelBadge"
 import { formatDateForInput } from "../../../utils/dateUtils"
 import { FileEditIcon, NotebookPenIcon } from "lucide-react"
@@ -15,26 +15,27 @@ const Price = () => {
 
   // Hook de usuarios
   const {
-    users,
-    isPendingUsers,
-    isErrorUsers,
-  } = useUsers()
+    prices,
+    isPendingPrice,
+    isErrorPrice,
+  } = usePrice()
 
   // Funcion que abre el modal tomando el usuario cuando edite
-  const handleClickEdit = (user: UserBody) => {
-    navigate(`/edit-user/${user._id}`, { state: { user } })
+  const handleClickEdit = (price: PriceBody) => {
+    navigate(`/details-price/${price._id}`, { state: { price } })
+    console.log(price)
   }
 
   // Sacar el numero consecutivo en vez de tomar el id del usuario
   const generateId = useMemo(() => {
-    return users.map((user: UserBody, index: number) => ({
-      ...user,
+    return prices.map((price: PriceBody, index: number) => ({
+      ...price,
       consecutiveNumber: index + 1
     }))
-  }, [users])
+  }, [prices])
 
   // Definicion de usuarios para pintarlos dentro de la tabla
-  const columns: ColumnDef<UserBody>[] = [
+  const columns: ColumnDef<PriceBody>[] = [
     {
       header: 'ID',
       accessorKey: 'consecutiveNumber',
@@ -128,8 +129,8 @@ const Price = () => {
   return (
     <div className="h-screen bg-gray-100">
       <LoadingErrorHandler
-        isLoading={isPendingUsers}
-        isError={isErrorUsers}
+        isLoading={isPendingPrice}
+        isError={isErrorPrice}
         loadingMessage="Cargando cotizaciones..."
       >
         {contentUsers}

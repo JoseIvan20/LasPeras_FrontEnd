@@ -1,6 +1,6 @@
 // Modal de comentario
 import { Controller, useForm } from "react-hook-form"
-import { CommentBody } from "../../types/user"
+import { CommentBody } from "../../types/price"
 import { useComment } from "../../hooks/useComment"
 import { useEffect } from "react"
 import MessageToasty from "../../components/messages/MessageToasty"

@@ -3,7 +3,7 @@ import MessageToasty from "../../components/messages/MessageToasty"
 import { ChevronLeft, GlobeLock, LockIcon, MailOpen, UserCircle2 } from "lucide-react"
 import CustomButton from "../../components/button/CustomButton"
 import { NavLink } from "react-router-dom"
-import { AuthBody } from "../../types/user"
+import { AuthBody } from "../../types/price"
 import useAuth from "../../hooks/useAuth"
 
 const Login = () => {

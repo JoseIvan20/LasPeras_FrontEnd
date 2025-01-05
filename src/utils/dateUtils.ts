@@ -1,6 +1,6 @@
 // Formateo de la fecha
-export function formatDateForInput(dateString: string): string {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toISOString().split('T')[0]
+export function formatDateForInput(date: string | Date): string {
+  if (!date) return ''
+  const dateObject = date instanceof Date ? date : new Date(date)
+  return dateObject.toISOString().split('T')[0]
 }

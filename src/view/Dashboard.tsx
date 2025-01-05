@@ -1,5 +1,5 @@
-import { useUsers } from "../hooks/useUsers"
-import { UserBody } from "../types/user"
+import { usePrice } from "../hooks/usePrice"
+import { PriceBody } from "../types/price"
 import useAuth from "../hooks/useAuth"
 import MessageCard from "../components/card/MessageCard"
 import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, NewspaperIcon, Users } from "lucide-react"
@@ -8,17 +8,17 @@ import { NavLink } from "react-router-dom"
 
 const Dashboard = () => {
 
-  const { users } = useUsers() // Usuarios
+  const { prices } = usePrice() // Usuarios
   const { admins } = useAuth() // Administrador
 
   // Sacar la cantidad de usuarios en estado "pending"
-  const statusPending = users.filter((user: UserBody) => user.status === "pending").length
+  const statusPending = prices.filter((user: PriceBody) => user.status === "pending").length
   // Sacar la cantidad de usuarios en estado "En progreso"
-  const statusActive = users.filter((user: UserBody) => user.status === "in_progress").length
+  const statusActive = prices.filter((user: PriceBody) => user.status === "in_progress").length
   // Sacar la cantidad de usuarios en estado de "finalizado"
-  const statusFinalized = users.filter((user: UserBody) => user.status === "finalized").length
+  const statusFinalized = prices.filter((user: PriceBody) => user.status === "finalized").length
   // Sacar la cantidad usuario en estado de "Atrasado"
-  const statusOverdue = users.filter((user: UserBody) => user.status === "overdue").length
+  const statusOverdue = prices.filter((user: PriceBody) => user.status === "overdue").length
 
   return (
     <div className="h-screen bg-gray-100 p-5">
@@ -67,12 +67,12 @@ const Dashboard = () => {
             bgColorIcon="bg-blue-50"
             sizeIcon={40}
             classNameTitle="font-bold text-xl md:text-2xl"
-            content={`Total: ${users.length}`}
+            content={`Total: ${prices.length}`}
             />
         </NavLink>
         
         <NavLink
-          to={'/dashboard/auth-users'}>
+          to={'/dashboard/auth-prices'}>
           <Card
             title="Administradores"
             titleStyle="text-gray-600"

@@ -18,7 +18,7 @@ const useMail = () => {
   const mailMutation = useMutation<MailResponse, Error, MailBody>({
     mutationFn: sendMail,
     onSuccess: data => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['prices'] })
       setSuccessMessage(data.message)
       setErrorMessage(null)
     },

@@ -42,7 +42,7 @@ const Router = () => {
           <Route element={<DashboardLayout />}>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path="/dashboard/cotizaciones" element={<Price />} />
-            <Route path="/edit-user/:id" element={<PriceEdit />} />
+            <Route path="/details-price/:id" element={<PriceEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
             <Route path="/dashboard/auth-users" element={<UserAuth />} />
             <Route path="/calendar" element={<Calendar />} />

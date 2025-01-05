@@ -7,8 +7,8 @@ import { Menu } from 'lucide-react'
 import WeekView from './calendar-view/WeekView'
 import ListView from './calendar-view/ListView'
 import DayView from './calendar-view/DayView'
-import { useUsers } from '../../hooks/useUsers'
-import { UserBody } from '../../types/user'
+import { usePrice } from '../../hooks/usePrice'
+import { PriceBody } from '../../types/price'
 import { parseISO } from 'date-fns'
 import MobileSidebar from './responsive/MobileSidebar'
 
@@ -27,13 +27,13 @@ const CalendarLayout: React.FC = () => {
 
   // Hook de usuario donde obtendremos la fecha
   const {
-    users,
-    isPendingUsers
-  } = useUsers()
+    prices,
+    isPendingPrice
+  } = usePrice()
 
   // Convertimos los datos de usuarios a eventos del calendario
   const events = useMemo(() => {
-    return users.map((user: UserBody) => {
+    return prices.map((user: PriceBody) => {
       const date = parseISO(user.date)
       // Ajustamos la fecha para que se mantenga en el día correcto
       date.setUTCHours(12, 0, 0, 0)
@@ -47,7 +47,7 @@ const CalendarLayout: React.FC = () => {
         type: user.typeOfCelebration
       }
     })
-  }, [users])
+  }, [prices])
 
   // Filtros por status
   const filters = [
@@ -82,7 +82,7 @@ const CalendarLayout: React.FC = () => {
 
   // Renderizacion de eventos
   const renderCalendarView = () => {
-    if (isPendingUsers) {
+    if (isPendingPrice) {
       return <div className="flex items-center justify-center h-full">Cargando eventos...</div>
     }
 

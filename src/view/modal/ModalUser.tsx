@@ -1,12 +1,12 @@
 import { useEffect } from "react"
-import { UserBody } from "../../types/user"
+import { PriceBody } from "../../types/price"
 import FilterSelect from "../../components/select/FilterSelect"
 import { formatDateForInput } from "../../utils/dateUtils"
 import { typeOfEvent } from "../../utils/typeOfEvent"
 import CustomButton from "../../components/button/CustomButton"
 import { Calendar, Mail, Phone, Save, User2, UsersRound, XCircle } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
-import { useUsers } from "../../hooks/useUsers"
+import { usePrice } from "../../hooks/usePrice"
 import MessageToasty from "../../components/messages/MessageToasty"
 import { userContactStatus, UserStatus } from "../../utils/statusUser"
 import { paymentMethod } from "../../utils/paymentMethod"
@@ -14,19 +14,19 @@ import { percentage } from "../../utils/percentage"
 
 
 interface ModalUserProps {
-  userSelected: UserBody
+  userSelected: PriceBody
   onClose: () => void
 }
 
 const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
 
   const {
-    updateUser,
-    isPendingUpdateUser,
-    isSuccessUpdateUser
-  } = useUsers()
+    updatePrice,
+    isPendingUpdatePrice,
+    isSuccessUpdatePrice
+  } = usePrice()
 
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<UserBody>({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<PriceBody>({
     defaultValues: userSelected
   })
 
@@ -36,12 +36,12 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
   }, [userSelected, reset])
 
   useEffect(() => {
-    if (isSuccessUpdateUser && !isPendingUpdateUser) {
+    if (isSuccessUpdatePrice && !isPendingUpdatePrice) {
       onClose()
     }
-  }, [isSuccessUpdateUser, isPendingUpdateUser, onClose])
+  }, [isSuccessUpdatePrice, isPendingUpdatePrice, onClose])
 
-  const onSubmitEdit = async (data: UserBody) => {
+  const onSubmitEdit = async (data: PriceBody) => {
     try {
       const formatDate = formatDateForInput(data.date)
       const {
@@ -74,7 +74,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         formData: filteredData
       }
 
-      await updateUser(dataUpdate)
+      await updatePrice(dataUpdate)
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
     }
@@ -302,8 +302,8 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
             buttonText="Guardar cambios"
             icon={Save}
             type="submit"
-            isLoading={isPendingUpdateUser}
-            disabled={isPendingUpdateUser}
+            isLoading={isPendingUpdatePrice}
+            disabled={isPendingUpdatePrice}
             loadingText="Guardando cambios..."
             className="bg-[#444] text-white hover:bg-[#666]" />
         </div>
