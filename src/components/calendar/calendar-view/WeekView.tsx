@@ -1,13 +1,7 @@
 // Componente que maneja los filtros de buisqueda por mes, semana, dia o lista
 import { format, startOfWeek, addDays } from 'date-fns'
 import { es } from 'date-fns/locale'
-
-interface Event {
-  id: string
-  title: string
-  date: Date
-  status: 'finalized' | 'in_progress'
-}
+import { Event } from '../../../types/calendar'
 
 interface WeekViewProps {
   currentDate: Date

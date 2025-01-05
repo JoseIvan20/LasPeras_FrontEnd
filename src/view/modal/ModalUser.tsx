@@ -10,7 +10,6 @@ import { usePrice } from "../../hooks/usePrice"
 import MessageToasty from "../../components/messages/MessageToasty"
 import { userContactStatus, UserStatus } from "../../utils/statusUser"
 import { paymentMethod } from "../../utils/paymentMethod"
-import { percentage } from "../../utils/percentage"
 
 
 interface ModalUserProps {
@@ -21,7 +20,7 @@ interface ModalUserProps {
 const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
 
   const {
-    updatePrice,
+    // updatePrice,
     isPendingUpdatePrice,
     isSuccessUpdatePrice
   } = usePrice()
@@ -53,7 +52,6 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         typeOfCelebration,
         message,
         paymentMethod,
-        percentage
       } = data
 
       const filteredData = {
@@ -66,7 +64,6 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         typeOfCelebration,
         message,
         paymentMethod,
-        percentage
       }
 
       const dataUpdate = {
@@ -74,7 +71,8 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         formData: filteredData
       }
 
-      await updatePrice(dataUpdate)
+      // await updatePrice(dataUpdate)
+      console.log(dataUpdate)
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
     }
@@ -251,20 +249,6 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                       onSelect={onChange}
                       value={value ? String(value) : null}
                       label="Método de pago"
-                      error={error?.message}
-                    />
-                  )}
-                />
-
-                <Controller
-                  name="percentage"
-                  control={control}
-                  render={({ field: { onChange, value }, fieldState: { error } }) => (
-                    <FilterSelect
-                      options={percentage}
-                      onSelect={onChange}
-                      value={value ? String(value) : null}
-                      label="Monto pagado"
                       error={error?.message}
                     />
                   )}

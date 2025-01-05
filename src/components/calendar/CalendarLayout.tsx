@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import MiniCalendar from './MiniCalendar'
 import EventFilters from './EventFilters'
 import MainCalendar from './MainCalendar'
@@ -11,15 +11,14 @@ import { usePrice } from '../../hooks/usePrice'
 import { PriceBody } from '../../types/price'
 import { parseISO } from 'date-fns'
 import MobileSidebar from './responsive/MobileSidebar'
+import { Event } from '../../types/calendar'
 
-interface Event {
-  id: string
-  title: string
-  date: Date
-  status: 'finalized' | 'in_progress'
+// Función auxiliar para validar el status
+function validateStatus(status: string): 'finalized' | 'in_progress' {
+  return status === 'finalized' || status === 'in_progress' ? status : 'in_progress'
 }
 
-const CalendarLayout: React.FC = () => {
+const CalendarLayout = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['finalized', 'in_progress'])
   const [currentView, setCurrentView] = useState<'month' | 'week' | 'day' | 'list'>('month')
@@ -32,9 +31,18 @@ const CalendarLayout: React.FC = () => {
   } = usePrice()
 
   // Convertimos los datos de usuarios a eventos del calendario
-  const events = useMemo(() => {
+  const events: Event[] = useMemo(() => {
     return prices.map((user: PriceBody) => {
-      const date = parseISO(user.date)
+      // const date = parseISO(user.date)
+      let date: Date
+      if (typeof user.date === 'string') {
+        date = parseISO(user.date)
+      } else if (user.date instanceof Date) {
+        date = user.date
+      } else {
+        // Si no es ni string ni Date, usamos la fecha actual como fallback
+        date = new Date()
+      }
       // Ajustamos la fecha para que se mantenga en el día correcto
       date.setUTCHours(12, 0, 0, 0)
       
@@ -42,7 +50,7 @@ const CalendarLayout: React.FC = () => {
         id: user._id,
         title: user.typeOfCelebration,
         date: date,
-        status: user.status,
+        status: validateStatus(user.status),
         client: user.name,
         type: user.typeOfCelebration
       }
@@ -77,14 +85,12 @@ const CalendarLayout: React.FC = () => {
   // Filtro de eventos: mes, semana, dia y lista
   // Filtramos los eventos según los filtros seleccionados
   const filteredEvents = useMemo(() => {
-    return events.filter((event: Event) => selectedFilters.includes(event.status))
+    return events.filter(event => selectedFilters.includes(event.status))
   }, [events, selectedFilters])
 
   // Renderizacion de eventos
   const renderCalendarView = () => {
-    if (isPendingPrice) {
-      return <div className="flex items-center justify-center h-full">Cargando eventos...</div>
-    }
+    if (isPendingPrice) return <div className="flex items-center justify-center h-full">Cargando eventos...</div>
 
     switch (currentView) {
       case 'month':

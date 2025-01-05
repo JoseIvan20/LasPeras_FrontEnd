@@ -1,12 +1,6 @@
 import { format, addHours, startOfDay } from 'date-fns'
 import { es } from 'date-fns/locale'
-
-interface Event {
-  id: string
-  title: string
-  date: Date
-  status: 'finalized' | 'in_progress'
-}
+import { Event } from '../../../types/calendar'
 
 interface DayViewProps {
   currentDate: Date

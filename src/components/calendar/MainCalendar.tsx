@@ -1,12 +1,6 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
-interface Event {
-  id: string
-  title: string
-  date: Date
-  status: 'finalized' | 'in_progress'
-}
+import { Event } from '../../types/calendar'
 
 interface MainCalendarProps {
   events: Event[]
