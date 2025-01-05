@@ -55,7 +55,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         paymentMethod,
         percentage
       } = data
-  
+
       const filteredData = {
         name,
         email,
@@ -68,12 +68,12 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
         paymentMethod,
         percentage
       }
-  
+
       const dataUpdate = {
         _id: userSelected._id.toString(),
         formData: filteredData
       }
-  
+
       await updateUser(dataUpdate)
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
@@ -104,7 +104,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                 />
               )}
             />
-          
+
             <Controller
               name="email"
               control={control}
@@ -165,7 +165,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                 />
               )}
             />
-            
+
             <Controller
               name="numberOfPeople"
               control={control}
@@ -174,7 +174,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                 pattern: {
                   value: /^\d+$/,
                   message: 'No se permite texto'
-                } 
+                }
               }}
               render={({ field }) => (
                 <MessageToasty
@@ -203,7 +203,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                 />
               )}
             />
-            
+
             <Controller
               name="status"
               control={control}
@@ -237,7 +237,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
               }}
             />
           </div>
-          
+
           {/* Seccion de informacion de pago */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
             {userSelected.status === 'finalized' || userSelected.status === 'in_progress' && (
@@ -255,7 +255,7 @@ const ModalUser = ({ userSelected, onClose }: ModalUserProps) => {
                     />
                   )}
                 />
-                
+
                 <Controller
                   name="percentage"
                   control={control}

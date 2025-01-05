@@ -1,4 +1,4 @@
-import { Calendar, House, Image, LayoutPanelTop, Shield, UserCog, Users } from "lucide-react"
+import { Calendar, House, Image, LayoutPanelTop, NotebookText, Shield, UserCog, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/gestion/price/Price"
 import UserAuth from "../view/gestion/auth/UserAuth"
@@ -45,7 +45,7 @@ export const routesDashboard = [
         key: 'all-users',
         path: '/dashboard/cotizaciones',
         name: 'Cotizaciones',
-        icon: UserCog,
+        icon: NotebookText,
         component: User,
         bgColor: 'bg-purple-100',
         textColor: 'text-purple-600',

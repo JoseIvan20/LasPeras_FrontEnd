@@ -5,8 +5,8 @@ import apiURL from "../utils/axios"
 export const sendMail = async (bodyMail: MailBody): Promise<MailResponse> => {
   try {
 
-    const { data } = await apiURL.post<MailResponse>('/createUserAndSendEmail', bodyMail)
-    // const { data } = await apiURL.post<MailResponse>('/contact/send', bodyMail)
+    // const { data } = await apiURL.post<MailResponse>('/createUserAndSendEmail', bodyMail)
+    const { data } = await apiURL.post<MailResponse>('/contact/send', bodyMail)
     return data
 
   } catch (error) {
@@ -16,7 +16,7 @@ export const sendMail = async (bodyMail: MailBody): Promise<MailResponse> => {
       throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
     }
     throw new Error('Error desconocido al enviar el correo')
-    
+
   }
 }
 

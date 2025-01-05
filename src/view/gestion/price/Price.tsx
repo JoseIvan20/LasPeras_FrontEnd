@@ -1,24 +1,17 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { UserBody } from "../../../types/user"
 import { useNavigate } from "react-router-dom"
-import { useMediaQuery } from "react-responsive"
 import { useUsers } from "../../../hooks/useUsers"
 import { LabelBadge } from "../../../components/label/LabelBadge"
 import { formatDateForInput } from "../../../utils/dateUtils"
-import { FileEditIcon, NotebookPenIcon, NotebookText } from "lucide-react"
+import { FileEditIcon, NotebookPenIcon } from "lucide-react"
 import ReusableTable from "../../../components/table/ReusableTable"
-import Modal from "../../../components/modal/Modal"
-import ModalUser from "../../modal/ModalUser"
 import { ColumnDef } from "@tanstack/react-table"
 import LoadingErrorHandler from "../../../components/chargeView/LoadingErrorHandler"
 
 const Price = () => {
 
-  const [isOpenModal, setIsModalOpen] = useState(false) // Modal
-  const [userSelected, setUserSelected] = useState<UserBody>(Object) // Usuario
   const navigate = useNavigate() // Navegacion
-  // Modos responsivos cuando apliquen tamanios de 767
-  const isMobile = useMediaQuery({ maxWidth: 767 })
 
   // Hook de usuarios
   const {
@@ -29,23 +22,11 @@ const Price = () => {
 
   // Funcion que abre el modal tomando el usuario cuando edite
   const handleClickEdit = (user: UserBody) => {
-    if (isMobile) { // Si estamos en modos responsivos
-      // Llevamos al usuario a una nueva vista por la carga de informacion
-      navigate(`/edit-user/${user._id}`, { state: { user } })
-    } else {
-      setIsModalOpen(true)
-      setUserSelected(user)
-    }
-  }
-
-  // Cierre del modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setUserSelected(Object)
+    navigate(`/edit-user/${user._id}`, { state: { user } })
   }
 
   // Sacar el numero consecutivo en vez de tomar el id del usuario
-  const generateId = useMemo(() =>{
+  const generateId = useMemo(() => {
     return users.map((user: UserBody, index: number) => ({
       ...user,
       consecutiveNumber: index + 1
@@ -112,7 +93,7 @@ const Price = () => {
           className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
           onClick={() => handleClickEdit(row.original)}
           title="Editar"
-          >
+        >
           <FileEditIcon size={22} />
         </button>
       )
@@ -130,7 +111,7 @@ const Price = () => {
         icon={NotebookPenIcon}
       />
 
-      {!isMobile && (
+      {/* {!isMobile && (
         <Modal
           title="Informacion de cotización"
           icon={NotebookText}
@@ -139,7 +120,7 @@ const Price = () => {
           size="xl" >
           <ModalUser userSelected={userSelected} onClose={handleCloseModal} />
         </Modal>
-      )}
+      )} */}
 
     </div>
   )
@@ -149,7 +130,7 @@ const Price = () => {
       <LoadingErrorHandler
         isLoading={isPendingUsers}
         isError={isErrorUsers}
-        loadingMessage="Cargando cotizaciones..." 
+        loadingMessage="Cargando cotizaciones..."
       >
         {contentUsers}
       </LoadingErrorHandler>

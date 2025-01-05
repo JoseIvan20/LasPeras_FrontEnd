@@ -35,16 +35,13 @@ export const useUsers = () => {
       MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
     },
     onError: error => {
-      console.error('Error updating user:', error.message )
+      console.error('Error updating user:', error.message)
       MessageToast({ icon: 'error', title: 'Error', message: `${error.message}` })
     }
   })
 
   const userById = useMutation({
     mutationFn: ({ _id }: GetUserDataProps) => getUser(_id),
-    onSuccess: () => {
-      MessageToast({ icon: 'success', title: 'Éxitoso', message: `Usuario consultado con éxito` })
-    },
     onError: () => {
       MessageToast({ icon: 'error', title: 'Error', message: `Ocurrió un error al obtener usuario` })
     }
@@ -95,7 +92,7 @@ export const useMail = () => {
       setSuccessMessage(null)
     }
   })
-  
+
   return {
     mailSend: mailMutation.mutate,
     isPendingSend: mailMutation.isPending,
