@@ -45,6 +45,7 @@ const PriceEdit = () => {
     // Actualiza la cotizacion
     updatePrice,
     isPendingUpdatePrice,
+    isSuccessUpdatePrice,
     
     // Obtener la cotizacion
     getPriceById,
@@ -138,11 +139,32 @@ const PriceEdit = () => {
         formData: filteredData
       })
 
-      navigate('/dashboard/cotizaciones')
     } catch (error) {
       console.log('Ocurrió un error en el formulario', error)
     }
   }
+
+  // Actulizamos la informacion si regresarnos al inicio, persistemos los datos pero actualizamos
+  useEffect(() => {
+    const updatePriceData = async () => {
+      if (isSuccessUpdatePrice && !isPendingUpdatePrice && id) {
+        try {
+          const updatedPrice = await getPriceById({ _id: id })
+          setPrice(updatedPrice)
+          // Actualizar el formulario con los nuevos datos
+          reset({
+            ...updatedPrice,
+            paymentMethod: '', // Mantener limpio el método de pago
+            paidAmount: 0     // Mantener limpio el monto
+          })
+        } catch (error) {
+          console.error('Error al actualizar los datos:', error)
+        }
+      }
+    }
+  
+    updatePriceData()
+  }, [isSuccessUpdatePrice, isPendingUpdatePrice, id, getPriceById, setPrice, reset])
 
   const handleAddPayment = async () => {
     if (!id) return
