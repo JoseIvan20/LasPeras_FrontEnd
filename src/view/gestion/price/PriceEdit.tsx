@@ -477,6 +477,7 @@ const PriceEdit = () => {
                       icon={BadgeDollarSign}
                       type="button"
                       onClick={handleAddPayment}
+                      disabled={!price?.totalAmount || price?.paymentStatus === 'complete'}
                       className="mt-4 bg-[#444] text-white hover:bg-[#666]"
                     />
                   </div>
