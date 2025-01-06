@@ -31,7 +31,7 @@ const paymentStatusConfig: PaymentStatusConfig = {
   partial: { text: 'Parcial', variant: 'info' },
   complete: { text: 'Completado', variant: 'success' },
   canceled: { text: 'Cancelado', variant: 'error' }
-};
+}
 
 const PriceEdit = () => {
 

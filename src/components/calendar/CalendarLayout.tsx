@@ -12,6 +12,7 @@ import { PriceBody } from '../../types/price'
 import { parseISO } from 'date-fns'
 import MobileSidebar from './responsive/MobileSidebar'
 import { Event } from '../../types/calendar'
+import SidebarDetails from './SidebarDetails'
 
 // Función auxiliar para validar el status
 function validateStatus(status: string): 'finalized' | 'in_progress' {
@@ -23,6 +24,8 @@ const CalendarLayout = () => {
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['finalized', 'in_progress'])
   const [currentView, setCurrentView] = useState<'month' | 'week' | 'day' | 'list'>('month')
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false) // Modos responsivos
+  const [isDetailsSidebarOpen, setIsDetailsSidebarOpen] = useState(false) // Abrir Sidebar
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null) // Tomar el evento seleccionado
 
   // Hook de usuario donde obtendremos la fecha
   const {
@@ -78,8 +81,8 @@ const CalendarLayout = () => {
 
   // Funcion que obtiene informacion del evento
   const handleEventClick = (event: Event) => {
-    console.log('Evento seleccionado:', event)
-    // Aquí puedes implementar la lógica para mostrar detalles del evento
+    setSelectedEvent(event)
+    setIsDetailsSidebarOpen(true)
   }
 
   // Filtro de eventos: mes, semana, dia y lista
@@ -140,6 +143,13 @@ const CalendarLayout = () => {
         <main className="flex-1 overflow-auto p-4">
           {renderCalendarView()}
         </main>
+
+        {isDetailsSidebarOpen && (
+          <SidebarDetails 
+            event={selectedEvent} 
+            onClose={() => setIsDetailsSidebarOpen(false)}
+          />
+        )}
       </div>
 
       {/* Sidebar móvil */}

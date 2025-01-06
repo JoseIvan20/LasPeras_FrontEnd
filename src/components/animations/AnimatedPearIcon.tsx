@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import FallingLeaf from "./FallingLeaf"
 
 interface AnimatedPearIcon {
   src: string

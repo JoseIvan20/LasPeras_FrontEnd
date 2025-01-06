@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, isSameMonth, isSameYear } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Event } from '../../../types/calendar'
 
@@ -9,7 +9,15 @@ interface ListViewProps {
 }
 
 const ListView = ({ currentDate, events, onEventClick }: ListViewProps) => {
-  const sortedEvents = [...events].sort((a, b) => a.date.getTime() - b.date.getTime())
+  // Filtrar eventos del mes actual
+  const currentMonthEvents = events.filter(event => 
+    isSameMonth(event.date, currentDate) && isSameYear(event.date, currentDate)
+  )
+
+  // Ordenar eventos por fecha
+  const sortedEvents = [...currentMonthEvents].sort((a, b) => 
+    a.date.getTime() - b.date.getTime()
+  )
 
   return (
     <div className="bg-white rounded-lg shadow">
@@ -23,7 +31,7 @@ const ListView = ({ currentDate, events, onEventClick }: ListViewProps) => {
           <p className="p-4 text-center text-gray-500">No hay eventos programados.</p>
         ) : (
           <ul className="divide-y divide-gray-200">
-            {sortedEvents.map((event) => (
+            {sortedEvents.map(event => (
               <li
                 key={event.id}
                 className="p-4 hover:bg-gray-50 cursor-pointer"

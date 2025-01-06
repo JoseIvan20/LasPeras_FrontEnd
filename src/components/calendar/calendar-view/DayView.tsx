@@ -1,4 +1,4 @@
-import { format, addHours, startOfDay } from 'date-fns'
+import { format, addHours, startOfDay, isSameDay } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Event } from '../../../types/calendar'
 
@@ -11,6 +11,9 @@ interface DayViewProps {
 const DayView = ({ currentDate, events, onEventClick }: DayViewProps) => {
   const hours = Array.from({ length: 24 }, (_, i) => addHours(startOfDay(currentDate), i))
 
+  // Filtramos los eventos del día actual
+  const todayEvents = events.filter(event => isSameDay(event.date, currentDate))
+
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="p-4 border-b">
@@ -20,8 +23,8 @@ const DayView = ({ currentDate, events, onEventClick }: DayViewProps) => {
       </div>
       <div className="overflow-y-auto h-[600px]">
         {hours.map((hour) => {
-          const hourEvents = events.filter(
-            (event) => format(event.date, 'HH') === format(hour, 'HH')
+          const hourEvents = todayEvents.filter(
+            event => format(event.date, 'HH') === format(hour, 'HH')
           )
 
           return (

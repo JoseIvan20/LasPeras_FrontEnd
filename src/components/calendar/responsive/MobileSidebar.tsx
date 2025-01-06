@@ -12,14 +12,14 @@ interface MobileSidebarProps {
   onFilterChange: (filterId: string) => void
 }
 
-const MobileSidebar: React.FC<MobileSidebarProps> = ({
+const MobileSidebar = ({
   isOpen,
   onClose,
   onDateSelect,
   filters,
   selectedFilters,
   onFilterChange
-}) => {
+}: MobileSidebarProps) => {
   if (!isOpen) return null
 
   return (
