@@ -33,7 +33,7 @@ const LoadingErrorHandler = ({
           <p> Ocurrio un error </p>
        </div>
     )
- }
+  }
 
  return children
 }

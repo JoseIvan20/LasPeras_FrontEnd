@@ -25,7 +25,7 @@ export const usePrice = () => {
   const priceQuery = useQuery({
     queryKey: ['prices'],
     queryFn: getPrices,
-    refetchInterval: 10000,
+    refetchInterval: 1000,
     retry: 3
   })
 
@@ -33,8 +33,8 @@ export const usePrice = () => {
   const usePaymentQuery = (_id: string) => useQuery({
     queryFn: () => getPaymentsByPriceId(_id),
     queryKey: ['payments'],
-    refetchInterval: 10000,
-    retry: 5
+    refetchInterval: 1000,
+    retry: 3
   })
 
   // Mutacion que actualiza la cotizacion
@@ -52,9 +52,6 @@ export const usePrice = () => {
   // Obtencion de la cotizacion por medio de id
   const priceById = useMutation({
     mutationFn: ({ _id }: GetPriceDataProps) => getPrice(_id),
-    onSuccess: data => {
-      console.log(data)
-    },
     onError: error => {
       const messageError = JSON.parse(error.message)
       MessageToast({ icon: 'error', title: 'Error', message: `${messageError.message}` })
@@ -65,13 +62,14 @@ export const usePrice = () => {
   const addPaymentPrice = useMutation({
     mutationFn: ({ _id, amount, method }: { _id: string, amount: number, method: string }) => 
       addPayment(_id, amount, method),
-    onSuccess: () => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['prices'] })
-      MessageToast({ icon: 'success', title: 'Éxitoso', message: `Pago agregado correctamente` })
+      MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
     },
     onError: error => {
-      const messageError = error instanceof Error ? error.message : 'Error desconocido'
-      MessageToast({ icon: 'error', title: 'Error', message: messageError })
+      const messageError = JSON.parse(error.message)
+      console.log(messageError)
+      MessageToast({ icon: 'error', title: 'Error', message: `${messageError.error}` })
     }
   })
 
@@ -94,6 +92,8 @@ export const usePrice = () => {
 
     getPriceById: priceById.mutateAsync,
     statusById: priceById.data?.status,
+    isPendingPriceById: priceById.isPending,
+    isErrorPriceById: priceById.isError,
 
     // Agregar precio
     addPayment: addPaymentPrice.mutate,

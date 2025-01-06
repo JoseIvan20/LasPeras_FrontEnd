@@ -23,7 +23,6 @@ const Price = () => {
   // Funcion que abre el modal tomando el usuario cuando edite
   const handleClickEdit = (price: PriceBody) => {
     navigate(`/details-price/${price._id}`, { state: { price } })
-    console.log(price)
   }
 
   // Sacar el numero consecutivo en vez de tomar el id del usuario

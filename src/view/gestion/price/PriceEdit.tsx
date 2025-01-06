@@ -14,6 +14,7 @@ import { paymentMethod } from "../../../utils/paymentMethod"
 import { useMediaQuery } from "react-responsive"
 import MessageToast from "../../../components/messages/MessageToast"
 import { LabelBadge } from "../../../components/label/LabelBadge"
+import Spinner from "../../../components/Spinner"
 
 type PaymentStatus = 'pending' | 'partial' | 'complete' | 'canceled'
 type BadgeVariant = 'default' | 'warning' | 'info' | 'success' | 'error'
@@ -41,16 +42,40 @@ const PriceEdit = () => {
   const isMobile = useMediaQuery({ width: 541 }) // Dispositivos mobiles
 
   const {
+    // Actualiza la cotizacion
     updatePrice,
     isPendingUpdatePrice,
+    
+    // Obtener la cotizacion
     getPriceById,
+    isPendingPriceById,
+    isErrorPriceById,
+
+    // Consultsr psgos
     usePaymentQuery,
+
+    // Agregar pago
     addPayment
   } = usePrice()
 
   const { data: paymentData, isLoading: isLoadingPayments } = usePaymentQuery(id || '')
 
-  const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<PriceBody>()
+  const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<PriceBody>({
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: 0,
+      status: 'pending',
+      date: new Date(),
+      numberOfPeople: 0,
+      typeOfCelebration: '',
+      message: '',
+      paymentMethod: '',
+      totalAmount: 0,
+      paidAmount: 0
+    },
+    disabled: price?.paymentStatus === 'complete'
+  })
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -136,12 +161,18 @@ const PriceEdit = () => {
     }
 
     try {
+      // const data = {
+      //   _id: id,
+      //   amount: Number(amount),
+      //   method
+      // }
+      // console.log(data)
       await addPayment({
         _id: id,
-        amount: amount,
+        amount: Number(amount),
         method
       })
-      // Actualizar la cotización
+      // Obtenemos la informacion de la cotizacion actual
       const updatedPrice = await getPriceById({ _id: id })
       setPrice(updatedPrice)
       reset({
@@ -149,15 +180,33 @@ const PriceEdit = () => {
         paymentMethod: '', // Limpiar el método de pago
         paidAmount: 0    // Limpiar el monto
       })
-      MessageToast({ icon: 'success', title: 'Éxito', message: 'Pago agregado correctamente' })
     } catch (error) {
       console.error('Error al agregar el pago', error)
-      MessageToast({ icon: 'error', title: 'Error', message: 'Error al agregar el pago' })
     }
   }
 
   const handleCancel = () => {
     navigate('/dashboard/cotizaciones')
+  }
+
+  if (isErrorPriceById) {
+    return (
+       <div className="text-center text-red-600 mt-4">
+          <h2 className="text-2xl font-bold mb-2">Error al cargar los datos</h2>
+          <p> Ocurrio un error </p>
+       </div>
+    )
+  }
+
+  if (isPendingPriceById) { // Es pantalla de carga
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className='flex gap-2 items-center bg-white p-3 rounded-md shadow'>
+          <Spinner size={30} borderColor='border-red-700'/>
+          <span className='text-slate-600 font-semibold'> Cargando cotización </span>
+        </div>
+      </div>
+    )
   }
 
   if (!price) {
@@ -186,7 +235,7 @@ const PriceEdit = () => {
             <Notebook className="text-[#444]" />
 
             <h1 className="text-[#444] text-xl font-semibold">
-              Detalles de contización
+              Detalles de cotización
             </h1>
           </div>
 
@@ -256,7 +305,6 @@ const PriceEdit = () => {
                       <MessageToasty
                         label="Correo electrónico"
                         icon={Mail}
-                        disabled
                         error={errors.email?.message}
                         {...field}
                       />
@@ -336,6 +384,7 @@ const PriceEdit = () => {
                         value={value ? String(value) : null}
                         label="Tipo de evento"
                         placeholder="Selecciona un tipo de evento"
+                        disabled={price?.paymentStatus === 'complete'}
                         error={error?.message}
                       />
                     )}
@@ -368,6 +417,7 @@ const PriceEdit = () => {
                           value={value ? valueToLabel[value] : null}
                           label="Estado del cliente"
                           placeholder="Selecciona un estado"
+                        disabled={price?.paymentStatus === 'complete'}
                           error={error?.message}
                         />
                       )
@@ -401,7 +451,7 @@ const PriceEdit = () => {
 
                   <div className="">
                     <CustomButton
-                      buttonText="Agregar Pago"
+                      buttonText="Agregar pago"
                       icon={BadgeDollarSign}
                       type="button"
                       onClick={handleAddPayment}
@@ -422,37 +472,56 @@ const PriceEdit = () => {
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                    <Controller
-                      name="paymentMethod"
-                      control={control}
-                      render={({ field: { onChange, value }, fieldState: { error } }) => (
-                        <FilterSelect
-                          options={paymentMethod}
-                          onSelect={onChange}
-                          value={value ? String(value) : null}
-                          label="Método de pago"
-                          disabled={price.paymentStatus === 'complete'}
-                          error={error?.message}
+                    {price?.totalAmount === undefined ? (
+                      <Controller
+                        name="totalAmount"
+                        control={control}
+                        render={({ field }) => (
+                          <MessageToasty
+                            label="Total a pagar"
+                            type="number"
+                            icon={BadgeDollarSign}
+                            placeholder="Ingrese el total a pagar..."
+                            error={errors.totalAmount?.message}
+                            {...field}
+                          />
+                        )}
+                      />
+                    ): (
+                      <>
+                        <Controller
+                          name="paymentMethod"
+                          control={control}
+                          render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <FilterSelect
+                              options={paymentMethod}
+                              onSelect={onChange}
+                              value={value ? String(value) : null}
+                              label="Método de pago"
+                              disabled={price?.paymentStatus === 'complete'}
+                              error={error?.message}
+                            />
+                          )}
                         />
-                      )}
-                    />
 
-                    <Controller
-                      name="paidAmount"
-                      control={control}
-                      rules={{ required: 'El monto es requerido' }}
-                      render={({ field }) => (
-                        <MessageToasty
-                          label="Monto a pagar"
-                          type="number"
-                          icon={BadgeDollarSign}
-                          placeholder="Ingrese el monto..."
-                          disabled={price.paymentStatus === 'complete'}
-                          error={errors.paidAmount?.message}
-                          {...field}
+                        <Controller
+                          name="paidAmount"
+                          control={control}
+                          rules={price.paymentStatus !== 'complete' ? { required: 'El monto es requerido' } : {}}
+                          render={({ field }) => (
+                            <MessageToasty
+                              label="Monto a pagar"
+                              type="number"
+                              icon={BadgeDollarSign}
+                              placeholder="Ingrese el monto..."
+                              error={errors.paidAmount?.message}
+                              {...field}
+                            />
+                          )}
                         />
-                      )}
-                    />
+                      
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -470,11 +539,14 @@ const PriceEdit = () => {
                       ))}
                     </ul>
                   ) : (
-                    <p>No hay pagos registrados.</p>
+                    <p className="flex text-gray-600 justify-end">No hay pagos registrados.</p>
                   )}
                 </div>
 
-                <div className="mt-4 text-gray-500 flex justify-end">
+                <div className="mt-4 text-gray-500 flex justify-between">
+                  <p className="font-semibold">
+                    Total a pagar: ${price.totalAmount}
+                  </p>
                   <p className="font-semibold">
                     Total Pagado: ${payments.reduce((sum, payment) => sum + payment.amount, 0)}
                   </p>

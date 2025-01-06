@@ -19,7 +19,7 @@ export interface PriceBody { // Props de un cotizacion
   paymentStatus: string
   paymentMethod: string
   totalAmount?: number
-  paidAmount: number
+  paidAmount?: number
   payments: Payment[]
 }
 
