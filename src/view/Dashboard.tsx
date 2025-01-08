@@ -2,7 +2,7 @@ import { usePrice } from "../hooks/usePrice"
 import { PriceBody } from "../types/price"
 import useAuth from "../hooks/useAuth"
 import MessageCard from "../components/card/MessageCard"
-import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, NewspaperIcon, Users } from "lucide-react"
+import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, MessageCircleMoreIcon, NewspaperIcon, Users } from "lucide-react"
 import Card from "../components/card/Card"
 import { NavLink } from "react-router-dom"
 import { useComment } from "../hooks/useComment"
@@ -92,7 +92,7 @@ const Dashboard = () => {
           <Card
             title="Comentarios"
             titleStyle="text-gray-600"
-            icon={Users}
+            icon={MessageCircleMoreIcon}
             iconColor="text-lime-700"
             bgColorIcon="bg-lime-50"
             sizeIcon={40}

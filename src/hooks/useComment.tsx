@@ -50,7 +50,7 @@ export const useComment = () => {
     mutationFn: (_id: string) => deleteComment(_id),
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['comments'] })
-      MessageToast({ icon: 'success', title: 'Éxito', message: `${data.message}` })
+      MessageToast({ icon: 'success', title: 'Éxito', message: data.message })
     },
     onError: error => {
       const errorFormat = JSON.parse(error.message)
