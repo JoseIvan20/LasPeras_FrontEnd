@@ -1,4 +1,4 @@
-import { AppWindow, Calendar1Icon, Notebook, TicketSlashIcon, UserRoundCogIcon, X } from 'lucide-react'
+import { Calendar1Icon, Notebook, TicketSlashIcon, UserRoundCogIcon, X } from 'lucide-react'
 import { Event } from '../../types/calendar'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LabelBadge } from '../label/LabelBadge'
@@ -74,7 +74,7 @@ const SidebarDetails = ({ event, onClose }: SidebarDetailsProps) => {
                 <div className='pt-1 bg-gray-100 rounded-md'>
                   <TicketSlashIcon size={20} />
                 </div>
-                Título
+                Tipo de evento
               </h3>
               <p className="text-gray-900">{event.title}</p>
             </div>
@@ -87,16 +87,6 @@ const SidebarDetails = ({ event, onClose }: SidebarDetailsProps) => {
                 Fecha
               </h3>
               <p className="text-gray-900">{event.date.toLocaleDateString()}</p>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-gray-500 flex items-center gap-3">
-                <div className='pt-1 bg-gray-100 rounded-md'>
-                  <AppWindow size={20} />
-                </div>
-                Tipo
-              </h3>
-              <p className="text-gray-900">{event.type}</p>
             </div>
           </div>
         </div>

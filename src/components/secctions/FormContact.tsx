@@ -5,7 +5,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import MessageToasty from "../messages/MessageToasty"
 import useMail from "../../hooks/useMail"
 import { MailBody } from "../../types/mail"
-import { MessageError, MessageSuccess } from "../messages/Message"
 import { useEffect } from "react"
 import AnimatedPearIcon from "../animations/AnimatedPearIcon"
 import FilterSelect from "../select/FilterSelect"
@@ -23,10 +22,7 @@ const FormContact = () => {
   const {
     mailSend,
     isPendingSend,
-    successMessage,
-    errorMessage,
     isSuccessSend,
-    clearMessages
   } = useMail()
 
   const onSubmit: SubmitHandler<MailBody> = async data => {
@@ -44,17 +40,11 @@ const FormContact = () => {
         typeOfCelebration: '',
         message: ''
       })
-      const timer = setTimeout(() => {
-        clearMessages()
-      }, 10000)
-      return () => clearTimeout(timer)
     }
-  }, [isSuccessSend, reset, clearMessages])
+  }, [isSuccessSend, reset])
 
   return (
     <div className="relative w-full max-w-lg bg-white px-10 py-5 shadow-lg rounded-lg">
-      {successMessage && <MessageSuccess success={successMessage} />}
-      {errorMessage && <MessageError error={errorMessage} />}
 
       <div>
         <div className="mb-10 flex items-center gap-4">

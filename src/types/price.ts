@@ -35,6 +35,7 @@ export interface AuthBody {
 
 // Props de Mensaje
 export interface CommentBody {
+  _id: string
   name: string
   role: string
   content: string

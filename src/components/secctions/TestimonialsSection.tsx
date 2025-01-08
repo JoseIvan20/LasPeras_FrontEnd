@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { MessageCirclePlus, MessageCirclePlusIcon, Star, User } from 'lucide-react'
+import { MessageCirclePlus, Star, User } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CustomButton from '../button/CustomButton'
 import { useComment } from '../../hooks/useComment'
-import Modal from '../modal/Modal'
-import ModalComment from '../../view/modal/ModalComment'
 import Lottie from 'react-lottie'
 import emptyCommentsAnimation from '../../assets/animations/empty-comments.json'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 interface TestimonialProps {
   id: number
@@ -55,23 +54,17 @@ const TestimonialCard = ({
 
 const TestimonialsSection = () => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isOpenModal, setIsModalOpen] = useState(false)
   const initialDisplayCount = 3 // Cuando hayan mas de 3 comentarios aparece el boton de Mostrar mas
  
   const {
     getComments
   } = useComment() // Hook de comentarios
+  const navigate = useNavigate()
 
   const { isAuthenticated } = useSelector((state: any) => state.auth)
 
-  // Funcion que levantaria un modal para agregar el comentario
-  const handleSubmitComment = () => {
-    setIsModalOpen(true)
-  }
-
-  // Cierre de modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
+  const gestionComments = () => {
+    navigate('/comments')
   }
 
   // Implementacion de lottie
@@ -92,9 +85,9 @@ const TestimonialsSection = () => {
           {isAuthenticated &&(
             <div className='flex md:justify-end justify-center mb-4'>
               <CustomButton
-                buttonText='Agregar comentario'
+                buttonText='Gestionar comentarios'
                 icon={MessageCirclePlus}
-                onClick={() => handleSubmitComment()} />
+                onClick={() => gestionComments()} />
             </div>
           )}
 
@@ -163,15 +156,6 @@ const TestimonialsSection = () => {
           </div>
         </div>
       </section>
-    
-      <Modal
-        title='Agregar comentario'
-        icon={MessageCirclePlusIcon}
-        isOpen={isOpenModal}
-        onClose={() => setIsModalOpen(false)}
-        size='sm' >
-        <ModalComment onClose={handleCloseModal} />
-      </Modal>
     </>
   )
 }

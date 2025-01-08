@@ -5,11 +5,13 @@ import MessageCard from "../components/card/MessageCard"
 import { AlertTriangle, BadgeCheckIcon, Clock, Loader2, NewspaperIcon, Users } from "lucide-react"
 import Card from "../components/card/Card"
 import { NavLink } from "react-router-dom"
+import { useComment } from "../hooks/useComment"
 
 const Dashboard = () => {
 
   const { prices } = usePrice() // Usuarios
   const { admins } = useAuth() // Administrador
+  const { getComments } = useComment() // Comentarios
 
   // Sacar la cantidad de usuarios en estado "pending"
   const statusPending = prices.filter((user: PriceBody) => user.status === "pending").length
@@ -72,7 +74,7 @@ const Dashboard = () => {
         </NavLink>
         
         <NavLink
-          to={'/dashboard/auth-prices'}>
+          to={'/dashboard/auth-users'}>
           <Card
             title="Administradores"
             titleStyle="text-gray-600"
@@ -82,6 +84,20 @@ const Dashboard = () => {
             sizeIcon={40}
             classNameTitle="font-bold text-xl md:text-2xl"
             content={`Total: ${admins.length}`}
+            />
+        </NavLink>
+        
+        <NavLink
+          to={'/comments'}>
+          <Card
+            title="Comentarios"
+            titleStyle="text-gray-600"
+            icon={Users}
+            iconColor="text-lime-700"
+            bgColorIcon="bg-lime-50"
+            sizeIcon={40}
+            classNameTitle="font-bold text-xl md:text-2xl"
+            content={`Total: ${getComments.length}`}
             />
         </NavLink>
       </div>

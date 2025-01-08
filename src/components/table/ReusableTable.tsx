@@ -68,6 +68,7 @@ function ReusableTable<TData>({
       ...(windowWidth >= 768 ? columns.filter(col => 
         (col as any).accessorKey === 'email' ||
         (col as any).accessorKey === 'consumer' ||
+        (col as any).accessorKey === 'role' ||
         (col as any).accessorKey === 'status'
       ) : []),
       // lg: phone, date

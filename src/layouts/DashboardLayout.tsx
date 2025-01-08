@@ -1,8 +1,25 @@
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/NavbarDashboard'
+import useAuth from '../hooks/useAuth'
+import { useEffect } from 'react'
 
 const DashboardLayout = () => {
+
+  // Uso del hook de obtencion de usuario
+  const { 
+    currentUser, 
+    isCurrentUserError,
+    isCurrentUserLoading,
+    logoutUser
+  } = useAuth()
+  
+  // Aplicamos useEffect cuando ocurra un cambio en la sesion
+  useEffect(() => {
+    if (!isCurrentUserLoading && (isCurrentUserError || !currentUser)) {
+      logoutUser()
+    }
+  }, [currentUser, isCurrentUserError, logoutUser])
 
   return (
     <div className="flex h-screen bg-gray-100">

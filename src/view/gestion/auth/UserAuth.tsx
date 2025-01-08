@@ -10,11 +10,14 @@ import LoadingErrorHandler from "../../../components/chargeView/LoadingErrorHand
 import { AdminBody } from "../../../types/admin"
 import MessageAlert from "../../../components/messages/MessageAlert"
 import Swal from "sweetalert2"
+import MessageToast from "../../../components/messages/MessageToast"
+import { useSelector } from "react-redux"
 
 const UserAuth = () => {
 
   const [isOpenModal, setIsModalOpen] = useState(false) // Modal
   const [adminSelected, setAdminSelected] = useState<AdminBody | null>(null) // Admin
+  const { user } = useSelector((state: any) => state.auth)
 
   // Hook de admins
   const {
@@ -89,6 +92,7 @@ const UserAuth = () => {
       },
       onCancel: () => {
         // MessageAlert maneja el mensaje de cancelación
+        MessageToast({ icon: 'warning', title: 'Cancelado', message: 'El usuario no se elimino' })
       }
     })
   }
@@ -142,17 +146,19 @@ const UserAuth = () => {
       cell: ({ row }) => (
         <div className="flex gap-2">
           <button
-            className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
+            className={`bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300 ${row.original.status === 'active' && row.original._id !== user.id ? 'cursor-not-allowed' : ''}`}
             onClick={() => handleClickEdit(row.original)}
             title="Editar"
+            disabled={row.original.status === 'active' && row.original._id !== user.id}
             >
             <FileEditIcon size={18} />
           </button>
 
           <button
-            className="bg-red-100 text-red-700 rounded-md p-1.5 hover:bg-red-200 hover:shadow duration-300"
+            className={`bg-red-100 text-red-700 rounded-md p-1.5 hover:bg-red-200 hover:shadow duration-300 ${row.original._id === user.id ? 'cursor-not-allowed' : ''}`}
             onClick={() => handleDeleteUser(row.original._id, row.original.name)}
             title="Eliminar"
+            disabled={row.original._id === user.id}
           >
             <Trash size={18} />
           </button>

@@ -2,7 +2,7 @@
 
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from "@tanstack/react-query"
 import MessageToast from "../components/messages/MessageToast"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { logout, setCredentials } from "../helper/redux/AuthSlice"
 import { 
   authenticated, 
@@ -12,7 +12,8 @@ import {
   toggleUserStatus, 
   updateAdminById,
   resendConfirmationCode, 
-  deleteUser
+  deleteUser,
+  getAdminById
 } from "../api/AuthAPI"
 import { AdminBody, ConfirmUserBody } from "../types/admin"
 import { useNavigate } from "react-router-dom"
@@ -32,11 +33,22 @@ const useAuth = () => {
   const queryClient = useQueryClient()
   const dispath = useDispatch()
   const navigate = useNavigate()
+  const { user } = useSelector((state: any) => state.auth)
 
+  // Consulta de usuarios
   const adminQuery = useQuery({
     queryFn: getAdmins,
     queryKey: ['admins'],
+    refetchInterval: 1000,
     retry: 3
+  })
+
+  // Obtencion de usuario
+  const currentUserQuery = useQuery({
+    queryKey: ['currentUser', user?.id],
+    queryFn: () => getAdminById(user?.id),
+    enabled: !!user?.id,
+    refetchInterval: 10000, // Refetch cada 30 segundos
   })
 
   // Mutacion de creacion de usuario
@@ -200,7 +212,12 @@ const useAuth = () => {
     deleteAdmin: deleteAdminMutation.mutate,
     isPendingDeleteAdmin: deleteAdminMutation.isPending,
     isSuccessDeleteAdmin: deleteAdminMutation.isSuccess,
-    isErrorDeleteAdmin: deleteAdminMutation.isError
+    isErrorDeleteAdmin: deleteAdminMutation.isError,
+
+    // Obtencion de usuario
+    currentUser: currentUserQuery.data,
+    isCurrentUserLoading: currentUserQuery.isLoading,
+    isCurrentUserError: currentUserQuery.isError,
   }
 }
 

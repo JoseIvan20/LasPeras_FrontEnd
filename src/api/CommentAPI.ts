@@ -1,6 +1,6 @@
-import { isAxiosError } from "axios"
 import { CommentBody } from "../types/price"
 import apiURL from "../utils/axios"
+import { handleApiError } from "../helper/errorHandler"
 
 // Agregar comentario
 export const addComment = async (commentData: Partial<CommentBody>) => {
@@ -12,11 +12,7 @@ export const addComment = async (commentData: Partial<CommentBody>) => {
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al agregar el comentario')
+    throw handleApiError(error)
 
   }
 }
@@ -31,11 +27,37 @@ export const getComments = async () => {
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al obtener usuarios')
+    throw handleApiError(error)
+
+  }
+}
+
+// Actualizar comentario
+export const updateComment = async (commentId: string, commentData: Partial<CommentBody>) => {
+  try {
+
+    const { data } = await apiURL.put(`/updateComment/${commentId}`, commentData)
+    // const { data } = await apiURL.put(`/comment/${commentId}`, commentData)
+    return data
+
+  } catch (error) {
+
+    throw handleApiError(error)
+
+  }
+}
+
+// Eliminar comentario
+export const deleteComment = async (commentId: string) => {
+  try {
+
+    const { data } = await apiURL.delete(`/deleteComment/${commentId}`)
+    // const { data } = await apiURL.delete(`/comment/${commentId}`)
+    return data
+
+  } catch (error) {
+
+    throw handleApiError(error)
 
   }
 }

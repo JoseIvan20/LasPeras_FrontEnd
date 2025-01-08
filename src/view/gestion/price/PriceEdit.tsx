@@ -78,6 +78,7 @@ const PriceEdit = () => {
     disabled: price?.paymentStatus === 'complete'
   })
 
+  // Cuando hay un cambio en la cotizacion actualiza la informacion en tiempo real
   useEffect(() => {
     const fetchUser = async () => {
       if (id) {
@@ -85,7 +86,7 @@ const PriceEdit = () => {
           const fetchedPrice = await getPriceById({ _id: id })
           setPrice(fetchedPrice)
           // Excluimos paymentMethod y paidAmount del reset
-          const { paymentMethod, paidAmount, ...restPrice } = fetchedPrice
+          const { totalAmount, paymentMethod, paidAmount, ...restPrice } = fetchedPrice
           reset(restPrice)
         } catch (err) {
           console.log('Error al obtener la cotizacion', err)
@@ -101,6 +102,7 @@ const PriceEdit = () => {
     }
   }, [paymentData])
 
+  // Edicion de cotizacion
   const onSubmitEdit = async (data: PriceBody) => {
     if (!id) {
       console.error('ID de cotizacion no disponible')
@@ -117,7 +119,6 @@ const PriceEdit = () => {
         numberOfPeople,
         typeOfCelebration,
         message,
-        paymentMethod,
         totalAmount
       } = data
 
@@ -130,7 +131,6 @@ const PriceEdit = () => {
         numberOfPeople,
         typeOfCelebration,
         message,
-        paymentMethod,
         totalAmount
       }
 
@@ -151,6 +151,7 @@ const PriceEdit = () => {
         try {
           const updatedPrice = await getPriceById({ _id: id })
           setPrice(updatedPrice)
+
           // Actualizar el formulario con los nuevos datos
           reset({
             ...updatedPrice,
@@ -166,6 +167,7 @@ const PriceEdit = () => {
     updatePriceData()
   }, [isSuccessUpdatePrice, isPendingUpdatePrice, id, getPriceById, setPrice, reset])
 
+  // Agregar pago
   const handleAddPayment = async () => {
     if (!id) return
 
@@ -207,10 +209,12 @@ const PriceEdit = () => {
     }
   }
 
+  // Cancelar moviemientos
   const handleCancel = () => {
     navigate('/dashboard/cotizaciones')
   }
 
+  // Si hay un error en la obtencion de la cotizacion
   if (isErrorPriceById) {
     return (
        <div className="text-center text-red-600 mt-4">
@@ -220,6 +224,7 @@ const PriceEdit = () => {
     )
   }
 
+  // Pantalla de carga
   if (isPendingPriceById) { // Es pantalla de carga
     return (
       <div className="flex justify-center items-center h-screen">
@@ -231,6 +236,7 @@ const PriceEdit = () => {
     )
   }
 
+  // Si no hay cotizacion
   if (!price) {
     return (
       <div className="bg-white p-5 m-2 rounded-lg shadow-md flex justify-between">
@@ -499,6 +505,7 @@ const PriceEdit = () => {
                       <Controller
                         name="totalAmount"
                         control={control}
+                        defaultValue={0}
                         render={({ field }) => (
                           <MessageToasty
                             label="Total a pagar"
@@ -515,6 +522,7 @@ const PriceEdit = () => {
                         <Controller
                           name="paymentMethod"
                           control={control}
+                          defaultValue=""
                           render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <FilterSelect
                               options={paymentMethod}

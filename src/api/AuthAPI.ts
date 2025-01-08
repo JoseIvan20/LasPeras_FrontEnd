@@ -1,7 +1,7 @@
-import { isAxiosError } from "axios"
 import { AuthBody } from "../types/price"
 import apiURL from "../utils/axios"
 import { AdminBody, ConfirmUserBody } from "../types/admin"
+import { handleApiError } from "../helper/errorHandler"
 
 // Inicio de sesion de administrador
 export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBody> => {
@@ -13,11 +13,7 @@ export const authenticated = async (authData: Partial<AuthBody>): Promise<AuthBo
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data || 'Error en la petición'
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al autenticar el usuario')
+    throw handleApiError(error)
 
   }
 }
@@ -32,11 +28,7 @@ export const createAdmin = async (authData: Partial<AdminBody>): Promise<AdminBo
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data || 'Error en la petición'
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al crear el usuario')
+    throw handleApiError(error)
 
   }
 }
@@ -51,16 +43,27 @@ export const getAdmins = async () => {
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data || 'Error en la petición'
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al obtener los usuarios')
+    throw handleApiError(error)
 
   }
 }
 
-// Obtencion de administradores
+// Obtencion de admin por id
+export const getAdminById = async (_id: string): Promise<AdminBody> => {
+  try {
+
+    const { data } = await apiURL.get(`/getAdminById/${_id}`)
+    // const { data } = await apiURL.get(`/auth/${_id}`)
+    return data
+
+  } catch (error) {
+
+    throw handleApiError(error)
+
+  }
+}
+
+// Actualizacion de admin
 export const updateAdminById = async (_id: string, formData: Partial<AdminBody>): Promise<AdminBody> => {
   try {
 
@@ -70,11 +73,7 @@ export const updateAdminById = async (_id: string, formData: Partial<AdminBody>)
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al actualizar el usuario')
+    throw handleApiError(error)
 
   }
 }
@@ -89,11 +88,7 @@ export const toggleUserStatus = async (_id: string, active: number): Promise<Adm
 
   } catch (error) {
 
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al cambiar el estatus del usuario')
+    throw handleApiError(error)
 
   }
 }
@@ -105,11 +100,9 @@ export const confirmAccount = async (formData: Partial<ConfirmUserBody>) => {
     // const { data } = await apiURL.post('/auth/confirm-user', formData)
     return data
   } catch (error) {
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al confirmar la cuenta.')
+
+    throw handleApiError(error)
+
   }
 }
 
@@ -120,12 +113,9 @@ export const resendConfirmationCode = async (formData: Partial<ConfirmUserBody>)
     // const { data } = await apiURL.post('/auth/resend-confirmation', formData)
     return data
   } catch (error) {
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      // throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-      throw errorMessage
-    }
-    throw new Error('Error desconocido al reenviar el codigo')
+
+    throw handleApiError(error)
+
   }
 }
 
@@ -136,10 +126,8 @@ export const deleteUser = async (_id: string) => {
     // const { data } = await apiURL.delete(`/auth/delete-user/${_id}`)
     return data
   } catch (error) {
-    if (isAxiosError(error)) {
-      const errorMessage = error.response?.data
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage))
-    }
-    throw new Error('Error desconocido al eliminar el usuario.')
+
+    throw handleApiError(error)
+
   }
 }

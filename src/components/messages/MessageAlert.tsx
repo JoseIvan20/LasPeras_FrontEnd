@@ -38,13 +38,6 @@ const MessageAlert = {
           onConfirm()
       } else if(result.dismiss === Swal.DismissReason.cancel) {
         onCancel()
-        swalWithBootstrapButtons.fire({
-          title: "Cancelado",
-          text: "El usuario no se elimino",
-          icon: "warning",
-          confirmButtonText: "Cerrar",
-          confirmButtonColor: "#444444"
-        })
       }
     })
 

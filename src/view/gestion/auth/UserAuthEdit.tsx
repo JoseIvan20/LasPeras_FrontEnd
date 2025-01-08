@@ -62,7 +62,7 @@ const UserAuthEdit = ({ adminSelected, onClose }: UserAuthEditProps) => {
     }
   }, [isSuccessUpdateAdmin, isPendingUpdateAdmin, isSuccessCreateAdmin, isPendingCreateAdmin, onClose])
 
-  // Update local state when adminSelected changes
+  // Actuliza el estado active cuando adminSelected cambia
   useEffect(() => {
     setIsActive(adminSelected?.active === 1)
   }, [adminSelected])

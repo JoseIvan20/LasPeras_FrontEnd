@@ -9,39 +9,88 @@ import StarRating from "../../components/button/StartRating"
 import CustomButton from "../../components/button/CustomButton"
 
 interface ModalCommentProps {
+  commentSelected: CommentBody | null
   onClose: () => void
 }
 
-const ModalComment = ({ onClose }: ModalCommentProps) => {
+const ModalComment = ({ onClose, commentSelected }: ModalCommentProps) => {
 
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<CommentBody>()
+  const { control, handleSubmit, formState: { errors }, setValue, reset } = useForm<CommentBody>({
+    defaultValues: {
+      name: commentSelected?.name || '',
+      role: commentSelected?.role || '',
+      content: commentSelected?.content || '',
+      rating: commentSelected?.rating || 0
+    }
+  })
 
+  // Actualizar userData cuando cambie commentSelected
+  useEffect(() => {
+    reset({
+      name: commentSelected?.name || '',
+      role: commentSelected?.role || '',
+      content: commentSelected?.content || '',
+      rating: commentSelected?.rating || 0
+    })
+  }, [commentSelected, reset])
+
+  // Hook de comentarios
   const {
     addComment,
     isPendingComment,
-    isSuccessComment
+    isSuccessComment,
+
+    updateComment,
+    isPendingUpdateComment,
+    isSuccessUpdateComment
   } = useComment()
 
   // Funcion que crea el comentario
   const onSubmiCreateComment = async (data: CommentBody) => {
-    try {
-      const dataComment = {
-        name: data.name,
-        role: data.role,
-        content: data.content,
-        rating: data.rating
+    if (commentSelected) { // Si hay comentario seleccionado
+      try {
+        const {
+          name,
+          role,
+          content,
+          rating
+        } = data
+  
+        const filteredData = {
+          name,
+          role,
+          content,
+          rating
+        }
+
+        await updateComment({
+          _id: commentSelected._id.toString(),
+          commentData: filteredData
+        })
+      } catch (error) {
+        console.error('Ocurrio un error en el formulario')
       }
-      await addComment(dataComment)
-    } catch (error) {
-      console.error('Ocurrio un error en el formulario')
+    } else {
+      try {
+        const dataComment = {
+          name: data.name,
+          role: data.role,
+          content: data.content,
+          rating: data.rating
+        }
+        await addComment(dataComment)
+      } catch (error) {
+        console.error('Ocurrio un error en el formulario')
+      }
     }
   }
 
+  // Cerramos el modal despues de que se completo el guardado del comentario
   useEffect(() => {
-    if (isSuccessComment && !isPendingComment) {
+    if (isSuccessComment && !isPendingComment || isSuccessUpdateComment && !isPendingUpdateComment) {
       onClose()
     }
-  }, [isSuccessComment, isPendingComment, onClose])
+  }, [isSuccessComment, isPendingComment, isPendingUpdateComment, isPendingUpdateComment, onClose])
 
   return (
     <div className="flex flex-col gap-3 md:gap-5">
@@ -126,12 +175,12 @@ const ModalComment = ({ onClose }: ModalCommentProps) => {
             onClick={onClose} />
 
           <CustomButton
-            buttonText="Guardar"
-            icon={Save}
+            buttonText={commentSelected ? 'Actualizar' : 'Guardar'}
+            icon={Save} 
             type="submit"
-            isLoading={isPendingComment}
-            disabled={isPendingComment}
-            loadingText="Guardando..."
+            isLoading={isPendingComment || isPendingUpdateComment}
+            disabled={isPendingComment || isPendingUpdateComment}
+            loadingText={commentSelected ? 'Actualizando...' : 'Guardando...'}
             className="bg-[#444] text-white hover:bg-[#666]" />
         </div>
       </form>

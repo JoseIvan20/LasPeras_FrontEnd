@@ -7,22 +7,40 @@ import {
 import AppLayout from './layouts/AppLayout'
 import Home from './view/Home'
 import Login from './view/auth/Login'
-import Dashboard from './view/Dashboard'
 import DashboardLayout from './layouts/DashboardLayout'
 import { useSelector } from 'react-redux'
 import ProtectedRoute from './helper/auth/ProtectedRoute'
 import NotFound from './view/NotFound'
 import PriceEdit from './view/gestion/price/PriceEdit'
-import GestionImage from './view/GestionImage'
-import UserAuth from './view/gestion/auth/UserAuth'
-import Calendar from './view/Calendar'
-import Price from './view/gestion/price/Price'
 import ActivateAccount from './view/auth/ActivateAccount'
+import { routesDashboard, RouteConfig } from './helper/routes'
+import React from 'react'
 
 const Router = () => {
 
   // Uso del estado global de autenticacion
   const { isAuthenticated } = useSelector((state: any) => state.auth)
+
+  // Función para generar rutas recursivamente
+  const generateRoutes = (routes: RouteConfig[]): React.ReactNode => {
+    return routes.map(route => {
+      if (route.subItems) {
+        // Si tiene subItems, genera rutas para cada uno
+        return generateRoutes(route.subItems)
+      }
+      
+      if (route.path && route.component) {
+        return (
+          <Route 
+            key={route.key} 
+            path={route.path} 
+            element={<route.component />} 
+          />
+        )
+      }
+      return []
+    })
+  }
 
   return (
     <BrowserRouter>
@@ -40,12 +58,14 @@ const Router = () => {
         /> {/* Ruta de activacion de cuenta */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-            <Route path='/dashboard' element={<Dashboard />} />
+            {/* <Route path='/dashboard' element={<Dashboard />} />
             <Route path="/dashboard/cotizaciones" element={<Price />} />
-            <Route path="/details-price/:id" element={<PriceEdit />} />
             <Route path="/gestion-image" element={<GestionImage />} />
             <Route path="/dashboard/auth-users" element={<UserAuth />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/comments" element={<Comments />} /> */}
+            {generateRoutes(routesDashboard)}
+            <Route path="/details-price/:id" element={<PriceEdit />} />
           </Route>
         </Route>
 
