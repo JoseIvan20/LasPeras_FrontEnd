@@ -4,8 +4,6 @@ import pearIcon from '../images/pear-icon.svg'
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import MessageToasty from "./messages/MessageToasty"
 import { MailBody } from "../types/mail"
-import { MessageError, MessageSuccess } from "./messages/Message"
-import { useEffect } from "react"
 import AnimatedPearIcon from "../components/animations/AnimatedPearIcon"
 import useMail from "../hooks/useMail"
 
@@ -14,37 +12,20 @@ const FormContact = () => {
   const { 
     control,
     handleSubmit,
-    reset,
     formState: { errors }
   } = useForm<MailBody>()
 
   const { 
     mailSend,
     isPendingSend,
-    successMessage,
-    errorMessage,
-    isSuccessSend,
-    clearMessages
   } = useMail()
 
   const onSubmit: SubmitHandler<MailBody> = data => {
     mailSend(data)
   }
 
-  useEffect(() => {
-    if (isSuccessSend) {
-      reset()
-      const timer = setTimeout(() => {
-        clearMessages()
-      }, 10000)
-      return () => clearTimeout(timer)
-    }
-  }, [isSuccessSend, reset, clearMessages])
-
   return (
     <div className="relative w-full max-w-lg bg-white px-10 py-5 shadow-lg rounded-lg">
-      {successMessage && <MessageSuccess success={successMessage} />}
-      {errorMessage && <MessageError error={errorMessage} />}
 
       <div>
         <div className="mb-10 flex items-center gap-4">
