@@ -77,7 +77,7 @@ export const usePrice = () => {
     mutationFn: (_id: string) => deletePriceById(_id),
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['prices'] })
-      MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
+      MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message ? data.message : 'Cotización eliminada correctamente'}` })
     },
     onError: error => {
       const messageError = JSON.parse(error.message)

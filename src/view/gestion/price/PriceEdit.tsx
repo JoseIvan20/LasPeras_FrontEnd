@@ -506,7 +506,7 @@ const PriceEdit = () => {
                   
                   <div className="flex flex-col gap-4">
                     {/* {price?.totalAmount === undefined ? ( */}
-                      <div className="w-1/6">
+                      <div className="md:w-1/6 w-full">
                         <Controller
                           name="totalAmount"
                           control={control}
