@@ -1,7 +1,7 @@
 // hook de usuarios
 
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from "@tanstack/react-query"
-import { addPayment, getPaymentsByPriceId, getPrice, getPrices, updatePriceById } from "../api/PriceAPI"
+import { addPayment, deletePriceById, getPaymentsByPriceId, getPrice, getPrices, updatePriceById } from "../api/PriceAPI"
 import { PriceBody } from "../types/price"
 import MessageToast from "../components/messages/MessageToast"
 import { useCallback, useState } from "react"
@@ -68,8 +68,20 @@ export const usePrice = () => {
     },
     onError: error => {
       const messageError = JSON.parse(error.message)
-      console.log(messageError)
       MessageToast({ icon: 'error', title: 'Error', message: `${messageError.error}` })
+    }
+  })
+
+  // Mutacion que elimina la cotizacion
+  const deletePriceMutation = useMutation({
+    mutationFn: (_id: string) => deletePriceById(_id),
+    onSuccess: data => {
+      queryClient.invalidateQueries({ queryKey: ['prices'] })
+      MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
+    },
+    onError: error => {
+      const messageError = JSON.parse(error.message)
+      MessageToast({ icon: 'error', title: 'Error', message: `${messageError.message}` })
     }
   })
 
@@ -99,7 +111,13 @@ export const usePrice = () => {
     addPayment: addPaymentPrice.mutate,
     isPendingAddPayment: addPaymentPrice.isPending,
     isSuccessAddPayment: addPaymentPrice.isSuccess,
-    isErrorAddPayment: addPaymentPrice.isError
+    isErrorAddPayment: addPaymentPrice.isError,
+
+    // Eliminar la cotizacion
+    deletePrice: deletePriceMutation.mutate,
+    isPendingDeletePrice: deletePriceMutation.isPending,
+    isSuccessDeletePrice: deletePriceMutation.isSuccess,
+    isErrorDeletePrice: deletePriceMutation.isError
   }
 }
 

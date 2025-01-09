@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom"
 import { usePrice } from "../../../hooks/usePrice"
 import { LabelBadge } from "../../../components/label/LabelBadge"
 import { formatDateForInput } from "../../../utils/dateUtils"
-import { FileEditIcon, NotebookPenIcon } from "lucide-react"
+import { FileEditIcon, NotebookPenIcon, Trash } from "lucide-react"
 import ReusableTable from "../../../components/table/ReusableTable"
 import { ColumnDef } from "@tanstack/react-table"
 import LoadingErrorHandler from "../../../components/chargeView/LoadingErrorHandler"
+import MessageAlert from "../../../components/messages/MessageAlert"
+import Swal from "sweetalert2"
+import MessageToast from "../../../components/messages/MessageToast"
 
 const Price = () => {
 
@@ -18,6 +21,8 @@ const Price = () => {
     prices,
     isPendingPrice,
     isErrorPrice,
+
+    deletePrice
   } = usePrice()
 
   // Funcion que abre el modal tomando el usuario cuando edite
@@ -32,6 +37,47 @@ const Price = () => {
       consecutiveNumber: index + 1
     }))
   }, [prices])
+
+  // Funcion que ejecuta la eliminacion de la cotización
+  const handleDeletePrice = async (_id: string) => {
+    MessageAlert.showConfirmDialog({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar la cotización? Está acción no se puede deshacer`,
+      icon: 'question',
+      confirmButtonText: 'Sí, eliminar',
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: 'Cancelar',
+      onConfirm: async () => {
+        try {
+          Swal.fire({
+            title: 'Eliminando cotización...',
+            text: 'Por favor espere',
+            icon: 'info',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+              Swal.showLoading()
+            }
+          })
+
+          await deletePrice(_id)
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al eliminar la cotización',
+            icon: 'error',
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: "#444444"
+          })
+        }
+      },
+      onCancel: () => {
+        // MessageAlert maneja el mensaje de cancelación
+        MessageToast({ icon: 'warning', title: 'Cancelado', message: 'La cotización no se elimino' })
+      }
+    })
+  }
 
   // Definicion de usuarios para pintarlos dentro de la tabla
   const columns: ColumnDef<PriceBody>[] = [
@@ -89,13 +135,23 @@ const Price = () => {
       header: 'Acciones',
       id: 'actions',
       cell: ({ row }) => (
-        <button
-          className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
-          onClick={() => handleClickEdit(row.original)}
-          title="Editar"
-        >
-          <FileEditIcon size={22} />
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="bg-sky-100 text-sky-700 rounded-md p-1.5 hover:bg-sky-200 hover:shadow duration-300"
+            onClick={() => handleClickEdit(row.original)}
+            title="Editar"
+          >
+            <FileEditIcon size={22} />
+          </button>
+
+          <button
+            className="bg-red-100 text-red-700 rounded-md p-1.5 hover:bg-red-200 hover:shadow duration-300"
+            onClick={() => handleDeletePrice(row.original._id)}
+            title="Eliminar"
+            >
+            <Trash size={18} />
+          </button>
+        </div>
       )
     },
   ]

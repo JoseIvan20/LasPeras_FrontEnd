@@ -64,3 +64,16 @@ export const getPaymentsByPriceId = async (_id: string): Promise<Payment[]> => {
     throw handleApiError(error)
   }
 }
+
+// Eliminar la cotizacion
+export const deletePriceById = async (_id: string): Promise<PriceBody> => {
+  try {
+
+    const { data } = await apiURL.delete(`/deletePrice/${_id}`)
+    // const { data } = await apiURL.delete(`/price/${_id}`)
+    return data
+
+  } catch (error) {
+    throw handleApiError(error)
+  }
+}

@@ -1,4 +1,4 @@
-import { Calendar1, House, Image, LayoutPanelTop, LucideIcon, MessageCircleMore, NotebookText, Shield, Users } from "lucide-react"
+import { Calendar1, House, Image, LayoutPanelTop, LucideIcon, MessageCircleMore, NotebookText, Settings, Shield, Users } from "lucide-react"
 import Dashboard from "../view/Dashboard"
 import User from "../view/gestion/price/Price"
 import UserAuth from "../view/gestion/auth/UserAuth"
@@ -6,6 +6,7 @@ import Home from "../view/Home"
 import Comments from "../view/Comments"
 import GestionImage from "../view/GestionImage"
 import Calendar from "../view/Calendar"
+import SettingsPage from "../view/Settings"
 
 // Tipo para las rutas
 export interface RouteConfig {
@@ -98,5 +99,15 @@ export const routesDashboard: RouteConfig[] = [
     showInSidebar: true,
     bgColor: 'bg-lime-100',
     textColor: 'text-lime-600',
+  },
+  { // Others
+    key: 'configuration',
+    path: '/configuration',
+    name: 'Configuración',
+    icon: Settings,
+    component: SettingsPage,
+    showInSidebar: true,
+    bgColor: 'bg-green-100',
+    textColor: 'text-green-600',
   },
 ]

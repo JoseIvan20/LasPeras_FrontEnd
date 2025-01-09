@@ -86,8 +86,12 @@ const PriceEdit = () => {
           const fetchedPrice = await getPriceById({ _id: id })
           setPrice(fetchedPrice)
           // Excluimos paymentMethod y paidAmount del reset
-          const { totalAmount, paymentMethod, paidAmount, ...restPrice } = fetchedPrice
-          reset(restPrice)
+          // const { totalAmount, paymentMethod, paidAmount, ...restPrice } = fetchedPrice
+          reset({
+            ...fetchedPrice,
+            paymentMethod: '',
+            paidAmount: 0,
+          })
         } catch (err) {
           console.log('Error al obtener la cotizacion', err)
         }
@@ -500,25 +504,31 @@ const PriceEdit = () => {
                     />
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                    {price?.totalAmount === undefined ? (
-                      <Controller
-                        name="totalAmount"
-                        control={control}
-                        defaultValue={0}
-                        render={({ field }) => (
-                          <MessageToasty
-                            label="Total a pagar"
-                            type="number"
-                            icon={BadgeDollarSign}
-                            placeholder="Ingrese el total a pagar..."
-                            error={errors.totalAmount?.message}
-                            {...field}
-                          />
-                        )}
-                      />
-                    ): (
-                      <>
+                  <div className="flex flex-col gap-4">
+                    {/* {price?.totalAmount === undefined ? ( */}
+                      <div className="w-1/6">
+                        <Controller
+                          name="totalAmount"
+                          control={control}
+                          defaultValue={0}
+                          render={({ field }) => (
+                            <MessageToasty
+                              label="Total a pagar"
+                              type="number"
+                              icon={BadgeDollarSign}
+                              placeholder="Ingrese el total a pagar..."
+                              error={errors.totalAmount?.message}
+                              disabled={price?.paymentStatus === 'complete'}
+                              {...field}
+                              onChange={e => {
+                                field.onChange(Number(e.target.value))
+                              }}
+                            />
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                         <Controller
                           name="paymentMethod"
                           control={control}
@@ -529,7 +539,7 @@ const PriceEdit = () => {
                               onSelect={onChange}
                               value={value ? String(value) : null}
                               label="Método de pago"
-                              disabled={price?.paymentStatus === 'complete'}
+                              disabled={price?.paymentStatus === 'complete' || !price?.totalAmount}
                               error={error?.message}
                             />
                           )}
@@ -546,13 +556,15 @@ const PriceEdit = () => {
                               icon={BadgeDollarSign}
                               placeholder="Ingrese el monto..."
                               error={errors.paidAmount?.message}
+                              disabled={price?.paymentStatus === 'complete' || !price?.totalAmount}
                               {...field}
+                              onChange={e => {
+                                field.onChange(Number(e.target.value))
+                              }}
                             />
                           )}
                         />
-                      
-                      </>
-                    )}
+                      </div>
                   </div>
                 </div>
 
@@ -574,10 +586,7 @@ const PriceEdit = () => {
                   )}
                 </div>
 
-                <div className="mt-4 text-gray-500 flex justify-between">
-                  <p className="font-semibold">
-                    Total a pagar: ${price.totalAmount}
-                  </p>
+                <div className="mt-4 text-gray-500 flex justify-end">
                   <p className="font-semibold">
                     Total Pagado: ${payments.reduce((sum, payment) => sum + payment.amount, 0)}
                   </p>

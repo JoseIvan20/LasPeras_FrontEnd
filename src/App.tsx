@@ -67,8 +67,7 @@ const LandingPage = () => {
           <div className="relative h-full">
             <Slider />
             <div className='absolute top-4 right-4 z-10'>
-              <WhatsAppButton
-                phoneNumber='5517430604' />
+              <WhatsAppButton />
             </div>
           </div>
         </div>

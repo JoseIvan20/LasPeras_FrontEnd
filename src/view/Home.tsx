@@ -8,8 +8,13 @@ import AnimatedCircle from '../components/animations/AnimatedCircle'
 import WhatsAppButton from '../components/button/WhatsAppButton'
 import TestimonialsSection from '../components/secctions/TestimonialsSection'
 import AnimatedTitle from '../components/animations/AnimatedTitle'
+import useWhatsApp from '../hooks/useWhatsApp'
 
 const Home = () => {
+
+  const { getConfig } = useWhatsApp()
+  console.log(getConfig?.isActive)
+
   return (
     <main className='relative min-h-screen overflow-hidden bg-white'>
       {/* Circulo decorativo superior izquierdo */}
@@ -54,9 +59,8 @@ const Home = () => {
           {/* Carrusel o Slider de imagenes */}
           <div className="relative h-full ">
             <Slider />
-            <div className='absolute top-4 right-4 z-20'>
-              <WhatsAppButton
-                phoneNumber='5517430604' />
+            <div className={`absolute top-4 right-4 z-20 ${!getConfig?.isActive ? 'hidden' : 'block'}`}>
+              <WhatsAppButton  />
             </div>
           </div>
         </div>
