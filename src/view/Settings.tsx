@@ -53,7 +53,7 @@ const SettingsPage = () => {
   useEffect(() => {
     if (getConfig && typeof getConfig.isActive === 'boolean') {
       setIsActive(getConfig.isActive)
-      setValue('isActive', getConfig.isActive) // Actualizamos también el valor en el formulario
+      setValue('isActive', getConfig.isActive)
     }
   }, [getConfig])
 
