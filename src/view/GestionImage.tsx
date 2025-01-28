@@ -112,9 +112,9 @@ const GestionImage = () => {
             control={control}
             rules={{
               required: 'Agrega una descripción a la imagen',
-              pattern: {
-                value: /^\d{200}$/,
-                message: 'Has rebasado el límite de caracteres, el límite es de 200 caracteres'
+              maxLength: {
+                value: 200,
+                message: 'La descripción no puede tener más de 200 caracteres'
               }
             }}
             render={({ field }) => (
@@ -128,6 +128,7 @@ const GestionImage = () => {
               />
             )}
           />
+          
           <Controller
             name="file"
             control={control}
