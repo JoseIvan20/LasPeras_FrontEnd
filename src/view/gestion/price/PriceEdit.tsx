@@ -75,7 +75,8 @@ const PriceEdit = () => {
       totalAmount: 0,
       paidAmount: 0
     },
-    disabled: price?.paymentStatus === 'complete'
+    // disabled: price?.paymentStatus === 'complete'
+    disabled: price?.paymentStatus === 'complete' && price?.status === 'finalized'
   })
 
   // Cuando hay un cambio en la cotizacion actualiza la informacion en tiempo real
@@ -233,7 +234,7 @@ const PriceEdit = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className='flex gap-2 items-center bg-white p-3 rounded-md shadow'>
-          <Spinner size={30} borderColor='border-red-700'/>
+          <Spinner size={30} borderColor='border-gray-700'/>
           <span className='text-slate-600 font-semibold'> Cargando cotización </span>
         </div>
       </div>
@@ -416,7 +417,7 @@ const PriceEdit = () => {
                         value={value ? String(value) : null}
                         label="Tipo de evento"
                         placeholder="Selecciona un tipo de evento"
-                        disabled={price?.paymentStatus === 'complete'}
+                        disabled={price?.paymentStatus === 'complete' && price?.status === 'finalized'}
                         error={error?.message}
                       />
                     )}
@@ -449,7 +450,7 @@ const PriceEdit = () => {
                           value={value ? valueToLabel[value] : null}
                           label="Estado del cliente"
                           placeholder="Selecciona un estado"
-                        disabled={price?.paymentStatus === 'complete'}
+                        disabled={price?.paymentStatus === 'complete' && price?.status === 'finalized'}
                           error={error?.message}
                         />
                       )
@@ -478,7 +479,7 @@ const PriceEdit = () => {
                    <div className="p-1.5 bg-gray-100 rounded-lg">
                       <BadgeDollarSign />
                     </div>
-                    <h1>Pago</h1>
+                    <h1>Información de pago</h1>
                   </div>
 
                   <div className="">

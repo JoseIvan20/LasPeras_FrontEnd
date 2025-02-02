@@ -51,8 +51,8 @@ export const updateComment = async (commentId: string, commentData: Partial<Comm
 export const deleteComment = async (commentId: string) => {
   try {
 
-    const { data } = await apiURL.delete(`/deleteComment/${commentId}`)
-    // const { data } = await apiURL.delete(`/comment/${commentId}`)
+    // const { data } = await apiURL.delete(`/deleteComment/${commentId}`)
+    const { data } = await apiURL.delete(`/comment/${commentId}`)
     return data
 
   } catch (error) {

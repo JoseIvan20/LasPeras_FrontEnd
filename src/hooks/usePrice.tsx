@@ -42,6 +42,7 @@ export const usePrice = () => {
     mutationFn: ({ _id, formData }: PriceDataProps) => updatePriceById(_id, formData),
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['prices'] })
+      queryClient.invalidateQueries({ queryKey: ['payments'] })
       MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
     },
     onError: error => {
@@ -52,6 +53,10 @@ export const usePrice = () => {
   // Obtencion de la cotizacion por medio de id
   const priceById = useMutation({
     mutationFn: ({ _id }: GetPriceDataProps) => getPrice(_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prices'] })
+      queryClient.invalidateQueries({ queryKey: ['payments'] })
+    },
     onError: error => {
       const messageError = JSON.parse(error.message)
       MessageToast({ icon: 'error', title: 'Error', message: `${messageError.message}` })
@@ -63,7 +68,7 @@ export const usePrice = () => {
     mutationFn: ({ _id, amount, method }: { _id: string, amount: number, method: string }) => 
       addPayment(_id, amount, method),
     onSuccess: data => {
-      queryClient.invalidateQueries({ queryKey: ['prices'] })
+      queryClient.invalidateQueries({ queryKey: ['payments'] })
       MessageToast({ icon: 'success', title: 'Éxitoso', message: `${data.message}` })
     },
     onError: error => {
