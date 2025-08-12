@@ -48,7 +48,7 @@ export const addPayment = async (_id: string, amount: number, method: string): P
     const { data } = await apiURL.post(`/addPayment/${_id}`, { amount, method })
     // const { data } = await apiURL.post(`/price/${_id}/payments`, { amount, method })
     return data
-    
+
   } catch (error) {
     throw handleApiError(error)
   }
