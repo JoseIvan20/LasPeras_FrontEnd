@@ -1,8 +1,8 @@
-import { 
-  BrowserRouter, 
-  Routes, 
+import {
+  BrowserRouter,
+  Routes,
   Route,
-  Navigate, 
+  Navigate,
 } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
 import Home from './view/Home'
@@ -15,8 +15,12 @@ import PriceEdit from './view/gestion/price/PriceEdit'
 import ActivateAccount from './view/auth/ActivateAccount'
 import { routesDashboard, RouteConfig } from './helper/routes'
 import React from 'react'
+import { useGTM } from './hooks/useGTM'
 
 const Router = () => {
+
+  // Hook
+  useGTM('GTM-N5MRM7DD')
 
   // Uso del estado global de autenticacion
   const { isAuthenticated } = useSelector((state: any) => state.auth)
@@ -28,13 +32,13 @@ const Router = () => {
         // Si tiene subItems, genera rutas para cada uno
         return generateRoutes(route.subItems)
       }
-      
+
       if (route.path && route.component) {
         return (
-          <Route 
-            key={route.key} 
-            path={route.path} 
-            element={<route.component />} 
+          <Route
+            key={route.key}
+            path={route.path}
+            element={<route.component />}
           />
         )
       }
@@ -47,14 +51,14 @@ const Router = () => {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path='/' element={<Home />} index /> {/* Ruta principal */}
-          <Route 
+          <Route
             path='/auth/login'
-            element={isAuthenticated ? <Navigate to='/dashboard' replace /> : <Login />} 
+            element={isAuthenticated ? <Navigate to='/dashboard' replace /> : <Login />}
           /> {/* Ruta de login */}
         </Route>
-        <Route 
+        <Route
           path='/active-account'
-          element={<ActivateAccount />} 
+          element={<ActivateAccount />}
         /> {/* Ruta de activacion de cuenta */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
